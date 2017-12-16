@@ -15,7 +15,7 @@ namespace ElevatorSimulationModel.Distributions
 
             CheckBorders();
         }
-        public override int GetTime()
+        public override int GetValue()
         {
             return leftBorder + randGenerator.Next(rightBorder - leftBorder);
         }

@@ -8,6 +8,6 @@ namespace ElevatorSimulationModel.Distributions
 {
     abstract class Distribution
     {
-        public abstract int GetTime();
+        public abstract int GetValue();
     }
 }
