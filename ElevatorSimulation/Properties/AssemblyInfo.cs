@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ElevatorSimulationModel")]
+[assembly: AssemblyTitle("ElevatorSimulation")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ElevatorSimulationModel")]
+[assembly: AssemblyProduct("ElevatorSimulation")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("ec48c244-629b-476b-a6a3-eadeff2af43d")]
+[assembly: Guid("d9f21b6d-be4e-49f1-bf81-b054e7c3f0b7")]
 
 // Version information for an assembly consists of the following four values:
 //
