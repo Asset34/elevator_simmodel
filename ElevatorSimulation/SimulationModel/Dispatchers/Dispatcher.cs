@@ -1,4 +1,4 @@
-﻿namespace ElevatorSimulation.Dispatchers
+﻿namespace ElevatorSimulation.SimulationModel.Dispatchers
 {
     /// <summary>
     /// Base generic class for dispatchers

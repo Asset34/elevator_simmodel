@@ -1,8 +1,8 @@
 ﻿using System;
 
-using ElevatorSimulation.Transactions;
+using ElevatorSimulation.SimulationModel.Transactions;
 
-namespace ElevatorSimulation.Events
+namespace ElevatorSimulation.SimulationModel.Events
 {
     /// <summary>
     /// Event of entering new tenant the floor queue

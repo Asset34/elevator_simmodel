@@ -1,4 +1,4 @@
-﻿namespace ElevatorSimulation.Events
+﻿namespace ElevatorSimulation.SimulationModel.Events
 {
     /// <summary>
     /// Base class for events

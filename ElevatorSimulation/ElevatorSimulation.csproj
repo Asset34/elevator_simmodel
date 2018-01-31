@@ -43,29 +43,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\ElevatorController.cs" />
-    <Compile Include="Controllers\FloorQueueController.cs" />
-    <Compile Include="Controllers\TenantGeneratorController.cs" />
-    <Compile Include="Dispatchers\CollectiveDispatchers\CollectiveDispatcher.cs" />
-    <Compile Include="Dispatchers\Dispatcher.cs" />
-    <Compile Include="Dispatchers\RequestDispatchers\RequestDispatcher.cs" />
-    <Compile Include="Distributions\Distribution.cs" />
-    <Compile Include="Distributions\DistributionWithGaps.cs" />
-    <Compile Include="Distributions\UniformDistribution.cs" />
-    <Compile Include="ElevatorSimulationModel.cs" />
+    <Compile Include="SimulationModel\Controllers\ElevatorController.cs" />
+    <Compile Include="SimulationModel\Controllers\FloorQueueController.cs" />
+    <Compile Include="SimulationModel\Controllers\TenantGeneratorController.cs" />
+    <Compile Include="SimulationModel\Dispatchers\ElevatorGroupDispatchers\ElevatorGroupDispatcher.cs" />
+    <Compile Include="SimulationModel\Dispatchers\Dispatcher.cs" />
+    <Compile Include="SimulationModel\Dispatchers\RequestDispatchers\RequestDispatcher.cs" />
+    <Compile Include="SimulationModel\Distributions\Distribution.cs" />
+    <Compile Include="SimulationModel\Distributions\DistributionWithGaps.cs" />
+    <Compile Include="SimulationModel\Distributions\UniformDistribution.cs" />
+    <Compile Include="SimulationModel\ElevatorSimulationModel.cs" />
     <Compile Include="EventComparer.cs" />
-    <Compile Include="Entities\Elevator.cs" />
-    <Compile Include="Entities\FloorQueue.cs" />
-    <Compile Include="Entities\TenantGenerator.cs" />
-    <Compile Include="Events\Event.cs" />
-    <Compile Include="Events\NewTenantEvent.cs" />
+    <Compile Include="SimulationModel\Entities\Elevator.cs" />
+    <Compile Include="SimulationModel\Entities\FloorQueue.cs" />
+    <Compile Include="SimulationModel\Entities\TenantGenerator.cs" />
+    <Compile Include="SimulationModel\Events\Event.cs" />
+    <Compile Include="SimulationModel\Events\NewTenantEvent.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomGenerator.cs" />
-    <Compile Include="Request.cs" />
+    <Compile Include="SimulationModel\Parameters\ElevatorParameters.cs" />
+    <Compile Include="SimulationModel\Parameters\FloorParameters.cs" />
+    <Compile Include="SimulationModel\Request.cs" />
     <Compile Include="Resettable.cs" />
-    <Compile Include="SimulationParameters.cs" />
-    <Compile Include="Transactions\Tenant.cs" />
+    <Compile Include="SimulationModel\Parameters\SimulationParameters.cs" />
+    <Compile Include="SimulationModel\Transactions\Tenant.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

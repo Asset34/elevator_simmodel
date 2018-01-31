@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Linq;
 
-namespace ElevatorSimulation.Distributions
+namespace ElevatorSimulation.SimulationModel.Distributions
 {
     /// <summary>
     /// "Decorator" for distributions which excludes specific values(gaps)
     /// </summary>
     class DistributionWithGaps : Distribution
     {
-        public DistributionWithGaps(Distribution distribution, int[] gaps)
+        public DistributionWithGaps(Distribution distribution, params int[] gaps)
         {
             m_distribution = distribution;
             m_gaps = gaps;

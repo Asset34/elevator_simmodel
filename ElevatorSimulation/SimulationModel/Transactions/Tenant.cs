@@ -1,4 +1,4 @@
-﻿namespace ElevatorSimulation.Transactions
+﻿namespace ElevatorSimulation.SimulationModel.Transactions
 {
     /// <summary>
     /// Model of the tenant

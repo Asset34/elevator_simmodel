@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using ElevatorSimulation.Transactions;
-using ElevatorSimulation.Entities;
+using ElevatorSimulation.SimulationModel.Transactions;
+using ElevatorSimulation.SimulationModel.Entities;
 
-namespace ElevatorSimulation.Controllers
+namespace ElevatorSimulation.SimulationModel.Controllers
 {
     /// <summary>
     /// Controller of the complex of tenant floor queues

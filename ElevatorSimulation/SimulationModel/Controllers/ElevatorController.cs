@@ -4,18 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using ElevatorSimulation.Transactions;
-using ElevatorSimulation.Entities;
-using ElevatorSimulation.Dispatchers.CollectiveDispatchers;
+using ElevatorSimulation.SimulationModel.Transactions;
+using ElevatorSimulation.SimulationModel.Entities;
+using ElevatorSimulation.SimulationModel.Dispatchers.ElevatorGroupDispatchers;
 
-namespace ElevatorSimulation.Controllers
+namespace ElevatorSimulation.SimulationModel.Controllers
 {
     /// <summary>
     /// Controller of the complex of elevators
     /// </summary>
     class ElevatorController : Resettable
     {
-        public ElevatorController(CollectiveDispatcher dispatcher)
+        public ElevatorController(ElevatorGroupDispatcher dispatcher)
         {
             m_dispatcher = dispatcher;
         }
@@ -33,6 +33,6 @@ namespace ElevatorSimulation.Controllers
         }
 
         private List<Elevator> m_elevators = new List<Elevator>();
-        private readonly CollectiveDispatcher m_dispatcher;
+        private readonly ElevatorGroupDispatcher m_dispatcher;
     }
 }

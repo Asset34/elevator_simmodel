@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ElevatorSimulation.Distributions
+namespace ElevatorSimulation.SimulationModel.Distributions
 {
     /// <summary>
     /// Ordinary uniform distribution between [min; max]

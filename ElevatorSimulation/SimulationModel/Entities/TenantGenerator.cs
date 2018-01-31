@@ -1,7 +1,7 @@
-﻿using ElevatorSimulation.Transactions;
-using ElevatorSimulation.Distributions;
+﻿using ElevatorSimulation.SimulationModel.Transactions;
+using ElevatorSimulation.SimulationModel.Distributions;
 
-namespace ElevatorSimulation.Entities
+namespace ElevatorSimulation.SimulationModel.Entities
 {
     /// <summary>
     /// Generator of tenants on the specific floor
@@ -16,10 +16,10 @@ namespace ElevatorSimulation.Entities
         /// </summary>
         public int Floor { get; }
 
-        public TenantGenerator(Distribution destinationFloorDistr, int floor)
+        public TenantGenerator(int floor, Distribution destinationFloorDistr)
         {
-            m_destinationFloorDistr = destinationFloorDistr;
             Floor = floor;
+            m_destinationFloorDistr = destinationFloorDistr;
         }
         public Tenant Generate()
         {

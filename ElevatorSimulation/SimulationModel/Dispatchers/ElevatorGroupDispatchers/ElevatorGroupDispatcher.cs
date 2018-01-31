@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using ElevatorSimulation.Entities;
+using ElevatorSimulation.SimulationModel.Entities;
 
-namespace ElevatorSimulation.Dispatchers.CollectiveDispatchers
+namespace ElevatorSimulation.SimulationModel.Dispatchers.ElevatorGroupDispatchers
 {
     /// <summary>
     /// Base class for dispatchers of group of elevators
     /// </summary>
-    abstract class CollectiveDispatcher : Dispatcher<Elevator>
+    abstract class ElevatorGroupDispatcher : Dispatcher<Elevator>
     {
         /// <summary>
         /// Get elevator which will handle the request

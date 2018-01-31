@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using ElevatorSimulation.Entities;
+using ElevatorSimulation.SimulationModel.Entities;
 
-namespace ElevatorSimulation.Dispatchers.RequestDispatchers
+namespace ElevatorSimulation.SimulationModel.Dispatchers.RequestDispatchers
 {
     /// <summary>
     /// Base class for dispatchers of floor requests of single elevator

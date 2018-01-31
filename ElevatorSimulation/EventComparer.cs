@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using ElevatorSimulation.Events;
+using ElevatorSimulation.SimulationModel.Events;
 
 namespace ElevatorSimulation
 {

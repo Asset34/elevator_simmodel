@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using ElevatorSimulation.Transactions;
-using ElevatorSimulation.Dispatchers.RequestDispatchers;
+using ElevatorSimulation.SimulationModel.Transactions;
+using ElevatorSimulation.SimulationModel.Dispatchers.RequestDispatchers;
 
-namespace ElevatorSimulation.Entities
+namespace ElevatorSimulation.SimulationModel.Entities
 {
     enum ElevatorState
     {

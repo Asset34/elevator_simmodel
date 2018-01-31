@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using ElevatorSimulation.Distributions;
-using ElevatorSimulation.Events;
+using ElevatorSimulation.SimulationModel.Distributions;
+using ElevatorSimulation.SimulationModel.Events;
 
 namespace ElevatorSimulation
 {

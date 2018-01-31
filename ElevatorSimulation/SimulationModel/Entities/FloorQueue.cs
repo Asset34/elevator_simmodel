@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using ElevatorSimulation.Transactions;
+using ElevatorSimulation.SimulationModel.Transactions;
 
-namespace ElevatorSimulation.Entities
+namespace ElevatorSimulation.SimulationModel.Entities
 {
     /// <summary>
     /// Queue of tenants on the specific floor

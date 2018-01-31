@@ -1,4 +1,4 @@
-﻿namespace ElevatorSimulation.Distributions
+﻿namespace ElevatorSimulation.SimulationModel.Distributions
 {
     /// <summary>
     /// Base class for distributions
