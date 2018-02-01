@@ -9,7 +9,7 @@ namespace ElevatorSimulation.SimulationModel.Controllers
     /// <summary>
     /// Controller of the complex of tenant generators
     /// </summary>
-    class TenantGeneratorController
+    class GroupTenantGeneratorController
     {
         public List<TenantGenerator> Generators
         {

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using ElevatorSimulation.SimulationModel.Entities;
+using ElevatorSimulation.SimulationModel.Transactions;
 
 namespace ElevatorSimulation.SimulationModel.Dispatchers.ElevatorGroupDispatchers
 {
@@ -27,7 +26,7 @@ namespace ElevatorSimulation.SimulationModel.Dispatchers.ElevatorGroupDispatcher
         {
             m_elevators.Add(element);
         }
-        public override Elevator GetElevator(Request request)
+        public override Elevator GetElevator(Tenant tenant)
         {
             List<KeyValuePair<Elevator, int>> priorityElevators = new List<KeyValuePair<Elevator, int>>();
 
@@ -36,14 +35,14 @@ namespace ElevatorSimulation.SimulationModel.Dispatchers.ElevatorGroupDispatcher
             int priority;
             foreach (Elevator elevator in m_elevators)
             {
-                displacement = request.Floor - elevator.CurrentFloor;
+                displacement = tenant.FloorFrom - elevator.CurrentFloor;
 
                 // Compute priority
                 if (displacement > 0 && elevator.State == ElevatorState.MoveUp ||
                     displacement < 0 && elevator.State == ElevatorState.MoveDown)
                 {
                     if (elevator.State == ElevatorState.MoveUp &&
-                        request.Type == RequestType.Up)
+                        tenant.CallType == CallType.Up)
                     {
                         priority = m_numFloors + 3 - Math.Abs(displacement);
                     }
@@ -71,7 +70,7 @@ namespace ElevatorSimulation.SimulationModel.Dispatchers.ElevatorGroupDispatcher
             // Search of the available elevator with highest priority
             foreach (KeyValuePair<Elevator, int> pair in sortedPriorityElevators)
             {
-                if (pair.Key.FreeSpace > 0)
+                if (pair.Key.FreeCount > 0)
                 {
                     return pair.Key;
                 }

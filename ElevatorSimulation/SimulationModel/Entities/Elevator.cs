@@ -10,7 +10,6 @@ namespace ElevatorSimulation.SimulationModel.Entities
     enum ElevatorState
     {
         Wait,
-        Stop,
         MoveUp,
         MoveDown
     }
@@ -25,61 +24,99 @@ namespace ElevatorSimulation.SimulationModel.Entities
     {
         public int Id { get; }
         /// <summary>
-        /// Maximum number of tenants
+        /// Maximum number of served tenants
         /// </summary>
         public int Capacity { get; set; }
+        /// <summary>
+        /// Number of served tenants
+        /// </summary>
+        public int FillCount
+        {
+            get { return m_tenants.Count; }
+        }
+        /// <summary>
+        /// Number of free places
+        /// </summary>
+        public int FreeCount
+        {
+            get { return Capacity - FillCount; }
+        }
         public int DefaultFloor { get; set; }
         public int CurrentFloor { get; private set; }
         public int DestinationFloor { get; private set; }
         public ElevatorState State { get; private set; }
-        /// <summary>
-        /// Number of tenants that can be picked up
-        /// </summary>
-        public int FreeSpace
-        {
-            get { return Capacity - m_tenants.Count; }
-        }
 
-        public Elevator(int id, int capacity, int startFloor, RequestDispatcher requestDispatcher)
+        public Elevator
+            (
+            int id, 
+            int capacity, 
+            int startFloor, 
+            CallDispatcher requestDispatcher
+            )
         {
             Id = id;
             DefaultFloor = startFloor;
             CurrentFloor = startFloor;
             Capacity = capacity;
+
             m_dispatcher = requestDispatcher;
+            m_dispatcher.SetElevator(this);
 
             State = ElevatorState.Wait;
         }
         public void Move()
-        {
-            switch (State)
+        {   
+            if (CurrentFloor != DestinationFloor)
             {
-                case ElevatorState.MoveDown:
-                    CurrentFloor--;
-                    break;
-                case ElevatorState.MoveUp:
+                if (State == ElevatorState.MoveUp)
+                {
                     CurrentFloor++;
-                    break;
+                }
+                else if (State == ElevatorState.MoveDown)
+                {
+                    CurrentFloor--;
+                }    
             }
-        }
-        public void AddRequest(Request request)
-        {
-            m_dispatcher.Register(request);
-            SetRequest();         
-        }
-        public void SetRequest()
-        {
-            // Get new handling request
-            DestinationFloor = m_dispatcher.GetRequest();
 
-            // Set new state
-            if (DestinationFloor > CurrentFloor)
+            if (CurrentFloor == DestinationFloor)
             {
-                State = ElevatorState.MoveUp;
+                m_dispatcher.UnregisterCall(DestinationFloor);
+                SetCall();
             }
+        }
+        public void AddHallCall(Tenant tenant)
+        {
+            m_dispatcher.RegisterHallCall(tenant);
+
+            SetCall();
+        }
+        public void AddCarCall(Tenant tenant)
+        {
+            m_dispatcher.RegisterCarCall(tenant);
+
+            SetCall();
+        }
+        public void SetCall()
+        {
+            Tuple<int, bool> result = m_dispatcher.GetCall(CurrentFloor);
+            
+            if (result.Item2)
+            {
+                DestinationFloor = result.Item1;
+
+                if (DestinationFloor >= CurrentFloor)
+                {
+                    State = ElevatorState.MoveUp;
+                }
+                else
+                {
+                    State = ElevatorState.MoveDown;
+                }
+            }
+            // If there are no calls
             else
             {
-                State = ElevatorState.MoveDown;
+                State = ElevatorState.Wait;
             }
         }
         public void PickUp(Tenant[] tenants)
@@ -92,11 +129,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
         public void PickUp(Tenant tenant)
         {
             // Checks
-            if (State != ElevatorState.Stop)
-            {
-                throw new InvalidOperationException("Picking up during the movement");
-            }
-            else if (m_tenants.Count == Capacity)
+            if (FreeCount == 0)
             {
                 throw new InvalidOperationException("The elevator is full");
             }
@@ -104,21 +137,11 @@ namespace ElevatorSimulation.SimulationModel.Entities
             // Add tenant
             m_tenants.Add(tenant, tenant.FloorTo);
 
-            // Add request from tenant
-            AddRequest(tenant.GetInternalRequest());
+            // Add call
+            AddCarCall(tenant);
         }
-        public Tenant[] DropOff()
-        {
-            // Checks
-            if (State == ElevatorState.Stop)
-            {
-                throw new InvalidOperationException("Dropping off during the movement");
-            }
-            else if (m_tenants.Count == 0)
-            {
-                throw new InvalidOperationException("");
-            }
-
+        public List<Tenant> DropOff()
+        {        
             // Get list of dropping off tenants
             List<Tenant> tenants = new List<Tenant>();
             foreach (var item in m_tenants.Where(kvp => kvp.Value == CurrentFloor).ToList())
@@ -127,7 +150,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
                 m_tenants.Remove(item.Key);
             }
 
-            return tenants.ToArray();
+            return tenants;
         }
         public void Reset()
         {
@@ -138,7 +161,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
             m_tenants.Clear();
         }
 
-        private readonly RequestDispatcher m_dispatcher;
+        private readonly CallDispatcher m_dispatcher;
         private Dictionary<Tenant, int> m_tenants = new Dictionary<Tenant, int>();
     }
 }

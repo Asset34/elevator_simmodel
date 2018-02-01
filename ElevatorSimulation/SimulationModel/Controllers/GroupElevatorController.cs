@@ -13,9 +13,9 @@ namespace ElevatorSimulation.SimulationModel.Controllers
     /// <summary>
     /// Controller of the complex of elevators
     /// </summary>
-    class ElevatorController : Resettable
+    class GroupElevatorController : Resettable
     {
-        public ElevatorController(ElevatorGroupDispatcher dispatcher)
+        public GroupElevatorController(ElevatorGroupDispatcher dispatcher)
         {
             m_dispatcher = dispatcher;
         }

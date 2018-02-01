@@ -24,9 +24,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
         }
         public void Enqueue(Tenant tenant)
         {
-            RequestType type = tenant.GetRequestType();
-
-            if (type == RequestType.Up)
+            if (tenant.CallType == CallType.Up)
             {
                 m_upQueue.Enqueue(tenant);
             }
@@ -35,16 +33,13 @@ namespace ElevatorSimulation.SimulationModel.Entities
                 m_downQueue.Enqueue(tenant);
             }
         }
-        public Tenant Dequeue(RequestType type)
+        public Tenant DequeueUp()
         {
-            if (type == RequestType.Up)
-            {
-                return m_upQueue.Dequeue();
-            }
-            else
-            {
-                return m_downQueue.Dequeue();
-            }
+            return m_upQueue.Dequeue();
+        }
+        public Tenant DequeueDown()
+        {
+            return m_downQueue.Dequeue();
         }
         public void Reset()
         {

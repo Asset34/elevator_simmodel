@@ -1,5 +1,11 @@
 ﻿namespace ElevatorSimulation.SimulationModel.Transactions
 {
+    enum CallType
+    {
+        Up,
+        Down
+    }
+
     /// <summary>
     /// Model of the tenant
     /// </summary>
@@ -14,6 +20,23 @@
         /// Destination floor
         /// </summary>
         public int FloorTo { get; set; }
+        /// <summary>
+        /// Destination of movement
+        /// </summary>
+        public CallType CallType
+        {
+            get
+            {
+                if (FloorTo > FloorFrom)
+                {
+                    return CallType.Up;
+                }
+                else
+                {
+                    return CallType.Down;
+                }
+            }
+        }
         
         public Tenant(int id, int floorFrom, int floorTo)
         {
@@ -21,32 +44,5 @@
             FloorFrom = floorFrom;
             FloorTo = floorTo;
         }   
-        /// <summary>
-        /// Get request from external controls
-        /// </summary>
-        /// <returns></returns>
-        public Request GetExternalRequest()
-        {
-            return new Request(FloorFrom, GetRequestType());
-        }
-        /// <summary>
-        /// Get request from internal controls
-        /// </summary>
-        /// <returns></returns>
-        public Request GetInternalRequest()
-        {
-            return new Request(FloorTo, GetRequestType());
-        }
-        public RequestType GetRequestType()
-        {
-            if (FloorFrom < FloorTo)
-            {
-                return RequestType.Up;
-            }
-            else
-            {
-                return RequestType.Down;
-            }
-        }
     }
 }

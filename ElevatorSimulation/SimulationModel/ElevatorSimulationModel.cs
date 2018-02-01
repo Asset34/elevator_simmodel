@@ -64,8 +64,8 @@ namespace ElevatorSimulation
         private readonly Distribution[] m_generationDistributions;
         private readonly Distribution[] m_movementDistributions;
         /* Controllers */
-        private readonly TenantGeneratorController m_tenantGeneratorController;
-        private readonly FloorQueueController m_floorQueueController;
-        private readonly ElevatorController m_elevatorController;
+        private readonly GroupTenantGeneratorController m_tenantGeneratorController;
+        private readonly GroupFloorQueueController m_floorQueueController;
+        private readonly GroupElevatorController m_elevatorController;
     }
 }
