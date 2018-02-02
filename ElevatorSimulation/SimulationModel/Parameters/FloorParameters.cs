@@ -14,11 +14,5 @@
         /// Variance of period
         /// </summary>
         public int DPeriod { get; set; }
-
-        public FloorParameters(int period, int dPeriod)
-        {
-            Period = period;
-            DPeriod = dPeriod;
-        }
     }
 }

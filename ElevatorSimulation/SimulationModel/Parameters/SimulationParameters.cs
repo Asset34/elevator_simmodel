@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ElevatorSimulation.SimulationModel.Parameters
+﻿namespace ElevatorSimulation.SimulationModel.Parameters
 {
     /// <summary>
     /// Input parameters of the simulation model
@@ -23,19 +21,5 @@ namespace ElevatorSimulation.SimulationModel.Parameters
         /// Complex of elevator parameters
         /// </summary>
         public ElevatorParameters[] ElevatorParameters { get; set; }
-
-        public SimulationParameters
-            (
-            int nFloors, 
-            int nElevators,
-            FloorParameters[] floorParameters,
-            ElevatorParameters[] elevatorParameters
-            )
-        {
-            NFloors = nFloors;
-            NElevators = nElevators;
-            FloorParameters = floorParameters;
-            ElevatorParameters = elevatorParameters;
-        }
     }
 }

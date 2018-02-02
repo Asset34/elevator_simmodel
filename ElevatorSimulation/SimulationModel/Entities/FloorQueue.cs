@@ -24,30 +24,23 @@ namespace ElevatorSimulation.SimulationModel.Entities
         }
         public void Enqueue(Tenant tenant)
         {
-            if (tenant.CallType == CallType.Up)
-            {
-                m_upQueue.Enqueue(tenant);
-            }
-            else
-            {
-                m_downQueue.Enqueue(tenant);
-            }
+            m_queues[tenant.CallType].Enqueue(tenant);
         }
-        public Tenant DequeueUp()
+        public Tenant Dequeue(CallType callType)
         {
-            return m_upQueue.Dequeue();
-        }
-        public Tenant DequeueDown()
-        {
-            return m_downQueue.Dequeue();
+            return m_queues[callType].Dequeue();
         }
         public void Reset()
         {
-            m_upQueue.Clear();
-            m_downQueue.Clear();
+            m_queues[CallType.Up].Clear();
+            m_queues[CallType.Down].Clear();
         }
 
-        private Queue<Tenant> m_upQueue = new Queue<Tenant>();
-        private Queue<Tenant> m_downQueue = new Queue<Tenant>();
+        private readonly Dictionary<CallType, Queue<Tenant>> m_queues
+            = new Dictionary<CallType, Queue<Tenant>>()
+            {
+                { CallType.Up  , new Queue<Tenant>()},
+                { CallType.Down, new Queue<Tenant>()}
+            };
     }
 }

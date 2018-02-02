@@ -36,13 +36,6 @@
                     return CallType.Down;
                 }
             }
-        }
-        
-        public Tenant(int id, int floorFrom, int floorTo)
-        {
-            Id = id;
-            FloorFrom = floorFrom;
-            FloorTo = floorTo;
-        }   
+        }  
     }
 }

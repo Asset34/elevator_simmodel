@@ -46,10 +46,10 @@
     <Compile Include="SimulationModel\Controllers\GroupElevatorController.cs" />
     <Compile Include="SimulationModel\Controllers\GroupFloorQueueController.cs" />
     <Compile Include="SimulationModel\Controllers\GroupTenantGeneratorController.cs" />
-    <Compile Include="SimulationModel\Dispatchers\ElevatorGroupDispatchers\ElevatorGroupDispatcher.cs" />
-    <Compile Include="SimulationModel\Dispatchers\ElevatorGroupDispatchers\NearestCarDispatcher.cs" />
-    <Compile Include="SimulationModel\Dispatchers\CallDispatchers\CollectiveCallDispatcher.cs" />
-    <Compile Include="SimulationModel\Dispatchers\CallDispatchers\CallDispatcher.cs" />
+    <Compile Include="SimulationModel\Schedulers\GlobalSchedulers\GlobalScheduler.cs" />
+    <Compile Include="SimulationModel\Schedulers\GlobalSchedulers\NearestCarScheduler.cs" />
+    <Compile Include="SimulationModel\Schedulers\CallSchedulers\CollectiveCallScheduler.cs" />
+    <Compile Include="SimulationModel\Schedulers\CallSchedulers\CallScheduler.cs" />
     <Compile Include="SimulationModel\Distributions\Distribution.cs" />
     <Compile Include="SimulationModel\Distributions\DistributionWithGaps.cs" />
     <Compile Include="SimulationModel\Distributions\UniformDistribution.cs" />
@@ -66,6 +66,7 @@
     <Compile Include="SimulationModel\Parameters\FloorParameters.cs" />
     <Compile Include="Resettable.cs" />
     <Compile Include="SimulationModel\Parameters\SimulationParameters.cs" />
+    <Compile Include="SimulationModel\Schedulers\Scheduler.cs" />
     <Compile Include="SimulationModel\Transactions\Tenant.cs" />
   </ItemGroup>
   <ItemGroup>

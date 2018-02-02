@@ -3,17 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 
 using ElevatorSimulation.SimulationModel.Transactions;
-using ElevatorSimulation.SimulationModel.Dispatchers.RequestDispatchers;
+using ElevatorSimulation.SimulationModel.Schedulers.CallSchedulers;
 
 namespace ElevatorSimulation.SimulationModel.Entities
 {
-    enum ElevatorState
-    {
-        Wait,
-        MoveUp,
-        MoveDown
-    }
-
     /// <summary>
     /// Elevator serving tenants
     /// </summary>
@@ -41,85 +34,110 @@ namespace ElevatorSimulation.SimulationModel.Entities
         {
             get { return Capacity - FillCount; }
         }
+
+        /// <summary>
+        /// Flag defines the elevator reached current call
+        /// </summary>
+        public bool IsReached
+        {
+            get
+            {
+                return CurrentFloor == DestinationFloor;
+            }
+        }
+        /// <summary>
+        /// Flag defines the elevator finished the work
+        /// </summary>
+        public bool IsIdle
+        {
+            get
+            {
+                return m_scheduler.IsEmpty &&
+                       IsReached;
+            }
+        }
+
         public int DefaultFloor { get; set; }
         public int CurrentFloor { get; private set; }
         public int DestinationFloor { get; private set; }
-        public ElevatorState State { get; private set; }
 
-        public Elevator
-            (
-            int id, 
-            int capacity, 
-            int startFloor, 
-            CallDispatcher requestDispatcher
-            )
+        public CallType CurrentCallType { get; private set; }
+
+        public Elevator(int id, int capacity, int startFloor, CallScheduler scheduler)
         {
             Id = id;
+
             DefaultFloor = startFloor;
             CurrentFloor = startFloor;
+            DestinationFloor = startFloor;
             Capacity = capacity;
 
-            m_dispatcher = requestDispatcher;
-            m_dispatcher.SetElevator(this);
-
-            State = ElevatorState.Wait;
+            m_scheduler = scheduler;
+            m_scheduler.SetElevator(this);
         }
-        public void Move()
-        {   
-            if (CurrentFloor != DestinationFloor)
-            {
-                if (State == ElevatorState.MoveUp)
-                {
-                    CurrentFloor++;
-                }
-                else if (State == ElevatorState.MoveDown)
-                {
-                    CurrentFloor--;
-                }    
-            }
 
-            if (CurrentFloor == DestinationFloor)
-            {
-                m_dispatcher.UnregisterCall(DestinationFloor);
-                SetCall();
-            }
-        }
         public void AddHallCall(Tenant tenant)
         {
-            m_dispatcher.RegisterHallCall(tenant);
-
+            m_scheduler.AddHallCall(tenant);
             SetCall();
         }
         public void AddCarCall(Tenant tenant)
         {
-            m_dispatcher.RegisterCarCall(tenant);
-
+            m_scheduler.AddCarCall(tenant);
             SetCall();
+        }
+        public void RemoveCall(int call)
+        {
+            // Check
+            if (IsIdle)
+            {
+                throw new InvalidOperationException("No calls to remove");
+            }
+
+            m_scheduler.RemoveCall(call);
         }
         public void SetCall()
         {
-            Tuple<int, bool> result = m_dispatcher.GetCall(CurrentFloor);
-            
-            if (result.Item2)
+            // Check
+            if (IsIdle)
             {
-                DestinationFloor = result.Item1;
-
-                if (DestinationFloor >= CurrentFloor)
-                {
-                    State = ElevatorState.MoveUp;
-                }
-                else
-                {
-                    State = ElevatorState.MoveDown;
-                }
+                throw new InvalidOperationException("No calls to setting");
             }
-            // If there are no calls
+
+            DestinationFloor = m_scheduler.GetCall(CurrentFloor);
+            if (DestinationFloor > CurrentFloor)
+            {
+                CurrentCallType = CallType.Up;
+            }
             else
             {
-                State = ElevatorState.Wait;
+                CurrentCallType = CallType.Down;
             }
         }
-        public void PickUp(Tenant[] tenants)
+
+        public void Move()
+        {
+            // Checks
+            if (IsIdle)
+            {
+                throw new InvalidOperationException("No calls to move");
+            }
+            else if (IsReached)
+            {
+                throw new InvalidOperationException("The elevator reached the next called floor");
+            }
+
+            if (CurrentCallType == CallType.Up)
+            {
+                CurrentFloor++;
+            }
+            else
+            {
+                CurrentFloor--;
+            }
+        }
+
+        public void PickUp(List<Tenant> tenants)
         {
             foreach (Tenant tenant in tenants)
             {
@@ -128,40 +146,38 @@ namespace ElevatorSimulation.SimulationModel.Entities
         }
         public void PickUp(Tenant tenant)
         {
-            // Checks
+            // Check
             if (FreeCount == 0)
             {
                 throw new InvalidOperationException("The elevator is full");
             }
 
-            // Add tenant
-            m_tenants.Add(tenant, tenant.FloorTo);
-
-            // Add call
+            m_tenants.Add(tenant);
             AddCarCall(tenant);
         }
         public List<Tenant> DropOff()
-        {        
-            // Get list of dropping off tenants
-            List<Tenant> tenants = new List<Tenant>();
-            foreach (var item in m_tenants.Where(kvp => kvp.Value == CurrentFloor).ToList())
+        {   
+            // Get list of dropped tenants
+            var droppedTenants = m_tenants.Where(x => x.FloorTo == CurrentFloor).ToList();
+            
+            // Remove dropped tenants from elevator
+            foreach (var tenant in droppedTenants)
             {
-                tenants.Add(item.Key);
-                m_tenants.Remove(item.Key);
+                m_tenants.Remove(tenant);
             }
 
-            return tenants;
+            return droppedTenants;
         }
+
         public void Reset()
         {
             CurrentFloor = DefaultFloor;
-            State = ElevatorState.Wait;
-
-            m_dispatcher.Reset();
+            
+            m_scheduler.Reset();
             m_tenants.Clear();
         }
 
-        private readonly CallDispatcher m_dispatcher;
-        private Dictionary<Tenant, int> m_tenants = new Dictionary<Tenant, int>();
+        private readonly CallScheduler m_scheduler;
+        private List<Tenant> m_tenants = new List<Tenant>();
     }
 }

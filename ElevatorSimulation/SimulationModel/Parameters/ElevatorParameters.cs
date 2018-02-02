@@ -22,19 +22,5 @@
         /// Starting position
         /// </summary>
         public int StartFloor { get; set; }
-
-        public ElevatorParameters
-            (
-            int period,
-            int dPeriod,
-            int capacity,
-            int startDloor
-            )
-        {
-            Period = period;
-            DPeriod = dPeriod;
-            Capacity = capacity;
-            StartFloor = StartFloor;
-        }
     }
 }

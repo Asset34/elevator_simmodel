@@ -25,7 +25,12 @@ namespace ElevatorSimulation.SimulationModel.Entities
         {
             m_tenantCounter++;
 
-            return new Tenant(m_tenantCounter, Floor, m_destinationFloorDistr.GetValue());
+            return new Tenant
+            {
+                Id = m_tenantCounter,
+                FloorFrom = Floor,
+                FloorTo = m_destinationFloorDistr.GetValue()
+            };
         }
 
         private static int m_tenantCounter = 0;

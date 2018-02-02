@@ -20,13 +20,9 @@ namespace ElevatorSimulation.SimulationModel.Controllers
         {
             m_queues[floor - 1].Enqueue(tenant);
         }
-        public Tenant DequeueUp(int floor)
+        public Tenant Dequeue(int floor, CallType callType)
         {
-            return m_queues[floor - 1].DequeueUp();
-        }
-        public Tenant DequeueDown(int floor)
-        {
-            return m_queues[floor - 1].DequeueDown();
+            return m_queues[floor - 1].Dequeue(callType);
         }
         public void Reset()
         {

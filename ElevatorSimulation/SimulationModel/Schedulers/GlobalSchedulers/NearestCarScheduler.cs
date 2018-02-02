@@ -5,30 +5,47 @@ using System.Linq;
 using ElevatorSimulation.SimulationModel.Entities;
 using ElevatorSimulation.SimulationModel.Transactions;
 
-namespace ElevatorSimulation.SimulationModel.Dispatchers.ElevatorGroupDispatchers
+namespace ElevatorSimulation.SimulationModel.Schedulers.GlobalSchedulers
 {
     /// <summary>
-    /// Dispatcher of group of elevators which uses the simplest
+    /// Scheduler of group of elevators which uses the simplest
     /// group algorithm based on allocating the closest car
-    /// to the current request
+    /// to the current call
     /// </summary>
-    class NearestCarDispatcher : ElevatorGroupDispatcher
+    class NearestCarScheduler : GlobalScheduler
     {
-        public NearestCarDispatcher(int numFloors)
+        public override bool IsEmpty
+        {
+            get
+            {
+                return m_elevators.Count == 0;
+            }
+        }
+
+        public NearestCarScheduler(int numFloors)
         {
             m_numFloors = numFloors;
         }
-        public override void Register(Elevator element)
+
+        public override void Add(Elevator element)
         {
             m_elevators.Add(element);
         }
-        public override void Unregister(Elevator element)
+        public override void Remove(Elevator element)
         {
             m_elevators.Add(element);
         }
+
         public override Elevator GetElevator(Tenant tenant)
         {
-            List<KeyValuePair<Elevator, int>> priorityElevators = new List<KeyValuePair<Elevator, int>>();
+            // Check
+            if (IsEmpty)
+            {
+                throw new InvalidOperationException("Scheduler is empty");
+            }
+
+            List<KeyValuePair<Elevator, int>> priorityElevators 
+                = new List<KeyValuePair<Elevator, int>>();
 
             // Set priority to each elevator
             int displacement;
@@ -38,11 +55,10 @@ namespace ElevatorSimulation.SimulationModel.Dispatchers.ElevatorGroupDispatcher
                 displacement = tenant.FloorFrom - elevator.CurrentFloor;
 
                 // Compute priority
-                if (displacement > 0 && elevator.State == ElevatorState.MoveUp ||
-                    displacement < 0 && elevator.State == ElevatorState.MoveDown)
+                if (displacement > 0 && elevator.CurrentCallType == CallType.Up ||
+                    displacement < 0 && elevator.CurrentCallType == CallType.Down)
                 {
-                    if (elevator.State == ElevatorState.MoveUp &&
-                        tenant.CallType == CallType.Up)
+                    if (elevator.CurrentCallType == tenant.CallType)
                     {
                         priority = m_numFloors + 3 - Math.Abs(displacement);
                     }
@@ -51,7 +67,7 @@ namespace ElevatorSimulation.SimulationModel.Dispatchers.ElevatorGroupDispatcher
                         priority = m_numFloors + 2 - Math.Abs(displacement);
                     }
                 }
-                else if (elevator.State == ElevatorState.Wait)
+                else if (elevator.IsIdle)
                 {
                     priority = 2;
                 }
@@ -60,7 +76,7 @@ namespace ElevatorSimulation.SimulationModel.Dispatchers.ElevatorGroupDispatcher
                     priority = 1;
                 }
 
-                // Add to sorted dictinary
+                // Add to sorted dictionary
                 priorityElevators.Add(new KeyValuePair<Elevator, int>(elevator, priority));
             }
 
@@ -78,6 +94,7 @@ namespace ElevatorSimulation.SimulationModel.Dispatchers.ElevatorGroupDispatcher
 
             return null;
         }
+
         public override void Reset()
         {
             m_elevators.Clear();

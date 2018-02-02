@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using ElevatorSimulation.SimulationModel.Transactions;
 using ElevatorSimulation.SimulationModel.Entities;
-using ElevatorSimulation.SimulationModel.Dispatchers.ElevatorGroupDispatchers;
+using ElevatorSimulation.SimulationModel.Schedulers.GlobalSchedulers;
 
 namespace ElevatorSimulation.SimulationModel.Controllers
 {
@@ -15,15 +15,15 @@ namespace ElevatorSimulation.SimulationModel.Controllers
     /// </summary>
     class GroupElevatorController : Resettable
     {
-        public GroupElevatorController(ElevatorGroupDispatcher dispatcher)
-        {
-            m_dispatcher = dispatcher;
-        }
         public List<Elevator> Elevators
         {
             get { return m_elevators; }
         }
-        
+
+        public GroupElevatorController(GlobalScheduler scheduler)
+        {
+            m_scheduler = scheduler;
+        }
         public void Reset()
         {
             foreach (Elevator elevator in m_elevators)
@@ -33,6 +33,6 @@ namespace ElevatorSimulation.SimulationModel.Controllers
         }
 
         private List<Elevator> m_elevators = new List<Elevator>();
-        private readonly ElevatorGroupDispatcher m_dispatcher;
+        private readonly GlobalScheduler m_scheduler;
     }
 }
