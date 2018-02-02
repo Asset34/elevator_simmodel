@@ -11,14 +11,14 @@ namespace ElevatorSimulation.SimulationModel.Entities
     /// <remarks>
     /// Queue(FCFS) of transactions
     /// </remarks>
-    class FloorQueue : Resettable
+    class TenantQueue : Entitie
     {
         /// <summary>
         /// Floor number
         /// </summary>
         public int Floor { get; }
 
-        public FloorQueue(int floor)
+        public TenantQueue(int floor)
         {
             Floor = floor;
         }
@@ -30,7 +30,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
         {
             return m_queues[callType].Dequeue();
         }
-        public void Reset()
+        public override void Reset()
         {
             m_queues[CallType.Up].Clear();
             m_queues[CallType.Down].Clear();

@@ -4,7 +4,7 @@
     /// Data class of parameters for floor of
     /// elevator simulation model
     /// </summary>
-    class FloorParameters
+    class TenantGeneratorParameters
     {
         /// <summary>
         /// Period of tenants appearance

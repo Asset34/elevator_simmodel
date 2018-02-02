@@ -13,18 +13,18 @@ namespace ElevatorSimulation.SimulationModel.Controllers
     /// <summary>
     /// Controller of the complex of elevators
     /// </summary>
-    class GroupElevatorController : Resettable
+    class ElevatorsController : Controller
     {
         public List<Elevator> Elevators
         {
             get { return m_elevators; }
         }
 
-        public GroupElevatorController(GlobalScheduler scheduler)
+        public ElevatorsController(GlobalScheduler scheduler)
         {
             m_scheduler = scheduler;
         }
-        public void Reset()
+        public override void Reset()
         {
             foreach (Elevator elevator in m_elevators)
             {

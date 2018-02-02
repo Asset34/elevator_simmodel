@@ -8,15 +8,15 @@
         /// <summary>
         /// Number of floors
         /// </summary>
-        public int NFloors { get; set; }      
+        public int NumFloors { get; set; }      
         /// <summary>
         /// Number of elevators
         /// </summary>
-        public int NElevators { get; set; }
+        public int NumElevators { get; set; }
         /// <summary>
         /// Complex of floor parameters
         /// </summary>
-        public FloorParameters[] FloorParameters { get; set; }
+        public TenantGeneratorParameters[] TenantGeneratorParameters { get; set; }
         /// <summary>
         /// Complex of elevator parameters
         /// </summary>

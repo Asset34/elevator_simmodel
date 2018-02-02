@@ -13,7 +13,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
     /// <remarks>
     /// Service device with accumulator
     /// </remarks>
-    class Elevator : Resettable
+    class Elevator : Entitie
     {
         public int Id { get; }
         /// <summary>
@@ -169,7 +169,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
             return droppedTenants;
         }
 
-        public void Reset()
+        public override void Reset()
         {
             CurrentFloor = DefaultFloor;
             

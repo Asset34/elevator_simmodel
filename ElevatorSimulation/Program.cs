@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using ElevatorSimulation.SimulationModel;
 using ElevatorSimulation.SimulationModel.Distributions;
 using ElevatorSimulation.SimulationModel.Events;
 using ElevatorSimulation.SimulationModel.Transactions;
 using ElevatorSimulation.SimulationModel.Schedulers.CallSchedulers;
 using ElevatorSimulation.SimulationModel.Entities;
+using ElevatorSimulation.SimulationModel.Parameters;
 
 namespace ElevatorSimulation
 {
@@ -16,8 +18,7 @@ namespace ElevatorSimulation
     {
         static void Main(string[] args)
         {
-            TestScheduler();
-            //TestSetUnion();
+            TestSimulationModel();
         }
 
         static void TestDistributions()
@@ -117,6 +118,33 @@ namespace ElevatorSimulation
             {
                 Console.WriteLine("{0}", x);
             }
+        }
+        static void TestSimulationModel()
+        {
+            SimulationParameters parameters = new SimulationParameters
+            {
+                NumFloors = 10,
+                NumElevators = 1,
+                TenantGeneratorParameters = new TenantGeneratorParameters[]
+                {
+                    new TenantGeneratorParameters { Period = 10, DPeriod = 5 },
+                    new TenantGeneratorParameters { Period = 10, DPeriod = 5 },
+                    new TenantGeneratorParameters { Period = 10, DPeriod = 5 },
+                    new TenantGeneratorParameters { Period = 10, DPeriod = 5 },
+                    new TenantGeneratorParameters { Period = 10, DPeriod = 5 },
+                    new TenantGeneratorParameters { Period = 10, DPeriod = 5 },
+                    new TenantGeneratorParameters { Period = 10, DPeriod = 5 },
+                    new TenantGeneratorParameters { Period = 10, DPeriod = 5 },
+                    new TenantGeneratorParameters { Period = 10, DPeriod = 5 },
+                    new TenantGeneratorParameters { Period = 10, DPeriod = 5 },
+                },
+                ElevatorParameters = new ElevatorParameters[]
+                {
+                    new ElevatorParameters { Capacity = 10, StartFloor = 4, Period = 7, DPeriod = 1}
+                }
+            };
+
+            ElevatorSimulationModel model = new ElevatorSimulationModel(parameters);
         }
     }
 }

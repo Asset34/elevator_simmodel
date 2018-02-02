@@ -1,5 +1,6 @@
 ﻿using ElevatorSimulation.SimulationModel.Transactions;
 using ElevatorSimulation.SimulationModel.Distributions;
+using System;
 
 namespace ElevatorSimulation.SimulationModel.Entities
 {
@@ -9,7 +10,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
     /// <remarks>
     /// Transaction source
     /// </remarks>
-    class TenantGenerator
+    class TenantGenerator : Entitie
     {
         /// <summary>
         /// Floor number
@@ -20,7 +21,10 @@ namespace ElevatorSimulation.SimulationModel.Entities
         {
             Floor = floor;
             m_destinationFloorDistr = destinationFloorDistr;
+            m_destinationFloorDistr
+                = new DistributionWithGaps(destinationFloorDistr, floor);
         }
+
         public Tenant Generate()
         {
             m_tenantCounter++;
@@ -31,6 +35,11 @@ namespace ElevatorSimulation.SimulationModel.Entities
                 FloorFrom = Floor,
                 FloorTo = m_destinationFloorDistr.GetValue()
             };
+        }
+
+        public override void Reset()
+        {
+            m_tenantCounter = 0;
         }
 
         private static int m_tenantCounter = 0;

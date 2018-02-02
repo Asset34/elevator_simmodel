@@ -7,11 +7,11 @@ using ElevatorSimulation.SimulationModel.Entities;
 namespace ElevatorSimulation.SimulationModel.Controllers
 {
     /// <summary>
-    /// Controller of the complex of tenant floor queues
+    /// Controller of the complex of tenant queues
     /// </summary>
-    class GroupFloorQueueController : Resettable
+    class TenantQueuesController : Controller
     {
-        public List<FloorQueue> Queues
+        public List<TenantQueue> Queues
         {
             get { return m_queues; }
         }
@@ -24,14 +24,14 @@ namespace ElevatorSimulation.SimulationModel.Controllers
         {
             return m_queues[floor - 1].Dequeue(callType);
         }
-        public void Reset()
+        public override void Reset()
         {
-            foreach (FloorQueue floorQueue in m_queues)
+            foreach (TenantQueue TenantQueue in m_queues)
             {
-                floorQueue.Reset();
+                TenantQueue.Reset();
             }
         }
 
-        private List<FloorQueue> m_queues = new List<FloorQueue>();
+        private List<TenantQueue> m_queues = new List<TenantQueue>();
     }
 }

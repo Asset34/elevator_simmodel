@@ -9,7 +9,7 @@ namespace ElevatorSimulation.SimulationModel.Controllers
     /// <summary>
     /// Controller of the complex of tenant generators
     /// </summary>
-    class GroupTenantGeneratorController
+    class TenantGeneratorsController : Controller
     {
         public List<TenantGenerator> Generators
         {
@@ -19,6 +19,14 @@ namespace ElevatorSimulation.SimulationModel.Controllers
         public Tenant GenerateTenant(int floor)
         {
             return m_generators[floor - 1].Generate();
+        }
+
+        public override void Reset()
+        {
+            foreach (TenantGenerator generator in m_generators)
+            {
+                generator.Reset();
+            }
         }
 
         private List<TenantGenerator> m_generators = new List<TenantGenerator>();
