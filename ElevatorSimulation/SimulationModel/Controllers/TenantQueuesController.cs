@@ -24,6 +24,10 @@ namespace ElevatorSimulation.SimulationModel.Controllers
         {
             return m_queues[floor - 1].Dequeue(callType);
         }
+        public bool GetHallcallStatus(int floor, CallType callType)
+        {
+            return m_queues[floor - 1].GetHallcallStatus(callType);
+        }
         public override void Reset()
         {
             foreach (TenantQueue TenantQueue in m_queues)

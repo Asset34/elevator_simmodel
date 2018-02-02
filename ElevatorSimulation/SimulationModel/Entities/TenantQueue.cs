@@ -22,6 +22,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
         {
             Floor = floor;
         }
+
         public void Enqueue(Tenant tenant)
         {
             m_queues[tenant.CallType].Enqueue(tenant);
@@ -30,6 +31,20 @@ namespace ElevatorSimulation.SimulationModel.Entities
         {
             return m_queues[callType].Dequeue();
         }
+        /// <summary>
+        /// Getter of current state of hallcall from this
+        /// floor and direction
+        /// </summary>
+        /// <param name="callType"></param>
+        /// <returns>
+        /// true  - hallcall is enabled
+        /// false - hallcall is disabled
+        /// </returns>
+        public bool GetHallcallStatus(CallType callType)
+        {
+            return m_queues[callType].Count > 0;
+        }
+
         public override void Reset()
         {
             m_queues[CallType.Up].Clear();
