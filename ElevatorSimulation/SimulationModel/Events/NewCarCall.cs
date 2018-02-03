@@ -1,4 +1,5 @@
 ﻿using ElevatorSimulation.SimulationModel.Controllers;
+using ElevatorSimulation.SimulationModel.Transactions;
 
 namespace ElevatorSimulation.SimulationModel.Events
 {
@@ -8,16 +9,16 @@ namespace ElevatorSimulation.SimulationModel.Events
     /// </summary>
     /// <remarks>
     /// Arguments:
-    ///    - Floor
+    ///    - Tenant
     /// Results:
     ///    - ElevatorID
     /// </remarks>
     class NewCarcall : Event
     {
         /// <summary>
-        /// The floor of the call
+        /// Tenant generating the carcall
         /// </summary>
-        public int Floor { get; set; }
+        public Tenant Tenant { get; set; }
 
         /// <summary>
         /// ID of the elevator which accepted the call
@@ -36,7 +37,7 @@ namespace ElevatorSimulation.SimulationModel.Events
         {
             return string.Format(
                 "Car call {0} was added to elevator {1}",
-                Floor,
+                Tenant.FloorTo,
                 ElevatorID
                 );
         }

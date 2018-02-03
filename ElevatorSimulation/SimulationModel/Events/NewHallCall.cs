@@ -9,21 +9,16 @@ namespace ElevatorSimulation.SimulationModel.Events
     /// </summary>
     /// <remarks>
     /// Arguments:
-    ///    - Floor
-    ///    - CallType
+    ///    - Tenant
     /// Results:
     ///    - ElevatorID
     /// </remarks>
     class NewHallcall : Event
     {
         /// <summary>
-        /// The floor of the call
+        /// Tenant generating the hallcall
         /// </summary>
-        public int Floor { get; set; }
-        /// <summary>
-        /// Type of the call ("up" or "down")
-        /// </summary>
-        public CallType CallType { get; set; }
+        public Tenant Tenant { get; set; }
 
         /// <summary>
         /// ID of the elevator which accepted the call
@@ -42,8 +37,8 @@ namespace ElevatorSimulation.SimulationModel.Events
         {
             return string.Format(
                 "Hall call {0}({1}) was added to elevator {2}",
-                Floor,
-                CallType,
+                Tenant.FloorFrom,
+                Tenant.CallType,
                 ElevatorID
                 );
         }
