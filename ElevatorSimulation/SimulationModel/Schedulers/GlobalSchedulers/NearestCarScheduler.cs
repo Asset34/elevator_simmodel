@@ -36,7 +36,7 @@ namespace ElevatorSimulation.SimulationModel.Schedulers.GlobalSchedulers
             m_elevators.Add(element);
         }
 
-        public override Elevator GetElevator(Tenant tenant)
+        public override int GetElevator(Tenant tenant)
         {
             // Check
             if (IsEmpty)
@@ -88,11 +88,11 @@ namespace ElevatorSimulation.SimulationModel.Schedulers.GlobalSchedulers
             {
                 if (pair.Key.FreeCount > 0)
                 {
-                    return pair.Key;
+                    return pair.Key.ID;
                 }
             }
 
-            return null;
+            return -1;
         }
 
         public override void Reset()

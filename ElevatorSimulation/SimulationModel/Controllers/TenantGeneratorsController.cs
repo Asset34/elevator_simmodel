@@ -15,10 +15,6 @@ namespace ElevatorSimulation.SimulationModel.Controllers
         {
             get { return m_generators; }
         }
-        public Tenant Generate(int floor)
-        {
-            return m_generators[floor].Generate();
-        }
 
         public override void Reset()
         {

@@ -15,7 +15,7 @@ namespace ElevatorSimulation.SimulationModel.Schedulers.GlobalSchedulers
         /// Get elevator which will handle the request
         /// </summary>
         /// <param name="tenant"></param>
-        /// <returns></returns>
-        public abstract Elevator GetElevator(Tenant tenant);
+        /// <returns>ID of elevator</returns>
+        public abstract int GetElevator(Tenant tenant);
     }
 }

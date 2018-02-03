@@ -9,21 +9,16 @@ namespace ElevatorSimulation.SimulationModel.Events
     /// </summary>
     /// <remarks>
     /// Arguments:
-    ///    - Tenant
-    /// Results:
     ///    - ElevatorID
+    ///    - Tenant
     /// </remarks>
     class NewCarcall : Event
     {
+        public int ElevatorID { get; set; }
         /// <summary>
         /// Tenant generating the carcall
         /// </summary>
         public Tenant Tenant { get; set; }
-
-        /// <summary>
-        /// ID of the elevator which accepted the call
-        /// </summary>
-        public int ElevatorID { get; set; }
 
         public NewCarcall(int time, EventController handler)
             :base(time, handler)

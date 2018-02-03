@@ -24,11 +24,16 @@ namespace ElevatorSimulation.SimulationModel.Controllers
         {
             m_scheduler = scheduler;
         }
-
-        public void AddHallcall(int id, Tenant tenant)
+        /// <summary>
+        /// Get ID of the elevator which will handle
+        /// the hallcall from tenant
+        /// </summary>
+        /// <param name="tenant"></param>
+        /// <returns> ID of elevator </returns>
+        public int SelectElevator(Tenant tenant)
         {
-            //m_elevators[]
-        }
+            return m_scheduler.GetElevator(tenant);
+        }     
 
         public override void Reset()
         {
