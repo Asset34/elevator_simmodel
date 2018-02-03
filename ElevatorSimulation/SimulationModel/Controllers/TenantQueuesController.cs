@@ -11,31 +11,31 @@ namespace ElevatorSimulation.SimulationModel.Controllers
     /// </summary>
     class TenantQueuesController : Controller
     {
-        public List<TenantQueue> Queues
+        public Dictionary<int, TenantQueue> Queues
         {
             get { return m_queues; }
         }
 
         public void Enqueue(int floor, Tenant tenant)
         {
-            m_queues[floor - 1].Enqueue(tenant);
+            m_queues[floor].Enqueue(tenant);
         }
         public Tenant Dequeue(int floor, CallType callType)
         {
-            return m_queues[floor - 1].Dequeue(callType);
+            return m_queues[floor].Dequeue(callType);
         }
         public bool GetHallcallStatus(int floor, CallType callType)
         {
-            return m_queues[floor - 1].GetHallcallStatus(callType);
+            return m_queues[floor].GetHallcallStatus(callType);
         }
         public override void Reset()
         {
-            foreach (TenantQueue TenantQueue in m_queues)
+            foreach (TenantQueue TenantQueue in m_queues.Values)
             {
                 TenantQueue.Reset();
             }
         }
 
-        private List<TenantQueue> m_queues = new List<TenantQueue>();
+        private Dictionary<int, TenantQueue> m_queues = new Dictionary<int, TenantQueue>();
     }
 }

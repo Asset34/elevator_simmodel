@@ -15,7 +15,7 @@ namespace ElevatorSimulation.SimulationModel.Controllers
     /// </summary>
     class ElevatorsController : Controller
     {
-        public List<Elevator> Elevators
+        public Dictionary<int, Elevator> Elevators
         {
             get { return m_elevators; }
         }
@@ -24,15 +24,21 @@ namespace ElevatorSimulation.SimulationModel.Controllers
         {
             m_scheduler = scheduler;
         }
+
+        public void AddHallcall(int id, Tenant tenant)
+        {
+            //m_elevators[]
+        }
+
         public override void Reset()
         {
-            foreach (Elevator elevator in m_elevators)
+            foreach (Elevator elevator in m_elevators.Values)
             {
                 elevator.Reset();
             }
         }
 
-        private List<Elevator> m_elevators = new List<Elevator>();
+        private Dictionary<int, Elevator> m_elevators = new Dictionary<int, Elevator>();
         private readonly GlobalScheduler m_scheduler;
     }
 }

@@ -14,7 +14,7 @@ namespace ElevatorSimulation.SimulationModel.Events
     /// Results:
     ///    - ElevatorID
     /// </remarks>
-    class NewHallCall : Event
+    class NewHallcall : Event
     {
         /// <summary>
         /// The floor of the call
@@ -30,7 +30,7 @@ namespace ElevatorSimulation.SimulationModel.Events
         /// </summary>
         public int ElevatorID { get; set; }
 
-        public NewHallCall(int time, EventController handler)
+        public NewHallcall(int time, EventController handler)
             :base(time, handler)
         {
         }

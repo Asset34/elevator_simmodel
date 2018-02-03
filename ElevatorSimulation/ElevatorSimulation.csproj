@@ -46,10 +46,14 @@
     <Compile Include="SimulationModel\Controllers\Controller.cs" />
     <Compile Include="SimulationModel\Controllers\EventController.cs" />
     <Compile Include="SimulationModel\Entities\Entitie.cs" />
-    <Compile Include="SimulationModel\EventProvider.cs" />
     <Compile Include="SimulationModel\Controllers\ElevatorsController.cs" />
     <Compile Include="SimulationModel\Controllers\TenantQueuesController.cs" />
     <Compile Include="SimulationModel\Controllers\TenantGeneratorsController.cs" />
+    <Compile Include="SimulationModel\Events\DropOff.cs" />
+    <Compile Include="SimulationModel\Events\ElevatorMovement.cs" />
+    <Compile Include="SimulationModel\Events\NewCarCall.cs" />
+    <Compile Include="SimulationModel\Events\NewHallCall.cs" />
+    <Compile Include="SimulationModel\Events\PickUp.cs" />
     <Compile Include="SimulationModel\Schedulers\GlobalSchedulers\GlobalScheduler.cs" />
     <Compile Include="SimulationModel\Schedulers\GlobalSchedulers\NearestCarScheduler.cs" />
     <Compile Include="SimulationModel\Schedulers\CallSchedulers\CollectiveCallScheduler.cs" />
@@ -62,7 +66,7 @@
     <Compile Include="SimulationModel\Entities\TenantQueue.cs" />
     <Compile Include="SimulationModel\Entities\TenantGenerator.cs" />
     <Compile Include="SimulationModel\Events\Event.cs" />
-    <Compile Include="SimulationModel\Events\NewTenantEvent.cs" />
+    <Compile Include="SimulationModel\Events\NewTenant.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomGenerator.cs" />

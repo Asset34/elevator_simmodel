@@ -14,7 +14,7 @@ namespace ElevatorSimulation.SimulationModel.Events
     class ElevatorMovement : Event
     {
         /// <summary>
-        /// ID of the elevator which pickig up the tenants
+        /// ID of the moving elevator
         /// </summary>
         public int ElevatorID { get; set; }
         

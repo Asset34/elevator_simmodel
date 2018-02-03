@@ -11,24 +11,23 @@ namespace ElevatorSimulation.SimulationModel.Controllers
     /// </summary>
     class TenantGeneratorsController : Controller
     {
-        public List<TenantGenerator> Generators
+        public Dictionary<int, TenantGenerator> Generators
         {
             get { return m_generators; }
         }
-
-        public Tenant GenerateTenant(int floor)
+        public Tenant Generate(int floor)
         {
-            return m_generators[floor - 1].Generate();
+            return m_generators[floor].Generate();
         }
 
         public override void Reset()
         {
-            foreach (TenantGenerator generator in m_generators)
+            foreach (TenantGenerator generator in m_generators.Values)
             {
                 generator.Reset();
             }
         }
-
-        private List<TenantGenerator> m_generators = new List<TenantGenerator>();
+       
+        private Dictionary<int, TenantGenerator> m_generators = new Dictionary<int, TenantGenerator>();
     }
 }

@@ -15,7 +15,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
     /// </remarks>
     class Elevator : Entitie
     {
-        public int Id { get; }
+        public int ID { get; }
         /// <summary>
         /// Maximum number of served tenants
         /// </summary>
@@ -47,6 +47,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
         }
         /// <summary>
         /// Flag defines the elevator finished the work
+        /// (The scheduler has no calls to handle)
         /// </summary>
         public bool IsIdle
         {
@@ -65,7 +66,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
 
         public Elevator(int id, int capacity, int startFloor, CallScheduler scheduler)
         {
-            Id = id;
+            ID = id;
 
             DefaultFloor = startFloor;
             CurrentFloor = startFloor;
@@ -76,14 +77,14 @@ namespace ElevatorSimulation.SimulationModel.Entities
             m_scheduler.SetElevator(this);
         }
 
-        public void AddHallCall(Tenant tenant)
+        public void AddHallcall(Tenant tenant)
         {
-            m_scheduler.AddHallCall(tenant);
+            m_scheduler.AddHallcall(tenant);
             SetCall();
         }
-        public void AddCarCall(Tenant tenant)
+        public void AddCarcall(Tenant tenant)
         {
-            m_scheduler.AddCarCall(tenant);
+            m_scheduler.AddCarcall(tenant);
             SetCall();
         }
         public void RemoveCall(int call)
@@ -153,7 +154,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
             }
 
             m_tenants.Add(tenant);
-            AddCarCall(tenant);
+            AddCarcall(tenant);
         }
         public List<Tenant> DropOff()
         {   

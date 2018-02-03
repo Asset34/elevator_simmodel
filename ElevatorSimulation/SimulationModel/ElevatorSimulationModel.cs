@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using ElevatorSimulation.SimulationModel.Parameters;
 using ElevatorSimulation.SimulationModel.Events;
 using ElevatorSimulation.SimulationModel.Controllers;
-using ElevatorSimulation.SimulationModel.Transactions;
 using ElevatorSimulation.SimulationModel.Distributions;
 using ElevatorSimulation.SimulationModel.Entities;
 using ElevatorSimulation.SimulationModel.Schedulers.CallSchedulers;
@@ -25,17 +24,23 @@ namespace ElevatorSimulation.SimulationModel
     /// </summary>
     class ElevatorSimulationModel : Resettable
     {
+        public static ElevatorSimulationModel Instance
+        {
+            get
+            {
+                if (m_instance == null)
+                {
+                    throw new NullReferenceException("Trying instance of uncreated simulation model");
+                }
+
+                return m_instance;
+            }
+        }
+
         /// <summary>
         /// Current model time
         /// </summary>
-        public int Time { get; }
-        /// <summary>
-        /// Current events set ordered by occurence time
-        /// </summary>
-        public List<Event> Events
-        {
-            get { return m_events; }
-        }
+        public int Time { get; private set; }
 
         public ElevatorSimulationModel(SimulationParameters parameters)
         {
@@ -48,9 +53,9 @@ namespace ElevatorSimulation.SimulationModel
                 parameters.ElevatorParameters);
 
             // Build distributions
-            Distribution[] generationDistributions
+            Dictionary<int, Distribution> generationDistributions
                 = BuildGenerationDistributions(parameters.NumFloors, parameters.TenantGeneratorParameters);
-            Distribution[] movementDistributions
+            Dictionary<int, Distribution> movementDistributions
                 = BuildMovementDistributions(parameters.NumElevators, parameters.ElevatorParameters);
 
             // Build event controller
@@ -61,13 +66,32 @@ namespace ElevatorSimulation.SimulationModel
                 generationDistributions,
                 movementDistributions
                 );
+
+            m_instance = this;
         }
         /// <summary>
         /// Run the model
         /// </summary>
-        public void Run()
+        public List<string> Run(int dTime)
         {
-            // TODO
+            List<string> log = new List<string>();
+            Event ev;
+            while (Time <= dTime)
+            {
+                // Get nearest event
+                ev = m_eventController.GetNextEvent();
+
+                // Set new model time
+                Time = ev.Time;
+
+                // Execute event
+                ev.Execute();
+
+                // Add to log
+                log.Add(ev.ToString());
+            }
+
+            return log;
         }
         /// <summary>
         /// Reset the model
@@ -85,7 +109,7 @@ namespace ElevatorSimulation.SimulationModel
             Distribution floorsDistribution = new UniformDistribution(1, numFloors);
             for (int i = 0; i < numFloors; i++)
             {
-                controller.Generators.Add(new TenantGenerator(i + 1, floorsDistribution));
+                controller.Generators.Add(i + 1, new TenantGenerator(i + 1, floorsDistribution));
             }
 
             return controller;
@@ -95,12 +119,16 @@ namespace ElevatorSimulation.SimulationModel
             TenantQueuesController controller = new TenantQueuesController();
             for (int i = 0; i < numFloors; i++)
             {
-                controller.Queues.Add(new TenantQueue(i + 1));
+                controller.Queues.Add(i + 1, new TenantQueue(i + 1));
             }
 
             return controller;
         }
-        private ElevatorsController BuildElevatorsController(int numFloors, int numElevators, ElevatorParameters[] parameters)
+        private ElevatorsController BuildElevatorsController(
+            int numFloors, 
+            int numElevators, 
+            ElevatorParameters[] parameters
+            )
         {
             // Build global scheduler
             GlobalScheduler scheduler = new NearestCarScheduler(numFloors);
@@ -111,7 +139,7 @@ namespace ElevatorSimulation.SimulationModel
             for (int i = 0; i < numElevators; i++)
             {
                 elevator = BuildElevator(i + 1, parameters[i]);
-                controller.Elevators.Add(elevator);
+                controller.Elevators.Add(i + 1, elevator);
             }
 
             return controller;
@@ -128,38 +156,45 @@ namespace ElevatorSimulation.SimulationModel
                 parameters.StartFloor,
                 scheduler);
         }
-        private Distribution[] BuildGenerationDistributions(int numFloors, TenantGeneratorParameters[] parameters)
+        private Dictionary<int, Distribution> BuildGenerationDistributions(
+            int numFloors, 
+            TenantGeneratorParameters[] parameters
+            )
         {
-            Distribution[] distributions = new Distribution[numFloors];
+            Dictionary<int, Distribution> distributions = new Dictionary<int, Distribution>();
             int min, max;
             for (int i = 0; i < numFloors; i++)
             {
                 min = parameters[i].Period - parameters[i].DPeriod;
                 max = parameters[i].Period + parameters[i].DPeriod;
 
-                distributions[i] = new UniformDistribution(min, max);
+                distributions.Add(i + 1, new UniformDistribution(min, max));
             }
 
             return distributions;
         }
-        private Distribution[] BuildMovementDistributions(int numElevators, ElevatorParameters[] parameters)
+        private Dictionary<int, Distribution> BuildMovementDistributions(
+            int numElevators, 
+            ElevatorParameters[] parameters
+            )
         {
-            Distribution[] distributions = new Distribution[numElevators];
+            Dictionary<int, Distribution> distributions = new Dictionary<int, Distribution>();
             int min, max;
             for (int i = 0; i < numElevators; i++)
             {
                 min = parameters[i].Period - parameters[i].DPeriod;
                 max = parameters[i].Period + parameters[i].DPeriod;
 
-                distributions[i] = new UniformDistribution(min, max);
+                distributions.Add(i + 1, new UniformDistribution(min, max));
             }
 
             return distributions;
         }
-
-
+        
         private List<Event> m_events = new List<Event>();
 
         private readonly EventController m_eventController;
+
+        private static ElevatorSimulationModel m_instance;
     }
 }

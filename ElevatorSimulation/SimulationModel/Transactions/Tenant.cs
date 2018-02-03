@@ -11,7 +11,7 @@
     /// </summary>
     class Tenant
     {
-        public int Id { get; set; }
+        public int ID { get; set; }
         /// <summary>
         /// Starting floor
         /// </summary>

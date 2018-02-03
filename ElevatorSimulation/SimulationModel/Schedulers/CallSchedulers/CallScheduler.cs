@@ -8,8 +8,8 @@ namespace ElevatorSimulation.SimulationModel.Schedulers.CallSchedulers
     /// </summary>
     abstract class CallScheduler : Scheduler
     {
-        public abstract void AddHallCall(Tenant tenant);
-        public abstract void AddCarCall(Tenant tenant);
+        public abstract void AddHallcall(Tenant tenant);
+        public abstract void AddCarcall(Tenant tenant);
         public abstract void RemoveCall(int call);
 
         /// <summary>

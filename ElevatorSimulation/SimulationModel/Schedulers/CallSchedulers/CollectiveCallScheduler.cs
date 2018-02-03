@@ -22,12 +22,12 @@ namespace ElevatorSimulation.SimulationModel.Schedulers.CallSchedulers
             }
         }
 
-        public override void AddHallCall(Tenant tenant)
+        public override void AddHallcall(Tenant tenant)
         {   
             m_sets[tenant.CallType].Add(tenant.FloorFrom);
             UpdateBorders(tenant.FloorFrom);
         }
-        public override void AddCarCall(Tenant tenant)
+        public override void AddCarcall(Tenant tenant)
         {
             m_sets[tenant.CallType].Add(tenant.FloorTo);
             UpdateBorders(tenant.FloorTo);
