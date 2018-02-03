@@ -31,6 +31,11 @@ namespace ElevatorSimulation.SimulationModel.Entities
         {
             return m_queues[callType].Dequeue();
         }
+        public Tenant Peek(CallType callType)
+        {
+            return m_queues[callType].Peek();
+        }
+
         /// <summary>
         /// Getter of current state of hallcall from this
         /// floor and direction
