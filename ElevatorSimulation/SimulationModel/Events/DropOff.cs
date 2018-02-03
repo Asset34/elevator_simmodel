@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Collections.Generic;
 
 using ElevatorSimulation.SimulationModel.Transactions;
 using ElevatorSimulation.SimulationModel.Controllers;
@@ -15,7 +16,7 @@ namespace ElevatorSimulation.SimulationModel.Events
     ///    - ElevatorID
     /// Results:
     ///    - Floor
-    ///    - TenantIDs
+    ///    - Tenants
     /// </remarks>
     class DropOff : Event
     {
@@ -29,9 +30,9 @@ namespace ElevatorSimulation.SimulationModel.Events
         /// </summary>
         public int Floor { get; set; }
         /// <summary>
-        /// IDs of dropped off tenants
+        /// Dropped off tenants
         /// </summary>
-        public int[] TenantIDs { get; set; }
+        public List<Tenant> Tenants { get; set; }
 
         public DropOff(int time, EventController handler)
             :base(time, handler)
@@ -46,9 +47,9 @@ namespace ElevatorSimulation.SimulationModel.Events
             StringBuilder text = new StringBuilder();
             text.Append(String.Format("Elevator {0} dropped off tenants", ElevatorID));
 
-            foreach (int id in TenantIDs)
+            foreach (Tenant tenant in Tenants)
             {
-                text.Append(String.Format("{0}, ", id));
+                text.Append(String.Format("{0}, ", tenant.ID));
             }
 
             text.Append(String.Format("on the {0} floor", Floor));

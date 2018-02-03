@@ -36,7 +36,8 @@ namespace ElevatorSimulation.SimulationModel.Events
             return string.Format(
                 "Elevator {0} moved to the {1} floor",
                 ElevatorID,
-                Floor);
+                Floor
+                );
         }
     }
 }
