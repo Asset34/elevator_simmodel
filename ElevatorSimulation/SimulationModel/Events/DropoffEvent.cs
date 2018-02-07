@@ -3,7 +3,7 @@ using System.Text;
 using System.Collections.Generic;
 
 using ElevatorSimulation.SimulationModel.Transactions;
-using ElevatorSimulation.SimulationModel.Controllers;
+using ElevatorSimulation.SimulationModel.Entities;
 
 namespace ElevatorSimulation.SimulationModel.Events
 {
@@ -11,48 +11,32 @@ namespace ElevatorSimulation.SimulationModel.Events
     /// Event of dropping off the tenants by oe
     /// of the elevators
     /// </summary>
-    /// <remarks>
-    /// Arguments:
-    ///    - ElevatorID
-    /// Results:
-    ///    - Floor
-    ///    - Tenants
-    /// </remarks>
-    class DropOff : Event
+    class DropoffEvent : EventOf1<Elevator>
     {
-        /// <summary>
-        /// ID of the elevator which dropping off the tenants
-        /// </summary>
-        public int ElevatorID { get; set; }
-
-        /// <summary>
-        /// The floor with dropped off tenants
-        /// </summary>
-        public int Floor { get; set; }
         /// <summary>
         /// Dropped off tenants
         /// </summary>
         public List<Tenant> Tenants { get; set; }
 
-        public DropOff(int time, EventController handler)
-            :base(time, handler)
+        public DropoffEvent(int time, EventProvider provider, Elevator elevator)
+            :base(time, provider, elevator)
         {
         }
         public override void Execute()
         {
-            m_handler.Handle(this);
+            Tenants = m_p.Dropoff();
         }
         public override string ToString()
         {
             StringBuilder text = new StringBuilder();
-            text.Append(String.Format("Elevator {0} dropped off tenants", ElevatorID));
+            text.Append(String.Format("Elevator {0} dropped off tenants", m_p.ID));
 
             foreach (Tenant tenant in Tenants)
             {
                 text.Append(String.Format("{0}, ", tenant.ID));
             }
 
-            text.Append(String.Format("on the {0} floor", Floor));
+            text.Append(String.Format("on the {0} floor", m_p.CurrentFloor));
 
             return text.ToString();
         }

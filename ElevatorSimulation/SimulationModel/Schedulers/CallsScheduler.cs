@@ -43,7 +43,7 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
             RedefineBorders(call);
         }
 
-        public int ScheduleCall(int floor)
+        public int Schedule(int floor)
         {
             // Check
             if (IsEmpty)

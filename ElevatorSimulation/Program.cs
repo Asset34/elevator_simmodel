@@ -19,7 +19,7 @@ namespace ElevatorSimulation
     {
         static void Main(string[] args)
         {
-            //TestSimulationModel();
+            TestSimulationModel();
         }
 
         static void TestDistributions()
@@ -85,17 +85,17 @@ namespace ElevatorSimulation
                         elevator.SetCall();
                     }
 
-                    elevator.DropOff();
+                    elevator.Dropoff();
 
                     if (elevator.CurrentCallType == CallType.Up &&
                         upTenants.ContainsKey(elevator.CurrentFloor))
                     {
-                        elevator.PickUp(upTenants[elevator.CurrentFloor]);
+                        elevator.Pickup(upTenants[elevator.CurrentFloor]);
                     }
                     else if (elevator.CurrentCallType == CallType.Down &&
                              downTenants.ContainsKey(elevator.CurrentFloor))
                     {
-                        elevator.PickUp(downTenants[elevator.CurrentFloor]);
+                        elevator.Pickup(downTenants[elevator.CurrentFloor]);
                     }
                 }
                 else
@@ -145,36 +145,6 @@ namespace ElevatorSimulation
             };
 
             ElevatorSimulationModel model = new ElevatorSimulationModel(parameters);
-        }
-        static void TestEventSorting()
-        {
-            Dictionary<int, Queue<Event>> events = new Dictionary<int, Queue<Event>>();
-
-            events.Add(1, new Queue<Event>());
-            events.Add(4, new Queue<Event>());
-            events.Add(9, new Queue<Event>());
-
-            events[1].Enqueue(new NewTenant(1, null));
-            events[1].Enqueue(new ElevatorMovement(1, null));
-            events[1].Enqueue(new PickUp(1, null));
-            events[1].Enqueue(new DropOff(1, null));
-            events[1].Enqueue(new NewHallcall(1, null));
-
-            events[4].Enqueue(new ElevatorMovement(1, null));
-            events[4].Enqueue(new NewTenant(1, null));
-            events[4].Enqueue(new PickUp(1, null));
-            events[4].Enqueue(new DropOff(1, null));
-            events[4].Enqueue(new NewHallcall(1, null));
-
-            events[9].Enqueue(new ElevatorMovement(1, null));
-            events[9].Enqueue(new NewTenant(1, null));
-            events[9].Enqueue(new PickUp(1, null));
-            events[9].Enqueue(new DropOff(1, null));
-            events[9].Enqueue(new NewHallcall(1, null));
-
-            int minKey = events.Keys.Min();
-            Queue<Event> queue = events[minKey];
-            Event ev = queue.Dequeue();
         }
     }
 }

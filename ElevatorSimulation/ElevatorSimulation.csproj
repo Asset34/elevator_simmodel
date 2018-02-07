@@ -43,16 +43,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SimulationModel\Controllers\EventController.cs" />
+    <Compile Include="SimulationModel\EventProvider.cs" />
     <Compile Include="SimulationModel\Entities\Entity.cs" />
     <Compile Include="SimulationModel\Controllers\ElevatorsController.cs" />
     <Compile Include="SimulationModel\Controllers\TenantQueuesController.cs" />
     <Compile Include="SimulationModel\Controllers\TenantGeneratorsController.cs" />
-    <Compile Include="SimulationModel\Events\DropOff.cs" />
-    <Compile Include="SimulationModel\Events\ElevatorMovement.cs" />
-    <Compile Include="SimulationModel\Events\NewCarCall.cs" />
-    <Compile Include="SimulationModel\Events\NewHallCall.cs" />
-    <Compile Include="SimulationModel\Events\PickUp.cs" />
+    <Compile Include="SimulationModel\Events\DropoffEvent.cs" />
+    <Compile Include="SimulationModel\Events\ElevatorMoveEvent.cs" />
+    <Compile Include="SimulationModel\Events\EventOf1.cs" />
+    <Compile Include="SimulationModel\Events\EventOf2.cs" />
+    <Compile Include="SimulationModel\Events\NewCarcallEvent.cs" />
+    <Compile Include="SimulationModel\Events\NewHallcallEvent.cs" />
+    <Compile Include="SimulationModel\Events\PickupEvent.cs" />
     <Compile Include="SimulationModel\Schedulers\ElevatorsScheduler.cs" />
     <Compile Include="SimulationModel\Schedulers\CallsScheduler.cs" />
     <Compile Include="SimulationModel\Distributions\Distribution.cs" />
@@ -63,7 +65,7 @@
     <Compile Include="SimulationModel\Entities\TenantQueue.cs" />
     <Compile Include="SimulationModel\Entities\TenantGenerator.cs" />
     <Compile Include="SimulationModel\Events\Event.cs" />
-    <Compile Include="SimulationModel\Events\NewTenant.cs" />
+    <Compile Include="SimulationModel\Events\NewTenantEvent.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomGenerator.cs" />
@@ -71,6 +73,7 @@
     <Compile Include="SimulationModel\Parameters\TenantGeneratorParameters.cs" />
     <Compile Include="Resettable.cs" />
     <Compile Include="SimulationModel\Parameters\SimulationParameters.cs" />
+    <Compile Include="SimulationModel\Schedulers\EventsScheduler.cs" />
     <Compile Include="SimulationModel\Transactions\Tenant.cs" />
   </ItemGroup>
   <ItemGroup>

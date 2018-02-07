@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using ElevatorSimulation.SimulationModel.Parameters;
 using ElevatorSimulation.SimulationModel.Events;
@@ -23,23 +20,15 @@ namespace ElevatorSimulation.SimulationModel
     /// </summary>
     class ElevatorSimulationModel : Resettable
     {
-        public static ElevatorSimulationModel Instance
-        {
-            get
-            {
-                if (m_instance == null)
-                {
-                    throw new NullReferenceException("Trying instance of uncreated simulation model");
-                }
-
-                return m_instance;
-            }
-        }
-
         /// <summary>
         /// Current model time
         /// </summary>
         public int Time { get; private set; }
+
+        /* Controllers of subsystems */
+        public TenantGeneratorsController GeneratorsController { get; }
+        public TenantQueuesController QueuesController { get; }
+        public ElevatorsController ElevatorsController { get; }
 
         public ElevatorSimulationModel(SimulationParameters parameters)
         {
@@ -57,28 +46,26 @@ namespace ElevatorSimulation.SimulationModel
             Dictionary<int, Distribution> movementDistributions
                 = BuildMovementDistributions(parameters.NumElevators, parameters.ElevatorParameters);
 
-            // Build event controller
-            m_eventController = new EventController(
-                generatorsController,
-                queuesController,
-                elevatorsController,
+            // Build event provider
+            m_eventProvider = new EventProvider(
+                this,
                 generationDistributions,
                 movementDistributions
                 );
-
-            m_instance = this;
         }
         /// <summary>
         /// Run the model
         /// </summary>
-        public List<string> Run(int dTime)
+        public void Run(int dTime)
         {
-            List<string> log = new List<string>();
+            // Initialize
+            m_eventProvider.Initialize();
+
             Event ev;
             while (Time <= dTime)
             {
                 // Get nearest event
-                ev = m_eventController.GetNextEvent();
+                ev = m_eventProvider.GetEvent();
 
                 // Set new model time
                 Time = ev.Time;
@@ -86,22 +73,23 @@ namespace ElevatorSimulation.SimulationModel
                 // Execute event
                 ev.Execute();
 
-                // Add to log
-                log.Add(ev.ToString());
+                // Log
             }
-
-            return log;
         }
         /// <summary>
         /// Reset the model
         /// </summary>
         public void Reset()
         {
-            // Reset events
-            m_events.Clear();
+            GeneratorsController.Reset();
+            QueuesController.Reset();
+            ElevatorsController.Reset();
 
+            m_eventProvider.Reset();
         }
 
+        /* Temprorary builders */
+        // NEED: Replace all build methods to external 'Buidler'
         private TenantGeneratorsController BuildGeneratorsController(int numFloors)
         {
             TenantGeneratorsController controller = new TenantGeneratorsController();
@@ -186,11 +174,7 @@ namespace ElevatorSimulation.SimulationModel
 
             return distributions;
         }
-        
-        private List<Event> m_events = new List<Event>();
 
-        private readonly EventController m_eventController;
-
-        private static ElevatorSimulationModel m_instance;
+        private readonly EventProvider m_eventProvider;
     }
 }

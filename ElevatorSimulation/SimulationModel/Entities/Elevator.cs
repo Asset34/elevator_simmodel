@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using ElevatorSimulation.SimulationModel.Transactions;
 using ElevatorSimulation.SimulationModel.Schedulers;
@@ -35,15 +34,19 @@ namespace ElevatorSimulation.SimulationModel.Entities
             get { return Capacity - FillCount; }
         }
 
+        public int DefaultFloor { get; set; }
+        public int CurrentFloor { get; private set; }
+        public int DestinationFloor { get; private set; }
+
+        public CallType CurrentCallType { get; private set; }
+
         /// <summary>
         /// Flag defines the elevator reached current call
         /// </summary>
         public bool IsReached
         {
             get
-            {
-                return CurrentFloor == DestinationFloor;
-            }
+            { return CurrentFloor == DestinationFloor; }
         }
         /// <summary>
         /// Flag defines the elevator finished the work
@@ -58,11 +61,13 @@ namespace ElevatorSimulation.SimulationModel.Entities
             }
         }
 
-        public int DefaultFloor { get; set; }
-        public int CurrentFloor { get; private set; }
-        public int DestinationFloor { get; private set; }
-
-        public CallType CurrentCallType { get; private set; }
+        public bool IsDroppingOff
+        {
+            get
+            {
+                return m_tenants.ContainsKey(CurrentFloor);
+            }
+        }
 
         public Elevator(int id, int capacity, int startFloor)
         {
@@ -104,7 +109,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
                 throw new InvalidOperationException("No calls to setting");
             }
 
-            DestinationFloor = m_scheduler.ScheduleCall(CurrentFloor);
+            DestinationFloor = m_scheduler.Schedule(CurrentFloor);
             if (DestinationFloor > CurrentFloor)
             {
                 CurrentCallType = CallType.Up;
@@ -113,6 +118,37 @@ namespace ElevatorSimulation.SimulationModel.Entities
             {
                 CurrentCallType = CallType.Down;
             }
+        }
+
+        public void Pickup(List<Tenant> tenants)
+        {
+            foreach (Tenant tenant in tenants)
+            {
+                Pickup(tenant);
+            }
+        }
+        public void Pickup(Tenant tenant)
+        {
+            // Check
+            if (FreeCount == 0)
+            {
+                throw new InvalidOperationException("The elevator is full");
+            }
+
+            if (!m_tenants.ContainsKey(tenant.FloorTo))
+            {
+                m_tenants.Add(tenant.FloorTo, new List<Tenant>());          
+            }
+
+            m_tenants[tenant.FloorTo].Add(tenant);
+        }
+        public List<Tenant> Dropoff()
+        {   
+            List<Tenant> tenants = m_tenants[CurrentFloor];
+
+            m_tenants.Remove(CurrentFloor);
+
+            return tenants;
         }
 
         public void Move()
@@ -127,6 +163,8 @@ namespace ElevatorSimulation.SimulationModel.Entities
                 throw new InvalidOperationException("The elevator reached the next called floor");
             }
 
+
+            // Move
             if (CurrentCallType == CallType.Up)
             {
                 CurrentFloor++;
@@ -135,37 +173,6 @@ namespace ElevatorSimulation.SimulationModel.Entities
             {
                 CurrentFloor--;
             }
-        }
-
-        public void PickUp(List<Tenant> tenants)
-        {
-            foreach (Tenant tenant in tenants)
-            {
-                PickUp(tenant);
-            }
-        }
-        public void PickUp(Tenant tenant)
-        {
-            // Check
-            if (FreeCount == 0)
-            {
-                throw new InvalidOperationException("The elevator is full");
-            }
-
-            m_tenants.Add(tenant);
-        }
-        public List<Tenant> DropOff()
-        {   
-            // Get list of dropped tenants
-            var droppedTenants = m_tenants.Where(x => x.FloorTo == CurrentFloor).ToList();
-            
-            // Remove dropped tenants from elevator
-            foreach (Tenant tenant in droppedTenants)
-            {
-                m_tenants.Remove(tenant);
-            }
-
-            return droppedTenants;
         }
 
         public void Reset()
@@ -177,6 +184,6 @@ namespace ElevatorSimulation.SimulationModel.Entities
         }
 
         private readonly CallsScheduler m_scheduler;
-        private List<Tenant> m_tenants = new List<Tenant>();
+        private Dictionary<int, List<Tenant>> m_tenants = new Dictionary<int, List<Tenant>>();
     }
 }

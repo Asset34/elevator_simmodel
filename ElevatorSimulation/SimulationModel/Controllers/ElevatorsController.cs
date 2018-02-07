@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using ElevatorSimulation.SimulationModel.Transactions;
 using ElevatorSimulation.SimulationModel.Entities;
@@ -30,9 +27,9 @@ namespace ElevatorSimulation.SimulationModel.Controllers
         /// </summary>
         /// <param name="tenant"></param>
         /// <returns> ID of elevator </returns>
-        public int SelectElevator(Tenant tenant)
+        public Elevator ScheduleElevator(Tenant tenant)
         {
-            return m_scheduler.ScheduleElevator(tenant);
+            return m_scheduler.Schedule(tenant);
         }     
 
         public void Reset()

@@ -1,6 +1,4 @@
-﻿using ElevatorSimulation.SimulationModel.Controllers;
-
-namespace ElevatorSimulation.SimulationModel.Events
+﻿namespace ElevatorSimulation.SimulationModel.Events
 {
     /// <summary>
     /// Base class for events
@@ -10,15 +8,15 @@ namespace ElevatorSimulation.SimulationModel.Events
         /// <summary>
         /// Occurrence time
         /// </summary>
-        public int Time { get; set; }
+        public int Time { get; }
 
-        public Event(int time, EventController handler)
+        public Event(int time, EventProvider provider)
         {
             Time = time;
-            m_handler = handler;
+            m_provider = provider;
         }
         public abstract void Execute();
 
-        protected EventController m_handler;
+        protected EventProvider m_provider;
     }
 }

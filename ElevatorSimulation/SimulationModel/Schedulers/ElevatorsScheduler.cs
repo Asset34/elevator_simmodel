@@ -35,8 +35,7 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
         {
             m_elevators.Add(element);
         }
-
-        public int ScheduleElevator(Tenant tenant)
+        public Elevator Schedule(Tenant tenant)
         {
             // Check
             if (IsEmpty)
@@ -88,11 +87,11 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
             {
                 if (pair.Key.FreeCount > 0)
                 {
-                    return pair.Key.ID;
+                    return pair.Key;
                 }
             }
 
-            return -1;
+            return null;
         }
 
         public void Reset()
