@@ -20,6 +20,10 @@ namespace ElevatorSimulation.SimulationModel
     /// </summary>
     class ElevatorSimulationModel : Resettable
     {
+        public delegate void LogEventHandler(string text);
+
+        public event LogEventHandler Log;
+
         /// <summary>
         /// Current model time
         /// </summary>
@@ -74,6 +78,7 @@ namespace ElevatorSimulation.SimulationModel
                 ev.Execute();
 
                 // Log
+                Log(ev.ToString());
             }
         }
         /// <summary>
