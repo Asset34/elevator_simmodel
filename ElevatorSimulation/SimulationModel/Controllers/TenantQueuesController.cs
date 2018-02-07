@@ -9,14 +9,14 @@ namespace ElevatorSimulation.SimulationModel.Controllers
     /// <summary>
     /// Controller of the complex of tenant queues
     /// </summary>
-    class TenantQueuesController : Controller
+    class TenantQueuesController
     {
         public Dictionary<int, TenantQueue> Queues
         {
             get { return m_queues; }
         }
 
-        public override void Reset()
+        public void Reset()
         {
             foreach (TenantQueue TenantQueue in m_queues.Values)
             {

@@ -9,8 +9,7 @@ using ElevatorSimulation.SimulationModel.Events;
 using ElevatorSimulation.SimulationModel.Controllers;
 using ElevatorSimulation.SimulationModel.Distributions;
 using ElevatorSimulation.SimulationModel.Entities;
-using ElevatorSimulation.SimulationModel.Schedulers.CallSchedulers;
-using ElevatorSimulation.SimulationModel.Schedulers.GlobalSchedulers;
+using ElevatorSimulation.SimulationModel.Schedulers;
 
 namespace ElevatorSimulation.SimulationModel
 {
@@ -131,7 +130,7 @@ namespace ElevatorSimulation.SimulationModel
             )
         {
             // Build global scheduler
-            GlobalScheduler scheduler = new NearestCarScheduler(numFloors);
+            ElevatorsScheduler scheduler = new ElevatorsScheduler(numFloors);
 
             // Build controller
             ElevatorsController controller = new ElevatorsController(scheduler);
@@ -146,15 +145,12 @@ namespace ElevatorSimulation.SimulationModel
         }
         private Elevator BuildElevator(int id, ElevatorParameters parameters)
         {
-            // Build call scheduler
-            CallScheduler scheduler = new CollectiveCallScheduler();
-
             // Build elevator
             return new Elevator(
                 id,
                 parameters.Capacity,
-                parameters.StartFloor,
-                scheduler);
+                parameters.StartFloor
+                );
         }
         private Dictionary<int, Distribution> BuildGenerationDistributions(
             int numFloors, 

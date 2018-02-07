@@ -5,15 +5,15 @@ using System.Linq;
 using ElevatorSimulation.SimulationModel.Entities;
 using ElevatorSimulation.SimulationModel.Transactions;
 
-namespace ElevatorSimulation.SimulationModel.Schedulers.CallSchedulers
+namespace ElevatorSimulation.SimulationModel.Schedulers
 {
     /// <summary>
     /// Scheduler of floor requests which serves all landing and resulting
     /// car calls in one direction
     /// </summary>
-    class CollectiveCallScheduler : CallScheduler
+    class CallsScheduler
     {
-        public override bool IsEmpty
+        public bool IsEmpty
         {
             get
             {
@@ -22,23 +22,28 @@ namespace ElevatorSimulation.SimulationModel.Schedulers.CallSchedulers
             }
         }
 
-        public override void AddHallcall(Tenant tenant)
+        public CallsScheduler(Elevator elevator)
+        {
+            m_elevator = elevator;
+        }
+
+        public void AddHallcall(Tenant tenant)
         {   
             m_sets[tenant.CallType].Add(tenant.FloorFrom);
             UpdateBorders(tenant.FloorFrom);
         }
-        public override void AddCarcall(Tenant tenant)
+        public void AddCarcall(Tenant tenant)
         {
             m_sets[tenant.CallType].Add(tenant.FloorTo);
             UpdateBorders(tenant.FloorTo);
         }
-        public override void RemoveCall(int call)
+        public void RemoveCall(int call)
         {
             m_sets[m_lastCallType].Remove(call);
             RedefineBorders(call);
         }
 
-        public override int GetCall(int floor)
+        public int ScheduleCall(int floor)
         {
             // Check
             if (IsEmpty)
@@ -107,11 +112,7 @@ namespace ElevatorSimulation.SimulationModel.Schedulers.CallSchedulers
             return call;
         }
 
-        public override void SetElevator(Elevator elevator)
-        {
-            m_elevator = elevator;
-        }
-        public override void Reset()
+        public void Reset()
         {
             m_sets[CallType.Up].Clear();
             m_sets[CallType.Down].Clear();
@@ -150,12 +151,13 @@ namespace ElevatorSimulation.SimulationModel.Schedulers.CallSchedulers
                 }
             }
         }
-
         private void ResetBorders()
         {
             m_maxCall = 0;
             m_minCall = int.MaxValue;
         }
+
+        private Elevator m_elevator;
 
         private CallType m_lastCallType;
         private int m_maxCall = 0;

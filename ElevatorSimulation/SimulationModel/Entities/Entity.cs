@@ -3,8 +3,8 @@
     /// <summary>
     /// Base class for entities of queueing theory
     /// </summary>
-    abstract class Entitie : Resettable
+    abstract class Entity
     {
-        public abstract void Reset();
+        // TODO: statistic events
     }
 }

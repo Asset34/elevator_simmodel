@@ -43,9 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SimulationModel\Controllers\Controller.cs" />
     <Compile Include="SimulationModel\Controllers\EventController.cs" />
-    <Compile Include="SimulationModel\Entities\Entitie.cs" />
+    <Compile Include="SimulationModel\Entities\Entity.cs" />
     <Compile Include="SimulationModel\Controllers\ElevatorsController.cs" />
     <Compile Include="SimulationModel\Controllers\TenantQueuesController.cs" />
     <Compile Include="SimulationModel\Controllers\TenantGeneratorsController.cs" />
@@ -54,10 +53,8 @@
     <Compile Include="SimulationModel\Events\NewCarCall.cs" />
     <Compile Include="SimulationModel\Events\NewHallCall.cs" />
     <Compile Include="SimulationModel\Events\PickUp.cs" />
-    <Compile Include="SimulationModel\Schedulers\GlobalSchedulers\GlobalScheduler.cs" />
-    <Compile Include="SimulationModel\Schedulers\GlobalSchedulers\NearestCarScheduler.cs" />
-    <Compile Include="SimulationModel\Schedulers\CallSchedulers\CollectiveCallScheduler.cs" />
-    <Compile Include="SimulationModel\Schedulers\CallSchedulers\CallScheduler.cs" />
+    <Compile Include="SimulationModel\Schedulers\ElevatorsScheduler.cs" />
+    <Compile Include="SimulationModel\Schedulers\CallsScheduler.cs" />
     <Compile Include="SimulationModel\Distributions\Distribution.cs" />
     <Compile Include="SimulationModel\Distributions\DistributionWithGaps.cs" />
     <Compile Include="SimulationModel\Distributions\UniformDistribution.cs" />
@@ -74,7 +71,6 @@
     <Compile Include="SimulationModel\Parameters\TenantGeneratorParameters.cs" />
     <Compile Include="Resettable.cs" />
     <Compile Include="SimulationModel\Parameters\SimulationParameters.cs" />
-    <Compile Include="SimulationModel\Schedulers\Scheduler.cs" />
     <Compile Include="SimulationModel\Transactions\Tenant.cs" />
   </ItemGroup>
   <ItemGroup>

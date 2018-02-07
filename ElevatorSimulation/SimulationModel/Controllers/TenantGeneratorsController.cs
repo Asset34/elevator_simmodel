@@ -9,14 +9,14 @@ namespace ElevatorSimulation.SimulationModel.Controllers
     /// <summary>
     /// Controller of the complex of tenant generators
     /// </summary>
-    class TenantGeneratorsController : Controller
+    class TenantGeneratorsController
     {
         public Dictionary<int, TenantGenerator> Generators
         {
             get { return m_generators; }
         }
 
-        public override void Reset()
+        public void Reset()
         {
             foreach (TenantGenerator generator in m_generators.Values)
             {

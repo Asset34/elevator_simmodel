@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ using ElevatorSimulation.SimulationModel;
 using ElevatorSimulation.SimulationModel.Distributions;
 using ElevatorSimulation.SimulationModel.Events;
 using ElevatorSimulation.SimulationModel.Transactions;
-using ElevatorSimulation.SimulationModel.Schedulers.CallSchedulers;
+using ElevatorSimulation.SimulationModel.Schedulers;
 using ElevatorSimulation.SimulationModel.Entities;
 using ElevatorSimulation.SimulationModel.Parameters;
 
@@ -18,7 +19,7 @@ namespace ElevatorSimulation
     {
         static void Main(string[] args)
         {
-            TestSimulationModel(); 
+            //TestSimulationModel();
         }
 
         static void TestDistributions()
@@ -30,7 +31,7 @@ namespace ElevatorSimulation
                 Console.WriteLine("{0}", d.GetValue());
             }
         }
-        static void SortTest()
+        static void TestSort()
         {
             int currentFloor = 2;
 
@@ -52,8 +53,7 @@ namespace ElevatorSimulation
         }
         static void TestScheduler()
         {
-            CollectiveCallScheduler dispatcher = new CollectiveCallScheduler();
-            Elevator elevator = new Elevator(1, 10, 3, dispatcher);
+            Elevator elevator = new Elevator(1, 10, 3);
 
             Dictionary<int, Tenant> downTenants = new Dictionary<int, Tenant>();
             downTenants.Add(8, new Tenant { ID = 7, FloorFrom = 8, FloorTo = 0 });
@@ -145,6 +145,36 @@ namespace ElevatorSimulation
             };
 
             ElevatorSimulationModel model = new ElevatorSimulationModel(parameters);
+        }
+        static void TestEventSorting()
+        {
+            Dictionary<int, Queue<Event>> events = new Dictionary<int, Queue<Event>>();
+
+            events.Add(1, new Queue<Event>());
+            events.Add(4, new Queue<Event>());
+            events.Add(9, new Queue<Event>());
+
+            events[1].Enqueue(new NewTenant(1, null));
+            events[1].Enqueue(new ElevatorMovement(1, null));
+            events[1].Enqueue(new PickUp(1, null));
+            events[1].Enqueue(new DropOff(1, null));
+            events[1].Enqueue(new NewHallcall(1, null));
+
+            events[4].Enqueue(new ElevatorMovement(1, null));
+            events[4].Enqueue(new NewTenant(1, null));
+            events[4].Enqueue(new PickUp(1, null));
+            events[4].Enqueue(new DropOff(1, null));
+            events[4].Enqueue(new NewHallcall(1, null));
+
+            events[9].Enqueue(new ElevatorMovement(1, null));
+            events[9].Enqueue(new NewTenant(1, null));
+            events[9].Enqueue(new PickUp(1, null));
+            events[9].Enqueue(new DropOff(1, null));
+            events[9].Enqueue(new NewHallcall(1, null));
+
+            int minKey = events.Keys.Min();
+            Queue<Event> queue = events[minKey];
+            Event ev = queue.Dequeue();
         }
     }
 }

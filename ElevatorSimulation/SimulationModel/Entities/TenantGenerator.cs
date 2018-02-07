@@ -9,7 +9,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
     /// <remarks>
     /// Transaction source
     /// </remarks>
-    class TenantGenerator : Entitie
+    class TenantGenerator : Entity
     {
         /// <summary>
         /// Floor number
@@ -33,7 +33,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
             };
         }
 
-        public override void Reset()
+        public void Reset()
         {
             m_tenantCounter = 0;
         }

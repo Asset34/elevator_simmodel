@@ -11,7 +11,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
     /// <remarks>
     /// Queue(FCFS) of transactions
     /// </remarks>
-    class TenantQueue : Entitie
+    class TenantQueue : Entity
     {
         /// <summary>
         /// Floor number
@@ -50,7 +50,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
             return m_queues[callType].Count > 0;
         }
 
-        public override void Reset()
+        public void Reset()
         {
             m_queues[CallType.Up].Clear();
             m_queues[CallType.Down].Clear();

@@ -6,21 +6,21 @@ using System.Threading.Tasks;
 
 using ElevatorSimulation.SimulationModel.Transactions;
 using ElevatorSimulation.SimulationModel.Entities;
-using ElevatorSimulation.SimulationModel.Schedulers.GlobalSchedulers;
+using ElevatorSimulation.SimulationModel.Schedulers;
 
 namespace ElevatorSimulation.SimulationModel.Controllers
 {
     /// <summary>
     /// Controller of the complex of elevators
     /// </summary>
-    class ElevatorsController : Controller
+    class ElevatorsController
     {
         public Dictionary<int, Elevator> Elevators
         {
             get { return m_elevators; }
         }
 
-        public ElevatorsController(GlobalScheduler scheduler)
+        public ElevatorsController(ElevatorsScheduler scheduler)
         {
             m_scheduler = scheduler;
         }
@@ -32,10 +32,10 @@ namespace ElevatorSimulation.SimulationModel.Controllers
         /// <returns> ID of elevator </returns>
         public int SelectElevator(Tenant tenant)
         {
-            return m_scheduler.GetElevator(tenant);
+            return m_scheduler.ScheduleElevator(tenant);
         }     
 
-        public override void Reset()
+        public void Reset()
         {
             foreach (Elevator elevator in m_elevators.Values)
             {
@@ -44,6 +44,6 @@ namespace ElevatorSimulation.SimulationModel.Controllers
         }
 
         private Dictionary<int, Elevator> m_elevators = new Dictionary<int, Elevator>();
-        private readonly GlobalScheduler m_scheduler;
+        private readonly ElevatorsScheduler m_scheduler;
     }
 }

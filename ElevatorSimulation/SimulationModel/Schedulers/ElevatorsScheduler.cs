@@ -5,16 +5,16 @@ using System.Linq;
 using ElevatorSimulation.SimulationModel.Entities;
 using ElevatorSimulation.SimulationModel.Transactions;
 
-namespace ElevatorSimulation.SimulationModel.Schedulers.GlobalSchedulers
+namespace ElevatorSimulation.SimulationModel.Schedulers
 {
     /// <summary>
     /// Scheduler of group of elevators which uses the simplest
     /// group algorithm based on allocating the closest car
     /// to the current call
     /// </summary>
-    class NearestCarScheduler : GlobalScheduler
+    class ElevatorsScheduler
     {
-        public override bool IsEmpty
+        public bool IsEmpty
         {
             get
             {
@@ -22,21 +22,21 @@ namespace ElevatorSimulation.SimulationModel.Schedulers.GlobalSchedulers
             }
         }
 
-        public NearestCarScheduler(int numFloors)
+        public ElevatorsScheduler(int numFloors)
         {
             m_numFloors = numFloors;
         }
 
-        public override void Add(Elevator element)
+        public void Add(Elevator element)
         {
             m_elevators.Add(element);
         }
-        public override void Remove(Elevator element)
+        public void Remove(Elevator element)
         {
             m_elevators.Add(element);
         }
 
-        public override int GetElevator(Tenant tenant)
+        public int ScheduleElevator(Tenant tenant)
         {
             // Check
             if (IsEmpty)
@@ -95,7 +95,7 @@ namespace ElevatorSimulation.SimulationModel.Schedulers.GlobalSchedulers
             return -1;
         }
 
-        public override void Reset()
+        public void Reset()
         {
             m_elevators.Clear();
         }
