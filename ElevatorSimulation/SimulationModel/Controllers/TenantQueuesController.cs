@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using ElevatorSimulation.SimulationModel.Entities;
 
@@ -10,9 +11,22 @@ namespace ElevatorSimulation.SimulationModel.Controllers
     /// </summary>
     class TenantQueuesController
     {
-        public Dictionary<int, TenantQueue> Queues
+        public void Add(TenantQueue queue)
         {
-            get { return m_queues; }
+            m_queues.Add(queue.Floor, queue);
+        }
+        public void Remove(TenantQueue queue)
+        {
+            m_queues.Remove(queue.Floor);
+        }
+        public TenantQueue Get(int floor)
+        {
+            return m_queues[floor];
+        }
+
+        public int[] GetFloors()
+        {
+            return m_queues.Keys.ToArray();
         }
 
         public void Reset()

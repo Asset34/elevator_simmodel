@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using ElevatorSimulation.SimulationModel.Transactions;
 using ElevatorSimulation.SimulationModel.Entities;
@@ -12,14 +13,28 @@ namespace ElevatorSimulation.SimulationModel.Controllers
     /// </summary>
     class ElevatorsController
     {
-        public Dictionary<int, Elevator> Elevators
-        {
-            get { return m_elevators; }
-        }
-
         public ElevatorsController(ElevatorsScheduler scheduler)
         {
             m_scheduler = scheduler;
+        }
+
+        public void Add(Elevator elevator)
+        {
+            m_elevators.Add(elevator.ID, elevator);
+
+            // Add to scheduler
+            m_scheduler.Add(elevator);
+        }
+        public void Remove(Elevator elevator)
+        {
+            m_elevators.Remove(elevator.ID);
+
+            // Remove from scheduler
+            m_scheduler.Remove(elevator);
+        }
+        public Elevator Get(int id)
+        {
+            return m_elevators[id];
         }
         /// <summary>
         /// Get ID of the elevator which will handle
@@ -31,6 +46,11 @@ namespace ElevatorSimulation.SimulationModel.Controllers
         {
             return m_scheduler.Schedule(tenant);
         }     
+
+        public int[] GetIDs()
+        {
+            return m_elevators.Keys.ToArray();
+        }
 
         public void Reset()
         {

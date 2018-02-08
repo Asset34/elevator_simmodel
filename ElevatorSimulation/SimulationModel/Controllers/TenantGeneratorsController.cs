@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using ElevatorSimulation.SimulationModel.Transactions;
 using ElevatorSimulation.SimulationModel.Entities;
@@ -11,9 +12,22 @@ namespace ElevatorSimulation.SimulationModel.Controllers
     /// </summary>
     class TenantGeneratorsController
     {
-        public Dictionary<int, TenantGenerator> Generators
+        public void Add(TenantGenerator generator)
         {
-            get { return m_generators; }
+            m_generators.Add(generator.Floor, generator);
+        }
+        public void Remove(TenantGenerator generator)
+        {
+            m_generators.Remove(generator.Floor);
+        }
+        public TenantGenerator Get(int floor)
+        {
+            return m_generators[floor];
+        }
+
+        public int[] GetFloors()
+        {
+            return m_generators.Keys.ToArray();
         }
 
         public void Reset()
@@ -23,7 +37,7 @@ namespace ElevatorSimulation.SimulationModel.Controllers
                 generator.Reset();
             }
         }
-       
+        
         private Dictionary<int, TenantGenerator> m_generators = new Dictionary<int, TenantGenerator>();
     }
 }
