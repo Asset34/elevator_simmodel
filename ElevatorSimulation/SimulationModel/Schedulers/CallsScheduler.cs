@@ -30,17 +30,20 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
         public void AddHallcall(Tenant tenant)
         {   
             m_sets[tenant.CallType].Add(tenant.FloorFrom);
-            UpdateBorders(tenant.FloorFrom);
+
+            RedefineBorders();
         }
         public void AddCarcall(Tenant tenant)
         {
             m_sets[tenant.CallType].Add(tenant.FloorTo);
-            UpdateBorders(tenant.FloorTo);
+
+            RedefineBorders();
         }
         public void RemoveCall(int call)
         {
             m_sets[m_lastCallType].Remove(call);
-            RedefineBorders(call);
+
+            RedefineBorders();
         }
 
         public int Schedule(int floor)
@@ -116,52 +119,19 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
         {
             m_sets[CallType.Up].Clear();
             m_sets[CallType.Down].Clear();
-
-            ResetBorders();
         }
 
-        private void UpdateBorders(int call)
+        private void RedefineBorders()
         {
-            if (call < m_minCall)
-            {
-                m_minCall = call;
-            }
-            else if (call > m_maxCall)
-            {
-                m_maxCall = call;
-            }
-        }
-        private void RedefineBorders(int unregisteredCall)
-        {
-            if (IsEmpty)
-            {
-                ResetBorders();
-            }
-            else
-            {
-                // Redefine only min
-                if (unregisteredCall == m_minCall)
-                {
-                    m_minCall = m_sets[CallType.Up].Union(m_sets[CallType.Down]).Min();
-                }
-                // Redefine only max
-                else if (unregisteredCall == m_maxCall)
-                {
-                    m_maxCall = m_sets[CallType.Up].Union(m_sets[CallType.Down]).Max();
-                }
-            }
-        }
-        private void ResetBorders()
-        {
-            m_maxCall = 0;
-            m_minCall = int.MaxValue;
+            m_minCall = m_sets[CallType.Up].Union(m_sets[CallType.Down]).Min();
+            m_maxCall = m_sets[CallType.Up].Union(m_sets[CallType.Down]).Max();
         }
 
         private Elevator m_elevator;
 
         private CallType m_lastCallType;
-        private int m_maxCall = 0;
-        private int m_minCall = int.MaxValue;
+        private int m_maxCall/* = 0*/;
+        private int m_minCall/* = int.MaxValue*/;
 
         private readonly Dictionary<CallType, HashSet<int>> m_sets
             = new Dictionary<CallType, HashSet<int>>()

@@ -18,7 +18,7 @@ namespace ElevatorSimulation.SimulationModel
     /// - 
     /// - 
     /// </summary>
-    class ElevatorSimulationModel : Resettable
+    class ElevatorSimulationModel
     {
         public delegate void LogEventHandler(string text);
 
@@ -66,20 +66,22 @@ namespace ElevatorSimulation.SimulationModel
             // Initialize
             m_eventProvider.Initialize();
 
-            Event ev;
+            Event ev = null;
+            DateTime time = new DateTime();
             while (Time <= dTime)
             {
+                // Execute event
+                if (ev != null)
+                {
+                    ev.Execute();
+                    Log(String.Format("{0}   {1}", time.AddMinutes(ev.Time).TimeOfDay, ev.ToString()));
+                }
+                
                 // Get nearest event
                 ev = m_eventProvider.GetEvent();
 
                 // Set new model time
                 Time = ev.Time;
-
-                // Execute event
-                ev.Execute();
-
-                // Log
-                Log(ev.ToString());
             }
         }
         /// <summary>

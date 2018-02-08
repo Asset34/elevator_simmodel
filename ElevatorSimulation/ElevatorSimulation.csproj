@@ -71,7 +71,6 @@
     <Compile Include="RandomGenerator.cs" />
     <Compile Include="SimulationModel\Parameters\ElevatorParameters.cs" />
     <Compile Include="SimulationModel\Parameters\TenantGeneratorParameters.cs" />
-    <Compile Include="Resettable.cs" />
     <Compile Include="SimulationModel\Parameters\SimulationParameters.cs" />
     <Compile Include="SimulationModel\Schedulers\EventsScheduler.cs" />
     <Compile Include="SimulationModel\Transactions\Tenant.cs" />

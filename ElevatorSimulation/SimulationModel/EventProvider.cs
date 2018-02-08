@@ -33,13 +33,6 @@ namespace ElevatorSimulation.SimulationModel
         public void Initialize()
         {
             int[] floors1 = m_model.GeneratorsController.GetFloors();
-            int[] floors2 = m_model.QueuesController.GetFloors();
-
-            //// Check
-            //if (floors1.SequenceEqual(floors2))
-            //{
-            //    throw new Exception("Error in association beetween generators and queues");
-            //}
 
             TenantGenerator generator;
             TenantQueue queue;
@@ -159,13 +152,16 @@ namespace ElevatorSimulation.SimulationModel
             // Get associated queue
             TenantQueue queue = m_model.QueuesController.Get(elevator.CurrentFloor);
 
-            if (elevator.FreeCount > 0 /*&& queue.GetHallcallStatus(elevator.CurrentCallType)*/)
+            if (elevator.FreeCount > 0 &&
+                queue.GetHallcallStatus(elevator.CurrentCallType))
             {
                 CreateEvent_Pickup(elevator);
             }
         }
         public void DropoffControl(Elevator elevator)
         {
+            bool test = elevator.IsDroppingOff;
+
             if (elevator.IsDroppingOff)
             {
                 CreateEvent_Dropoff(elevator);

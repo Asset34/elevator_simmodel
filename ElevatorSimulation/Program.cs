@@ -21,14 +21,10 @@ namespace ElevatorSimulation
         {
             TestSimulationModel();
 
-            //Dictionary<int, string> tests = new Dictionary<int, string>(I)
-
-            //tests.Add(8,  "A");
-            //tests.Add(15, "B");
-            //tests.Add(5,  "C");
-            //tests.Add(10, "D");
-
-            //tests.
+            //DateTime time = new DateTime();
+            //time = time.AddMinutes(15);
+            
+            //Console.WriteLine("{0}", time.TimeOfDay);
         }
 
         static void LogHandler(string text)
@@ -138,24 +134,19 @@ namespace ElevatorSimulation
         {
             SimulationParameters parameters = new SimulationParameters
             {
-                NumFloors = 10,
+                NumFloors = 5,
                 NumElevators = 1,
                 TenantGeneratorParameters = new TenantGeneratorParameters[]
                 {
                     new TenantGeneratorParameters { Period = 10, DPeriod = 5 },
-                    new TenantGeneratorParameters { Period = 10, DPeriod = 5 },
-                    new TenantGeneratorParameters { Period = 10, DPeriod = 5 },
-                    new TenantGeneratorParameters { Period = 10, DPeriod = 5 },
-                    new TenantGeneratorParameters { Period = 10, DPeriod = 5 },
-                    new TenantGeneratorParameters { Period = 10, DPeriod = 5 },
-                    new TenantGeneratorParameters { Period = 10, DPeriod = 5 },
-                    new TenantGeneratorParameters { Period = 10, DPeriod = 5 },
-                    new TenantGeneratorParameters { Period = 10, DPeriod = 5 },
-                    new TenantGeneratorParameters { Period = 10, DPeriod = 5 },
+                    new TenantGeneratorParameters { Period = 11, DPeriod = 3 },
+                    new TenantGeneratorParameters { Period = 15, DPeriod = 2 },
+                    new TenantGeneratorParameters { Period = 8, DPeriod = 3 },
+                    new TenantGeneratorParameters { Period = 11, DPeriod = 4 }
                 },
                 ElevatorParameters = new ElevatorParameters[]
                 {
-                    new ElevatorParameters { Capacity = 10, StartFloor = 1, Period = 7, DPeriod = 1}
+                    new ElevatorParameters { Capacity = 10, StartFloor = 1, Period = 3, DPeriod = 1}
                 }
             };
 
@@ -163,7 +154,7 @@ namespace ElevatorSimulation
 
             model.Log += LogHandler;
 
-            model.Run(50);
+            model.Run(30);
         }
     }
 }
