@@ -22,9 +22,9 @@ namespace ElevatorSimulation.SimulationModel.Events
         public override string ToString()
         {
             return string.Format(
-                "Car call {0} was added to elevator {1}",
-                m_p1.FloorTo,
-                m_p2.ID
+                "Elevator[id:{0}] - add carcall[floor:{1}]",
+                m_p2.ID,
+                m_p1.FloorTo               
                 );
         }
     }

@@ -21,22 +21,27 @@ namespace ElevatorSimulation.SimulationModel.Events
         {
             // Generate new tenant
             Tenant = m_p1.Generate();
-
+            
             // Create new event
             if (!m_p2.GetHallcallStatus(Tenant.CallType))
             {
                 m_provider.CreateEvent_NewHallcall(Tenant);
             }
 
+            // Add tenant to the associated queue
+            m_p2.Enqueue(Tenant);
+
             // Create new event of tenant generation
-            m_provider.CreateEvent_NewTenant(m_p1, m_p2);
+            //m_provider.CreateEvent_NewTenant(m_p1, m_p2);
         }
         public override string ToString()
         {
             return string.Format(
-                "Tenant {0} was generated on the {1} floor",
+                "Generator[floor:{0}] - generate tenant[id:{1}; path:{2}->{3}]",
+                Tenant.FloorFrom,
                 Tenant.ID,
-                Tenant.FloorFrom
+                Tenant.FloorFrom,
+                Tenant.FloorTo
                 );
         }
     }

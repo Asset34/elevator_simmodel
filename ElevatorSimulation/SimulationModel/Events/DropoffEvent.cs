@@ -29,14 +29,14 @@ namespace ElevatorSimulation.SimulationModel.Events
         public override string ToString()
         {
             StringBuilder text = new StringBuilder();
-            text.Append(String.Format("Elevator {0} dropped off tenants", m_p.ID));
+            text.Append(String.Format("Elevator[id:{0}] - drop off[tenants:", m_p.ID));
 
             foreach (Tenant tenant in Tenants)
             {
-                text.Append(String.Format("{0}, ", tenant.ID));
+                text.Append(String.Format("{0},", tenant.ID));
             }
 
-            text.Append(String.Format("on the {0} floor", m_p.CurrentFloor));
+            text.Append(String.Format("; floor:{0}]", m_p.CurrentFloor));
 
             return text.ToString();
         }

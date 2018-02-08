@@ -21,7 +21,7 @@ namespace ElevatorSimulation.SimulationModel.Events
         public override string ToString()
         {
             return string.Format(
-                "Elevator {0} moved to the {1} floor",
+                "Elevator[id:{0}] - move[floor:{1}]",
                 m_p.ID,
                 m_p.CurrentFloor
                 );

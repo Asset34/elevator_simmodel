@@ -34,7 +34,7 @@ namespace ElevatorSimulation.SimulationModel.Events
 
             // Add tenants to the elevator
             m_p2.Pickup(Tenants);
-
+            
             // Add unduplicated carcalls from tenants
             foreach (Tenant tenant in Tenants)
             {
@@ -51,14 +51,14 @@ namespace ElevatorSimulation.SimulationModel.Events
         public override string ToString()
         {
             StringBuilder text = new StringBuilder();
-            text.Append(String.Format("Elevator {0} picked up tenants", m_p2.ID));
+            text.Append(String.Format("Elevator[id:{0}] - pick up[tenants:", m_p2.ID));
 
             foreach (Tenant tenant in Tenants)
             {
-                text.Append(String.Format("{0}, ", tenant.ID));
+                text.Append(String.Format("{0},", tenant.ID));
             }
 
-            text.Append(String.Format("on the {0} floor", m_p1.Floor));
+            text.Append(String.Format("; floor:{0}]", m_p1.Floor));
 
             return text.ToString();
         }
