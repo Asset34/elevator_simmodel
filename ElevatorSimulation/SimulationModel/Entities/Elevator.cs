@@ -24,7 +24,17 @@ namespace ElevatorSimulation.SimulationModel.Entities
         /// </summary>
         public int FillCount
         {
-            get { return m_tenants.Count; }
+            get
+            {
+                int count = 0;
+                
+                foreach (List<Tenant> list in m_tenants.Values)
+                {
+                    count += list.Count;
+                }
+
+                return count;
+            }
         }
         /// <summary>
         /// Number of free places
