@@ -25,42 +25,42 @@ namespace ElevatorSimulation.SimulationModel.Entities
 
         public void Enqueue(Tenant tenant)
         {
-            m_queues[tenant.CallType].Enqueue(tenant);
+            m_queues[tenant.Direction].Enqueue(tenant);
         }
-        public Tenant Dequeue(CallType callType)
+        public Tenant Dequeue(Direction Direction)
         {
-            return m_queues[callType].Dequeue();
+            return m_queues[Direction].Dequeue();
         }
-        public Tenant Peek(CallType callType)
+        public Tenant Peek(Direction Direction)
         {
-            return m_queues[callType].Peek();
+            return m_queues[Direction].Peek();
         }
 
         /// <summary>
         /// Getter of current state of hallcall from this
         /// floor and direction
         /// </summary>
-        /// <param name="callType"></param>
+        /// <param name="Direction"></param>
         /// <returns>
         /// true  - hallcall is enabled
         /// false - hallcall is disabled
         /// </returns>
-        public bool GetHallcallStatus(CallType callType)
+        public bool GetHallcallStatus(Direction Direction)
         {
-            return m_queues[callType].Count > 0;
+            return m_queues[Direction].Count > 0;
         }
 
         public void Reset()
         {
-            m_queues[CallType.Up].Clear();
-            m_queues[CallType.Down].Clear();
+            m_queues[Direction.Up].Clear();
+            m_queues[Direction.Down].Clear();
         }
 
-        private readonly Dictionary<CallType, Queue<Tenant>> m_queues
-            = new Dictionary<CallType, Queue<Tenant>>()
+        private readonly Dictionary<Direction, Queue<Tenant>> m_queues
+            = new Dictionary<Direction, Queue<Tenant>>()
             {
-                { CallType.Up  , new Queue<Tenant>()},
-                { CallType.Down, new Queue<Tenant>()}
+                { Direction.Up  , new Queue<Tenant>()},
+                { Direction.Down, new Queue<Tenant>()}
             };
     }
 }

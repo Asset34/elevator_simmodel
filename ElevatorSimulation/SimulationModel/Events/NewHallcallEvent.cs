@@ -36,7 +36,7 @@ namespace ElevatorSimulation.SimulationModel.Events
                 "Elevator[id:{0}] - add hallcall[floor:{1}; type:{2}]",
                 m_p2.ID,
                 m_p1.FloorFrom,
-                m_p1.CallType
+                m_p1.Direction
                 );
         }
     }

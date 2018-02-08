@@ -48,7 +48,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
         public int CurrentFloor { get; private set; }
         public int DestinationFloor { get; private set; }
 
-        public CallType CurrentCallType { get; private set; }
+        public Direction CurrentDirection { get; private set; }
 
         /// <summary>
         /// Flag defines the elevator reached current call
@@ -122,11 +122,11 @@ namespace ElevatorSimulation.SimulationModel.Entities
             DestinationFloor = m_scheduler.Schedule(CurrentFloor);
             if (DestinationFloor > CurrentFloor)
             {
-                CurrentCallType = CallType.Up;
+                CurrentDirection = Direction.Up;
             }
             else
             {
-                CurrentCallType = CallType.Down;
+                CurrentDirection = Direction.Down;
             }
         }
 
@@ -175,7 +175,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
 
 
             // Move
-            if (CurrentCallType == CallType.Up)
+            if (CurrentDirection == Direction.Up)
             {
                 CurrentFloor++;
             }

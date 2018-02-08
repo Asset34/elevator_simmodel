@@ -1,6 +1,6 @@
 ﻿namespace ElevatorSimulation.SimulationModel.Transactions
 {
-    enum CallType
+    enum Direction
     {
         Up,
         Down
@@ -23,17 +23,17 @@
         /// <summary>
         /// Destination of movement
         /// </summary>
-        public CallType CallType
+        public Direction Direction
         {
             get
             {
                 if (FloorTo > FloorFrom)
                 {
-                    return CallType.Up;
+                    return Direction.Up;
                 }
                 else
                 {
-                    return CallType.Down;
+                    return Direction.Down;
                 }
             }
         }  

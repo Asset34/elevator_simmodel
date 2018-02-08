@@ -98,12 +98,12 @@ namespace ElevatorSimulation
 
                     elevator.Dropoff();
 
-                    if (elevator.CurrentCallType == CallType.Up &&
+                    if (elevator.CurrentDirection == Direction.Up &&
                         upTenants.ContainsKey(elevator.CurrentFloor))
                     {
                         elevator.Pickup(upTenants[elevator.CurrentFloor]);
                     }
-                    else if (elevator.CurrentCallType == CallType.Down &&
+                    else if (elevator.CurrentDirection == Direction.Down &&
                              downTenants.ContainsKey(elevator.CurrentFloor))
                     {
                         elevator.Pickup(downTenants[elevator.CurrentFloor]);

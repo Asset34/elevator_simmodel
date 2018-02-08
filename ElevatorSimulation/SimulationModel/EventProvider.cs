@@ -153,7 +153,7 @@ namespace ElevatorSimulation.SimulationModel
             TenantQueue queue = m_model.QueuesController.Get(elevator.CurrentFloor);
 
             if (elevator.FreeCount > 0 &&
-                queue.GetHallcallStatus(elevator.CurrentCallType))
+                queue.GetHallcallStatus(elevator.CurrentDirection))
             {
                 CreateEvent_Pickup(elevator);
             }

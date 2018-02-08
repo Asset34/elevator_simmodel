@@ -17,8 +17,8 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
         {
             get
             {
-                return m_sets[CallType.Up].Count == 0 &&
-                       m_sets[CallType.Down].Count == 0;
+                return m_sets[Direction.Up].Count == 0 &&
+                       m_sets[Direction.Down].Count == 0;
             }
         }
 
@@ -29,19 +29,19 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
 
         public void AddHallcall(Tenant tenant)
         {   
-            m_sets[tenant.CallType].Add(tenant.FloorFrom);
+            m_sets[tenant.Direction].Add(tenant.FloorFrom);
 
             RedefineBorders();
         }
         public void AddCarcall(Tenant tenant)
         {
-            m_sets[tenant.CallType].Add(tenant.FloorTo);
+            m_sets[tenant.Direction].Add(tenant.FloorTo);
 
             RedefineBorders();
         }
         public void RemoveCall(int call)
         {
-            m_sets[m_lastCallType].Remove(call);
+            m_sets[m_lastDirection].Remove(call);
 
             RedefineBorders();
         }
@@ -55,31 +55,31 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
             }
 
             int call;
-            if (m_elevator.CurrentCallType == CallType.Up)
+            if (m_elevator.CurrentDirection == Direction.Up)
             {
                 if (floor == m_maxCall)
                 {
                     call = m_minCall;
-                    m_lastCallType = CallType.Up;
+                    m_lastDirection = Direction.Up;
 
-                    if (m_sets[CallType.Down].Count != 0)
+                    if (m_sets[Direction.Down].Count != 0)
                     {
-                        call = m_sets[CallType.Down].Max();
-                        m_lastCallType = CallType.Down;
+                        call = m_sets[Direction.Down].Max();
+                        m_lastDirection = Direction.Down;
                     }
                 }
                 else
                 {
                     call = m_maxCall;
-                    m_lastCallType = CallType.Down;
+                    m_lastDirection = Direction.Down;
 
                     // Get calls which directed such as elevator movement
                     // and located upper than elevator
-                    var upperCalls = m_sets[CallType.Up].Where(x => x >= floor);
+                    var upperCalls = m_sets[Direction.Up].Where(x => x >= floor);
                     if (upperCalls.Any())
                     {
                         call = upperCalls.Min();
-                        m_lastCallType = CallType.Up;
+                        m_lastDirection = Direction.Up;
                     }
                 }   
             }
@@ -88,26 +88,26 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
                 if (floor == m_minCall)
                 {
                     call = m_maxCall;
-                    m_lastCallType = CallType.Down;
+                    m_lastDirection = Direction.Down;
 
-                    if (m_sets[CallType.Up].Count != 0)
+                    if (m_sets[Direction.Up].Count != 0)
                     {
-                        call = m_sets[CallType.Up].Max();
-                        m_lastCallType = CallType.Up;
+                        call = m_sets[Direction.Up].Max();
+                        m_lastDirection = Direction.Up;
                     }
                 }
                 else
                 {
                     call = m_minCall;
-                    m_lastCallType = CallType.Up;
+                    m_lastDirection = Direction.Up;
 
                     // Get calls which directed such as elevator movement
                     // and located lower than elevator
-                    var lowerCalls = m_sets[CallType.Down].Where(x => x <= floor);
+                    var lowerCalls = m_sets[Direction.Down].Where(x => x <= floor);
                     if (lowerCalls.Any())
                     {
                         call = lowerCalls.Max();
-                        m_lastCallType = CallType.Down;
+                        m_lastDirection = Direction.Down;
                     }
                 }
             }
@@ -117,27 +117,27 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
 
         public void Reset()
         {
-            m_sets[CallType.Up].Clear();
-            m_sets[CallType.Down].Clear();
+            m_sets[Direction.Up].Clear();
+            m_sets[Direction.Down].Clear();
         }
 
         private void RedefineBorders()
         {
-            m_minCall = m_sets[CallType.Up].Union(m_sets[CallType.Down]).Min();
-            m_maxCall = m_sets[CallType.Up].Union(m_sets[CallType.Down]).Max();
+            m_minCall = m_sets[Direction.Up].Union(m_sets[Direction.Down]).Min();
+            m_maxCall = m_sets[Direction.Up].Union(m_sets[Direction.Down]).Max();
         }
 
         private Elevator m_elevator;
 
-        private CallType m_lastCallType;
+        private Direction m_lastDirection;
         private int m_maxCall/* = 0*/;
         private int m_minCall/* = int.MaxValue*/;
 
-        private readonly Dictionary<CallType, HashSet<int>> m_sets
-            = new Dictionary<CallType, HashSet<int>>()
+        private readonly Dictionary<Direction, HashSet<int>> m_sets
+            = new Dictionary<Direction, HashSet<int>>()
         {
-            { CallType.Up,   new HashSet<int>() },
-            { CallType.Down, new HashSet<int>() }
+            { Direction.Up,   new HashSet<int>() },
+            { Direction.Down, new HashSet<int>() }
         };
     }
 }

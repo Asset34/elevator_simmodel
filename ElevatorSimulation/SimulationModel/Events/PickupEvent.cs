@@ -26,10 +26,10 @@ namespace ElevatorSimulation.SimulationModel.Events
         {
             // Get list of picking up tenants
             Tenants = new List<Tenant>();
-            while (m_p1.GetHallcallStatus(m_p2.CurrentCallType) &&
+            while (m_p1.GetHallcallStatus(m_p2.CurrentDirection) &&
                    m_p2.FreeCount > 0)
             {
-                Tenants.Add(m_p1.Dequeue(m_p2.CurrentCallType));
+                Tenants.Add(m_p1.Dequeue(m_p2.CurrentDirection));
             }
 
             // Add tenants to the elevator
@@ -43,9 +43,9 @@ namespace ElevatorSimulation.SimulationModel.Events
             }
 
             // Repeat call if not all tenants was picked up
-            if (m_p1.GetHallcallStatus(m_p2.CurrentCallType))
+            if (m_p1.GetHallcallStatus(m_p2.CurrentDirection))
             {
-                m_provider.CreateEvent_NewHallcall(m_p1.Peek(m_p2.CurrentCallType));
+                m_provider.CreateEvent_NewHallcall(m_p1.Peek(m_p2.CurrentDirection));
             }
         }
         public override string ToString()
