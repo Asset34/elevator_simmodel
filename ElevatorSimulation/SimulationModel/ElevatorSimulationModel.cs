@@ -37,12 +37,13 @@ namespace ElevatorSimulation.SimulationModel
         public ElevatorSimulationModel(SimulationParameters parameters)
         {
             // Build group controllers
-            TenantGeneratorsController generatorsController = BuildGeneratorsController(parameters.NumFloors);
-            TenantQueuesController queuesController = BuildQueuesController(parameters.NumFloors);
-            ElevatorsController elevatorsController = BuildElevatorsController(
+            GeneratorsController = BuildGeneratorsController(parameters.NumFloors);
+            QueuesController = BuildQueuesController(parameters.NumFloors);
+            ElevatorsController = BuildElevatorsController(
                 parameters.NumFloors,
                 parameters.NumElevators,
-                parameters.ElevatorParameters);
+                parameters.ElevatorParameters
+                );
 
             // Build distributions
             Dictionary<int, Distribution> generationDistributions
@@ -101,7 +102,7 @@ namespace ElevatorSimulation.SimulationModel
             Distribution floorsDistribution = new UniformDistribution(1, numFloors);
             for (int i = 0; i < numFloors; i++)
             {
-                controller.Generators.Add(i + 1, new TenantGenerator(i + 1, floorsDistribution));
+                controller.Add(new TenantGenerator(i + 1, floorsDistribution));
             }
 
             return controller;
@@ -111,7 +112,7 @@ namespace ElevatorSimulation.SimulationModel
             TenantQueuesController controller = new TenantQueuesController();
             for (int i = 0; i < numFloors; i++)
             {
-                controller.Queues.Add(i + 1, new TenantQueue(i + 1));
+                controller.Add(new TenantQueue(i + 1));
             }
 
             return controller;
@@ -131,7 +132,7 @@ namespace ElevatorSimulation.SimulationModel
             for (int i = 0; i < numElevators; i++)
             {
                 elevator = BuildElevator(i + 1, parameters[i]);
-                controller.Elevators.Add(i + 1, elevator);
+                controller.Add(elevator);
             }
 
             return controller;

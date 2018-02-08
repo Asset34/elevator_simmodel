@@ -20,7 +20,22 @@ namespace ElevatorSimulation
         static void Main(string[] args)
         {
             TestSimulationModel();
+
+            //Dictionary<int, string> tests = new Dictionary<int, string>(I)
+
+            //tests.Add(8,  "A");
+            //tests.Add(15, "B");
+            //tests.Add(5,  "C");
+            //tests.Add(10, "D");
+
+            //tests.
         }
+
+        static void LogHandler(string text)
+        {
+            Console.WriteLine("{0}", text);
+        }
+
 
         static void TestDistributions()
         {
@@ -140,11 +155,15 @@ namespace ElevatorSimulation
                 },
                 ElevatorParameters = new ElevatorParameters[]
                 {
-                    new ElevatorParameters { Capacity = 10, StartFloor = 4, Period = 7, DPeriod = 1}
+                    new ElevatorParameters { Capacity = 10, StartFloor = 1, Period = 7, DPeriod = 1}
                 }
             };
 
             ElevatorSimulationModel model = new ElevatorSimulationModel(parameters);
+
+            model.Log += LogHandler;
+
+            model.Run(50);
         }
     }
 }

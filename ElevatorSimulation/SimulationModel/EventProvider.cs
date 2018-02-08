@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using ElevatorSimulation.SimulationModel.Events;
 using ElevatorSimulation.SimulationModel.Distributions;
@@ -31,12 +32,23 @@ namespace ElevatorSimulation.SimulationModel
         /// </summary>
         public void Initialize()
         {
-            Dictionary<int, TenantGenerator> generators = m_model.GeneratorsController.Generators;
-            Dictionary<int, TenantQueue> queues = m_model.QueuesController.Queues;
-            
-            foreach (int key in generators.Keys)
+            int[] floors1 = m_model.GeneratorsController.GetFloors();
+            int[] floors2 = m_model.QueuesController.GetFloors();
+
+            //// Check
+            //if (floors1.SequenceEqual(floors2))
+            //{
+            //    throw new Exception("Error in association beetween generators and queues");
+            //}
+
+            TenantGenerator generator;
+            TenantQueue queue;
+            foreach (int key in floors1)
             {
-                CreateEvent_NewTenant(generators[key], queues[key]);
+                generator = m_model.GeneratorsController.Get(key);
+                queue = m_model.QueuesController.Get(key);
+
+                CreateEvent_NewTenant(generator, queue);
             }
         }
         /// <summary>
@@ -98,7 +110,7 @@ namespace ElevatorSimulation.SimulationModel
             int time = m_model.Time;
 
             // Get associated queue
-            TenantQueue queue = m_model.QueuesController.Queues[elevator.CurrentFloor];
+            TenantQueue queue = m_model.QueuesController.Get(elevator.CurrentFloor);
 
             // Create event
             Event newEv = new PickupEvent(time, this, queue, elevator);
@@ -132,8 +144,9 @@ namespace ElevatorSimulation.SimulationModel
 
                 // Try to pick up
                 PickupControl(elevator);
-                
-                CreateEvent_Dropoff(elevator);
+
+                // Try to drop off
+                DropoffControl(elevator);
             }
             // Move next
             else if (!elevator.IsIdle)
@@ -144,12 +157,18 @@ namespace ElevatorSimulation.SimulationModel
         public void PickupControl(Elevator elevator)
         {
             // Get associated queue
-            TenantQueue queue = m_model.QueuesController.Queues[elevator.CurrentFloor];
+            TenantQueue queue = m_model.QueuesController.Get(elevator.CurrentFloor);
 
-            if (elevator.FreeCount > 0 &&
-                queue.GetHallcallStatus(elevator.CurrentCallType))
+            if (elevator.FreeCount > 0 /*&& queue.GetHallcallStatus(elevator.CurrentCallType)*/)
             {
                 CreateEvent_Pickup(elevator);
+            }
+        }
+        public void DropoffControl(Elevator elevator)
+        {
+            if (elevator.IsDroppingOff)
+            {
+                CreateEvent_Dropoff(elevator);
             }
         }
 

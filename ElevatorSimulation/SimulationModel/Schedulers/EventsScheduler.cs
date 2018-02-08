@@ -33,7 +33,7 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
         }
         public Event Schedule()
         {
-            return Remove(m_events.Min().Key);
+            return Remove(m_events.Keys.Min());
         }
 
         public void Reset()
