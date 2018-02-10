@@ -6,11 +6,11 @@ using ElevatorSimulation.SimulationModel.Transactions;
 namespace ElevatorSimulation.SimulationModel.Entities
 {
     /// <summary>
-    /// Queue of tenants on the specific floor
+    /// Queue of tenants on the specific floor.
+    /// Performs queue(FCFS) of transactions and
+    /// contains two queues for each of two types 
+    /// of transactions
     /// </summary>
-    /// <remarks>
-    /// Queue(FCFS) of transactions
-    /// </remarks>
     class TenantQueue : Entity
     {
         /// <summary>
@@ -37,17 +37,13 @@ namespace ElevatorSimulation.SimulationModel.Entities
         }
 
         /// <summary>
-        /// Getter of current state of hallcall from this
-        /// floor and direction
+        /// Getter of current state of hallcall of
+        /// this direction
         /// </summary>
-        /// <param name="Direction"></param>
-        /// <returns>
-        /// true  - hallcall is enabled
-        /// false - hallcall is disabled
-        /// </returns>
-        public bool GetHallcallStatus(Direction Direction)
+        /// <param name="direction"></param>
+        public bool IsHallcallEnabled(Direction direction)
         {
-            return m_queues[Direction].Count > 0;
+            return m_queues[direction].Count > 0;
         }
 
         public void Reset()

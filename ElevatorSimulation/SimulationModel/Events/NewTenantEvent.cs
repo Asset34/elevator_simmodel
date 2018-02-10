@@ -23,7 +23,7 @@ namespace ElevatorSimulation.SimulationModel.Events
             Tenant = m_p1.Generate();
             
             // Create new event
-            if (!m_p2.GetHallcallStatus(Tenant.Direction))
+            if (!m_p2.IsHallcallEnabled(Tenant.Direction))
             {
                 m_provider.CreateEvent_NewHallcall(Tenant);
             }

@@ -55,7 +55,7 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
             }
 
             int call;
-            if (m_elevator.CurrentDirection == Direction.Up)
+            if (m_elevator.Direction == Direction.Up)
             {
                 if (floor == m_maxCall)
                 {
@@ -123,15 +123,20 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
 
         private void RedefineBorders()
         {
-            m_minCall = m_sets[Direction.Up].Union(m_sets[Direction.Down]).Min();
-            m_maxCall = m_sets[Direction.Up].Union(m_sets[Direction.Down]).Max();
+            var union = m_sets[Direction.Up].Union(m_sets[Direction.Down]);
+
+            if (union.Any())
+            {
+                m_minCall = union.Min();
+                m_maxCall = union.Max();
+            }
         }
 
         private Elevator m_elevator;
 
         private Direction m_lastDirection;
-        private int m_maxCall/* = 0*/;
-        private int m_minCall/* = int.MaxValue*/;
+        private int m_maxCall;
+        private int m_minCall;
 
         private readonly Dictionary<Direction, HashSet<int>> m_sets
             = new Dictionary<Direction, HashSet<int>>()

@@ -11,6 +11,11 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
     /// </summary>
     class EventsScheduler
     {
+        public bool IsEmpty
+        {
+            get { return m_events.Count == 0; }
+        }
+
         public void Add(Event ev)
         {
             if (!m_events.ContainsKey(ev.Time))
@@ -33,6 +38,12 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
         }
         public Event Schedule()
         {
+            // Check
+            if (IsEmpty)
+            {
+                throw new InvalidOperationException("No events to schedule");
+            }
+
             return Remove(m_events.Keys.Min());
         }
 

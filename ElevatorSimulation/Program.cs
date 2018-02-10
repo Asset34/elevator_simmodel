@@ -62,59 +62,6 @@ namespace ElevatorSimulation
 
             Console.WriteLine("{0}", min);
         }
-        static void TestScheduler()
-        {
-            Elevator elevator = new Elevator(1, 10, 3);
-
-            Dictionary<int, Tenant> downTenants = new Dictionary<int, Tenant>();
-            downTenants.Add(8, new Tenant { ID = 7, FloorFrom = 8, FloorTo = 0 });
-            downTenants.Add(3, new Tenant { ID = 3, FloorFrom = 3, FloorTo = 2 });
-            downTenants.Add(6, new Tenant { ID = 6, FloorFrom = 6, FloorTo = 4 });
-
-            Dictionary<int, Tenant> upTenants = new Dictionary<int, Tenant>();
-            upTenants.Add(1, new Tenant { ID = 1, FloorFrom = 1, FloorTo = 5 });
-            upTenants.Add(3, new Tenant { ID = 2, FloorFrom = 3, FloorTo = 5 });
-            upTenants.Add(5, new Tenant { ID = 4, FloorFrom = 5, FloorTo = 6 });
-
-            foreach (Tenant tenant in upTenants.Values)
-            {
-                elevator.AddHallcall(tenant);
-            }
-            foreach (Tenant tenant in downTenants.Values)
-            {
-                elevator.AddHallcall(tenant);
-            }
-
-            while (!elevator.IsIdle)
-            {
-                if (elevator.IsReached)
-                {
-                    elevator.RemoveCall(elevator.CurrentFloor);
-
-                    if (!elevator.IsIdle)
-                    {
-                        elevator.SetCall();
-                    }
-
-                    elevator.Dropoff();
-
-                    if (elevator.CurrentDirection == Direction.Up &&
-                        upTenants.ContainsKey(elevator.CurrentFloor))
-                    {
-                        elevator.Pickup(upTenants[elevator.CurrentFloor]);
-                    }
-                    else if (elevator.CurrentDirection == Direction.Down &&
-                             downTenants.ContainsKey(elevator.CurrentFloor))
-                    {
-                        elevator.Pickup(downTenants[elevator.CurrentFloor]);
-                    }
-                }
-                else
-                {
-                    elevator.Move();
-                }
-            }
-        }
         static void TestSetUnion()
         {
             HashSet<int> set1 = new HashSet<int>();
@@ -134,15 +81,15 @@ namespace ElevatorSimulation
         {
             SimulationParameters parameters = new SimulationParameters
             {
-                NumFloors = 5,
+                NumFloors = 3,
                 NumElevators = 1,
                 TenantGeneratorParameters = new TenantGeneratorParameters[]
                 {
                     new TenantGeneratorParameters { Period = 10, DPeriod = 5 },
                     new TenantGeneratorParameters { Period = 11, DPeriod = 3 },
                     new TenantGeneratorParameters { Period = 15, DPeriod = 2 },
-                    new TenantGeneratorParameters { Period = 8, DPeriod = 3 },
-                    new TenantGeneratorParameters { Period = 11, DPeriod = 4 }
+                    //new TenantGeneratorParameters { Period = 8, DPeriod = 3 },
+                    //new TenantGeneratorParameters { Period = 11, DPeriod = 4 }
                 },
                 ElevatorParameters = new ElevatorParameters[]
                 {
@@ -154,7 +101,7 @@ namespace ElevatorSimulation
 
             model.Log += LogHandler;
 
-            model.Run(30);
+            model.Run(50);
         }
     }
 }

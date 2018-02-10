@@ -16,16 +16,12 @@ namespace ElevatorSimulation.SimulationModel.Events
         }
         public override void Execute()
         {
-            bool flag = false;
-
-            if (m_p2.IsIdle)
-            {
-                flag = true;
-            }
+            // Save previous elevator state
+            ElevatorState prevState = m_p2.State;
 
             m_p2.AddHallcall(m_p1);
 
-            if (flag)
+            if (prevState == ElevatorState.Idle)
             {
                 m_provider.ElevatorMoveControl(m_p2);
             }

@@ -15,9 +15,9 @@ namespace ElevatorSimulation.SimulationModel.Events
         }
         public override void Execute()
         {
-            m_provider.ElevatorMoveControl(m_p2);
-
             m_p2.AddCarcall(m_p1);
+
+            m_provider.ElevatorMoveControl(m_p2); 
         }
         public override string ToString()
         {

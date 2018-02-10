@@ -130,9 +130,9 @@ namespace ElevatorSimulation.SimulationModel
                 elevator.RemoveCall(elevator.CurrentFloor);
 
                 // Set next call
-                if (!elevator.IsIdle)
+                if (elevator.State != ElevatorState.Idle)
                 {
-                    elevator.SetCall();
+                    elevator.ScheduleCall();
                 }
 
                 // Try to pick up
@@ -142,8 +142,9 @@ namespace ElevatorSimulation.SimulationModel
                 DropoffControl(elevator);
             }
             // Move next
-            else if (!elevator.IsIdle)
+            else if (elevator.State != ElevatorState.Idle)
             {
+                elevator.EnableMove();
                 CreateEvent_ElevatorMove(elevator);
             }
         }
@@ -152,17 +153,17 @@ namespace ElevatorSimulation.SimulationModel
             // Get associated queue
             TenantQueue queue = m_model.QueuesController.Get(elevator.CurrentFloor);
 
-            if (elevator.FreeCount > 0 &&
-                queue.GetHallcallStatus(elevator.CurrentDirection))
+            if (elevator.FreeCount > 0 && queue.IsHallcallEnabled(elevator.Direction) ||
+                elevator.State == ElevatorState.Idle && queue.IsHallcallEnabled(elevator.OppositeDirection))
             {
                 CreateEvent_Pickup(elevator);
             }
         }
         public void DropoffControl(Elevator elevator)
         {
-            bool test = elevator.IsDroppingOff;
+            bool test = elevator.IsDropOff;
 
-            if (elevator.IsDroppingOff)
+            if (elevator.IsDropOff)
             {
                 CreateEvent_Dropoff(elevator);
             }

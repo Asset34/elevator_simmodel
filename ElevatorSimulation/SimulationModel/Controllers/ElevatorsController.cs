@@ -36,6 +36,7 @@ namespace ElevatorSimulation.SimulationModel.Controllers
         {
             return m_elevators[id];
         }
+
         /// <summary>
         /// Get ID of the elevator which will handle
         /// the hallcall from tenant

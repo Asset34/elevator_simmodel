@@ -54,10 +54,10 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
                 displacement = tenant.FloorFrom - elevator.CurrentFloor;
 
                 // Compute priority
-                if (displacement > 0 && elevator.CurrentDirection == Direction.Up ||
-                    displacement < 0 && elevator.CurrentDirection == Direction.Down)
+                if (displacement > 0 && elevator.Direction == Direction.Up ||
+                    displacement < 0 && elevator.Direction == Direction.Down)
                 {
-                    if (elevator.CurrentDirection == tenant.Direction)
+                    if (elevator.Direction == tenant.Direction)
                     {
                         priority = m_numFloors + 3 - Math.Abs(displacement);
                     }
@@ -66,7 +66,7 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
                         priority = m_numFloors + 2 - Math.Abs(displacement);
                     }
                 }
-                else if (elevator.IsIdle)
+                else if (elevator.State == ElevatorState.Idle)
                 {
                     priority = 2;
                 }
