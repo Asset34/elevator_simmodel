@@ -22,6 +22,9 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
             }
         }
 
+        public int Top { get; private set; }
+        public int Bottom { get; private set; }
+
         public CallsScheduler(Elevator elevator)
         {
             m_elevator = elevator;
@@ -57,9 +60,9 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
             int call;
             if (m_elevator.Direction == Direction.Up)
             {
-                if (floor == m_maxCall)
+                if (floor == Top)
                 {
-                    call = m_minCall;
+                    call = Bottom;
                     m_lastDirection = Direction.Up;
 
                     if (m_sets[Direction.Down].Count != 0)
@@ -70,7 +73,7 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
                 }
                 else
                 {
-                    call = m_maxCall;
+                    call = Top;
                     m_lastDirection = Direction.Down;
 
                     // Get calls which directed such as elevator movement
@@ -85,9 +88,9 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
             }
             else 
             {
-                if (floor == m_minCall)
+                if (floor == Bottom)
                 {
-                    call = m_maxCall;
+                    call = Top;
                     m_lastDirection = Direction.Down;
 
                     if (m_sets[Direction.Up].Count != 0)
@@ -98,7 +101,7 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
                 }
                 else
                 {
-                    call = m_minCall;
+                    call = Bottom;
                     m_lastDirection = Direction.Up;
 
                     // Get calls which directed such as elevator movement
@@ -127,16 +130,13 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
 
             if (union.Any())
             {
-                m_minCall = union.Min();
-                m_maxCall = union.Max();
+                Bottom = union.Min();
+                Top = union.Max();
             }
         }
 
         private Elevator m_elevator;
-
         private Direction m_lastDirection;
-        private int m_maxCall;
-        private int m_minCall;
 
         private readonly Dictionary<Direction, HashSet<int>> m_sets
             = new Dictionary<Direction, HashSet<int>>()
