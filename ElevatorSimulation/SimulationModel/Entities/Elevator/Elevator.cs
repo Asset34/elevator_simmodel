@@ -44,9 +44,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
 
         public int DefaultFloor { get; set; }
         public int CurrentFloor { get; private set; }
-        public int DestinationFloor { get; private set; }
-
-        public Direction Direction { get; private set; }
+        public int TargetFloor { get; private set; }
 
         /// <summary>
         /// Flag which defines there is tenants for dropping off
@@ -56,14 +54,22 @@ namespace ElevatorSimulation.SimulationModel.Entities
             get { return m_tenants.ContainsKey(CurrentFloor); }
         }
 
+        public Direction Direction { get; private set; }
+        public State State
+        {
+            get { return m_stateMachine.CurrentState; }
+        }
+
         public Elevator(int id, int capacity, int startFloor)
         {
             ID = id;
 
+            Capacity = capacity;
             DefaultFloor = startFloor;
             CurrentFloor = startFloor;
-            DestinationFloor = startFloor;
-            Capacity = capacity;
+            TargetFloor = startFloor;
+
+            Direction = Direction.Down;
 
             m_scheduler = new CallsScheduler(this);
             m_stateMachine = new StateMachine(this);
@@ -72,63 +78,12 @@ namespace ElevatorSimulation.SimulationModel.Entities
         public void AddHallcall(Tenant tenant)
         {
             m_scheduler.AddHallcall(tenant);
-
-            if (State == ElevatorState.Idle)
-            {
-                State = ElevatorState.Stop;
-            }
-
-            ScheduleCall();
+            m_stateMachine.MoveNext(Command.Call);
         }
         public void AddCarcall(Tenant tenant)
         {
             m_scheduler.AddCarcall(tenant);
-            ScheduleCall();
-        }
-        public void RemoveCall()
-        {
-            // Check
-            if (State == ElevatorState.Idle)
-            {
-                throw new InvalidOperationException("No calls to remove");
-            }
-
-            m_scheduler.RemoveCall(DestinationFloor);
-        }
-        public void ScheduleCall()
-        {
-            // Check
-            if (State == ElevatorState.Idle)
-            {
-                throw new InvalidOperationException("No calls to set");
-            }
-
-            // Schedule new call
-            if (State == ElevatorState.Move)
-            {
-                if (Direction == Direction.Up)
-                {
-                    DestinationFloor = m_scheduler.Schedule(CurrentFloor + 1);
-                }
-                else
-                {
-                    DestinationFloor = m_scheduler.Schedule(CurrentFloor - 1);
-                }
-            }
-            else
-            {
-                DestinationFloor = m_scheduler.Schedule(CurrentFloor);
-            }
-
-            // Set direction
-            if (DestinationFloor > CurrentFloor)
-            {
-                Direction = Direction.Up;
-            }
-            else
-            {
-                Direction = Direction.Down;
-            }
+            m_stateMachine.MoveNext(Command.Call);
         }
 
         public void Pickup(List<Tenant> tenants)
@@ -145,45 +100,49 @@ namespace ElevatorSimulation.SimulationModel.Entities
             {
                 throw new InvalidOperationException("The elevator is full");
             }
-            if (State == ElevatorState.Move)
+            if (State == State.Move)
             {
                 throw new InvalidOperationException("Pick up during the movement");
             }
 
+            // Add
             if (!m_tenants.ContainsKey(tenant.FloorTo))
             {
                 m_tenants.Add(tenant.FloorTo, new List<Tenant>());          
             }
-
             m_tenants[tenant.FloorTo].Add(tenant);
         }
         public List<Tenant> Dropoff()
         {
             // Check
-            if (State == ElevatorState.Move)
+            if (State == State.Move)
             {
                 throw new InvalidOperationException("Drop off during the movement");
             }
 
+            // Remove
             List<Tenant> tenants = m_tenants[CurrentFloor];
-
             m_tenants.Remove(CurrentFloor);
 
             return tenants;
         }
 
-        public void Move()
+        public void StartMove()
         {
             // Checks
-            if (State == ElevatorState.Idle)
+            if (State == State.Idle)
             {
                 throw new InvalidOperationException("No calls to move");
             }
-            if (IsReached)
+            if (State == State.AtFloor)
             {
                 throw new InvalidOperationException("The elevator reached the next called floor");
             }
 
+            m_stateMachine.MoveNext(Command.ToMove);
+        }
+        public void Move()
+        {
             // Move
             if (Direction == Direction.Up)
             {
@@ -194,18 +153,39 @@ namespace ElevatorSimulation.SimulationModel.Entities
                 CurrentFloor--;
             }
 
-            // Stop elevator
-            State = ElevatorState.Stop;
+            m_stateMachine.MoveNext(Command.ToMove);
         }
 
         public void Reset()
         {
             CurrentFloor = DefaultFloor;
 
-            State = ElevatorState.Idle;
-            
             m_scheduler.Reset();
+            m_stateMachine.Reset();
+
             m_tenants.Clear();
+        }
+
+        private void RemoveCall()
+        {
+            // Check
+            if (State == State.Idle)
+            {
+                throw new InvalidOperationException("No calls to remove");
+            }
+
+            m_scheduler.RemoveCall(TargetFloor);
+        }
+        private void ScheduleCall()
+        {
+            // Check
+            if (State == State.Idle)
+            {
+                throw new InvalidOperationException("No calls to set");
+            }
+
+            // Schedule new call
+            TargetFloor = m_scheduler.Schedule(CurrentFloor);
         }
 
         private readonly CallsScheduler m_scheduler;

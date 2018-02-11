@@ -20,11 +20,6 @@ namespace ElevatorSimulation
         static void Main(string[] args)
         {
             TestSimulationModel();
-
-            //DateTime time = new DateTime();
-            //time = time.AddMinutes(15);
-            
-            //Console.WriteLine("{0}", time.TimeOfDay);
         }
 
         static void LogHandler(string text)
@@ -81,13 +76,13 @@ namespace ElevatorSimulation
         {
             SimulationParameters parameters = new SimulationParameters
             {
-                NumFloors = 3,
+                NumFloors = 2,
                 NumElevators = 1,
                 TenantGeneratorParameters = new TenantGeneratorParameters[]
                 {
                     new TenantGeneratorParameters { Period = 10, DPeriod = 5 },
                     new TenantGeneratorParameters { Period = 11, DPeriod = 3 },
-                    new TenantGeneratorParameters { Period = 15, DPeriod = 2 },
+                    //new TenantGeneratorParameters { Period = 15, DPeriod = 2 },
                     //new TenantGeneratorParameters { Period = 8, DPeriod = 3 },
                     //new TenantGeneratorParameters { Period = 11, DPeriod = 4 }
                 },

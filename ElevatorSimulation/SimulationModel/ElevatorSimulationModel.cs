@@ -76,7 +76,7 @@ namespace ElevatorSimulation.SimulationModel
                     ev.Execute();
                     Log(String.Format("{0}   {1}", time.AddMinutes(ev.Time).TimeOfDay, ev.ToString()));
                 }
-                
+
                 // Get nearest event
                 ev = m_eventProvider.GetEvent();
 

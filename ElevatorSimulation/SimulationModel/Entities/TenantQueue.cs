@@ -41,7 +41,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
         /// this direction
         /// </summary>
         /// <param name="direction"></param>
-        public bool IsHallcallEnabled(Direction direction)
+        public bool IsHallcall(Direction direction)
         {
             return m_queues[direction].Count > 0;
         }

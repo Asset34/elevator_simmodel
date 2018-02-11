@@ -66,7 +66,7 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
                         priority = m_numFloors + 2 - Math.Abs(displacement);
                     }
                 }
-                else if (elevator.State == ElevatorState.Idle)
+                else if (elevator.State == State.Idle)
                 {
                     priority = 2;
                 }

@@ -122,53 +122,39 @@ namespace ElevatorSimulation.SimulationModel
         }
 
         /* Additional */
-        public void ElevatorMoveControl(Elevator elevator)
+        public void TryMove(Elevator elevator)
         {
-            if (elevator.IsReached)
+            if (elevator.State == State.Halt)
             {
-                // Remove handled call
-                elevator.RemoveCall(elevator.CurrentFloor);
-
-                // Set next call
-                if (elevator.State != ElevatorState.Idle)
-                {
-                    elevator.ScheduleCall();
-                }
-
-                // Try to pick up
-                PickupControl(elevator);
-
-                // Try to drop off
-                DropoffControl(elevator);
-            }
-            // Move next
-            else if (elevator.State != ElevatorState.Idle)
-            {
-                elevator.EnableMove();
+                TryDropoff(elevator);
+                TryPickup(elevator);
+                
                 CreateEvent_ElevatorMove(elevator);
             }
-        }
-        public void PickupControl(Elevator elevator)
-        {
-            // Get associated queue
-            TenantQueue queue = m_model.QueuesController.Get(elevator.CurrentFloor);
-
-            if (elevator.FreeCount > 0 && queue.IsHallcallEnabled(elevator.Direction) ||
-                elevator.State == ElevatorState.Idle && queue.IsHallcallEnabled(elevator.OppositeDirection))
+            else if (elevator.State == State.Idle)
             {
-                CreateEvent_Pickup(elevator);
+                TryDropoff(elevator);
+                TryPickup(elevator);
             }
         }
-        public void DropoffControl(Elevator elevator)
+        public void TryDropoff(Elevator elevator)
         {
-            bool test = elevator.IsDropOff;
-
             if (elevator.IsDropOff)
             {
                 CreateEvent_Dropoff(elevator);
             }
         }
+        public void TryPickup(Elevator elevator)
+        {
+            // Get associated queue
+            TenantQueue queue = m_model.QueuesController.Get(elevator.CurrentFloor);
 
+            if (queue.IsHallcall(elevator.Direction))
+            {
+                CreateEvent_Pickup(elevator);
+            }
+        }
+        
         public void Reset()
         {
             m_scheduler.Reset();

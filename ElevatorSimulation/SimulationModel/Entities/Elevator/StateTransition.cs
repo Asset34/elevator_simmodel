@@ -5,7 +5,7 @@
         private partial class StateMachine
         {
             /// <summary>
-            /// 
+            /// Performs the each edge of the each state
             /// </summary>
             private class StateTransition
             {

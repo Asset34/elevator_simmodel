@@ -15,8 +15,14 @@ namespace ElevatorSimulation.SimulationModel.Events
         {
             m_p.Move();
 
-            // Create event of new move
-            m_provider.ElevatorMoveControl(m_p);
+            if (m_p.State == State.Move)
+            {
+                m_provider.CreateEvent_ElevatorMove(m_p);
+            }
+            else
+            {
+                m_provider.TryMove(m_p);
+            }
         }
         public override string ToString()
         {

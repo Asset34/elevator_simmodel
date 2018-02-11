@@ -22,8 +22,7 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
             }
         }
 
-        public int Top { get; private set; }
-        public int Bottom { get; private set; }
+        public bool IsBorder { get; private set; }
 
         public CallsScheduler(Elevator elevator)
         {
@@ -34,19 +33,20 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
         {   
             m_sets[tenant.Direction].Add(tenant.FloorFrom);
 
-            RedefineBorders();
+            RedefineLimits();
         }
         public void AddCarcall(Tenant tenant)
         {
             m_sets[tenant.Direction].Add(tenant.FloorTo);
 
-            RedefineBorders();
+            RedefineLimits();
         }
         public void RemoveCall(int call)
         {
-            m_sets[m_lastDirection].Remove(call);
+            //m_sets[m_lastDirection].Remove(call);
+            m_sets[m_elevator.Direction].Remove(call);
 
-            RedefineBorders();
+            RedefineLimits();
         }
 
         public int Schedule(int floor)
@@ -60,21 +60,18 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
             int call;
             if (m_elevator.Direction == Direction.Up)
             {
-                if (floor == Top)
+                if (floor == m_top)
                 {
-                    call = Bottom;
-                    m_lastDirection = Direction.Up;
+                    call = m_bottom;
 
                     if (m_sets[Direction.Down].Count != 0)
                     {
                         call = m_sets[Direction.Down].Max();
-                        m_lastDirection = Direction.Down;
                     }
                 }
                 else
                 {
-                    call = Top;
-                    m_lastDirection = Direction.Down;
+                    call = m_top;
 
                     // Get calls which directed such as elevator movement
                     // and located upper than elevator
@@ -82,27 +79,23 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
                     if (upperCalls.Any())
                     {
                         call = upperCalls.Min();
-                        m_lastDirection = Direction.Up;
                     }
                 }   
             }
             else 
             {
-                if (floor == Bottom)
+                if (floor == m_bottom)
                 {
-                    call = Top;
-                    m_lastDirection = Direction.Down;
+                    call = m_top;
 
                     if (m_sets[Direction.Up].Count != 0)
                     {
                         call = m_sets[Direction.Up].Max();
-                        m_lastDirection = Direction.Up;
                     }
                 }
                 else
                 {
-                    call = Bottom;
-                    m_lastDirection = Direction.Up;
+                    call = m_bottom;
 
                     // Get calls which directed such as elevator movement
                     // and located lower than elevator
@@ -110,10 +103,12 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
                     if (lowerCalls.Any())
                     {
                         call = lowerCalls.Max();
-                        m_lastDirection = Direction.Down;
                     }
                 }
             }
+
+            // Check if next call is border
+            RedefineBorder();
 
             return call;
         }
@@ -124,19 +119,40 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
             m_sets[Direction.Down].Clear();
         }
 
-        private void RedefineBorders()
+        private void RedefineLimits()
         {
             var union = m_sets[Direction.Up].Union(m_sets[Direction.Down]);
 
             if (union.Any())
             {
-                Bottom = union.Min();
-                Top = union.Max();
+                m_bottom = union.Min();
+                m_top = union.Max();
+            }
+        }
+        private void RedefineBorder()
+        {
+            IsBorder = false;
+
+            if (m_elevator.Direction == Direction.Down)
+            {
+                var lower = m_sets[Direction.Down].Where(call => (call <= m_elevator.TargetFloor));
+                if (!lower.Any())
+                {
+                    IsBorder = true;
+                }
+            }
+            else
+            {
+                var upper = m_sets[Direction.Up].Where(call => (call >= m_elevator.TargetFloor));
+                if (!upper.Any())
+                {
+                    IsBorder = true;
+                }
             }
         }
 
-        private Elevator m_elevator;
-        private Direction m_lastDirection;
+        private int m_top;
+        private int m_bottom;
 
         private readonly Dictionary<Direction, HashSet<int>> m_sets
             = new Dictionary<Direction, HashSet<int>>()
@@ -144,5 +160,7 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
             { Direction.Up,   new HashSet<int>() },
             { Direction.Down, new HashSet<int>() }
         };
+
+        private Elevator m_elevator;
     }
 }

@@ -43,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SimulationModel\Entities\Elevator\StateMachine.cs" />
+    <Compile Include="SimulationModel\Entities\Elevator\StateTransition.cs" />
     <Compile Include="SimulationModel\EventProvider.cs" />
     <Compile Include="SimulationModel\Entities\Entity.cs" />
     <Compile Include="SimulationModel\Controllers\ElevatorsController.cs" />
@@ -61,7 +63,7 @@
     <Compile Include="SimulationModel\Distributions\DistributionWithGaps.cs" />
     <Compile Include="SimulationModel\Distributions\UniformDistribution.cs" />
     <Compile Include="SimulationModel\ElevatorSimulationModel.cs" />
-    <Compile Include="SimulationModel\Entities\Elevator.cs" />
+    <Compile Include="SimulationModel\Entities\Elevator\Elevator.cs" />
     <Compile Include="SimulationModel\Entities\TenantQueue.cs" />
     <Compile Include="SimulationModel\Entities\TenantGenerator.cs" />
     <Compile Include="SimulationModel\Events\Event.cs" />

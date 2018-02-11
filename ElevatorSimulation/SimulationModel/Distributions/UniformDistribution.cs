@@ -19,7 +19,7 @@ namespace ElevatorSimulation.SimulationModel.Distributions
         }
         public override int GetValue()
         {
-            return RandomGenerator.Instance.Next(m_min, m_max);
+            return RandomGenerator.Instance.Next(m_min, m_max + 1);
         }
 
         private int m_min;

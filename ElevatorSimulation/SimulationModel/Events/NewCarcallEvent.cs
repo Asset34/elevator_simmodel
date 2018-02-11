@@ -15,9 +15,14 @@ namespace ElevatorSimulation.SimulationModel.Events
         }
         public override void Execute()
         {
+            State prevState = m_p2.State;
+
             m_p2.AddCarcall(m_p1);
 
-            m_provider.ElevatorMoveControl(m_p2); 
+            if (prevState == State.Idle)
+            {
+                m_provider.TryMove(m_p2);
+            }
         }
         public override string ToString()
         {

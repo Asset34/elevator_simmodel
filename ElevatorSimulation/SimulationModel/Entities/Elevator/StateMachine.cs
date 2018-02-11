@@ -15,8 +15,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
 
     enum Command
     {
-        Hallcall,
-        Carcall,
+        Call,
         ToHalt,
         ToFloor,
         ToMove,
@@ -26,7 +25,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
     partial class Elevator
     {
         /// <summary>
-        /// Finite-State machine of the elevator
+        /// Finite-State machine(FSM) of the elevator
         /// </summary>
         private partial class StateMachine
         {
@@ -41,7 +40,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
                 m_actions.Add(State.Idle   , OnIdle );
                 m_actions.Add(State.Halt   , OnHalt );
                 m_actions.Add(State.AtFloor, OnFloor);
-                m_actions.Add(State.Move   , OnHalt );
+                m_actions.Add(State.Move   , OnMove );
             }
 
             public State GetNext(Command command)
@@ -55,9 +54,15 @@ namespace ElevatorSimulation.SimulationModel.Entities
 
                 return m_transitions[st];
             }
-            public State MoveNext(Command command)
+            public void MoveNext(Command command)
             {
-                return GetNext(command);
+                CurrentState = GetNext(command);
+                m_actions[CurrentState]();
+            }
+
+            public void Reset()
+            {
+                CurrentState = State.Idle;
             }
 
             /* State actions */
@@ -67,57 +72,69 @@ namespace ElevatorSimulation.SimulationModel.Entities
             }
             private void OnHalt()
             {
-                // Set new direction
-                m_elevator.ScheduleCall();
-
-                // GOTO next state
-                if (m_elevator.CurrentFloor == m_elevator.DestinationFloor)
-                {
-                    MoveNext(Command.ToFloor);
-                }
-                else
-                {
-                    MoveNext(Command.ToMove);
-                }
-
-                // Action
-                m_actions[CurrentState]();
-            }
-            private void OnFloor()
-            {
-                m_elevator.RemoveCall();
-
-                // Set new direction if needed
-                if (m_elevator.CurrentFloor == m_elevator.m_scheduler.Top)
-                {
-                    m_elevator.Direction = Direction.Down;
-                }
-                else if (m_elevator.CurrentFloor == m_elevator.m_scheduler.Bottom)
-                {
-                    m_elevator.Direction = Direction.Up;
-                }
-
-                // GOTO next state
                 if (m_elevator.m_scheduler.IsEmpty)
                 {
                     MoveNext(Command.ToIdle);
                 }
                 else
                 {
+                    // Set new direction
+                    m_elevator.ScheduleCall();
+
+                    // GOTO next state
+                    if (m_elevator.CurrentFloor == m_elevator.TargetFloor)
+                    {
+                        MoveNext(Command.ToFloor);
+                    }
+                    else
+                    {
+                        if (m_elevator.CurrentFloor < m_elevator.TargetFloor)
+                        {
+                            m_elevator.Direction = Direction.Up;
+                        }
+                        else
+                        {
+                            m_elevator.Direction = Direction.Down;
+                        }
+                    }
+                }   
+            }
+            private void OnFloor()
+            {
+                m_elevator.RemoveCall();
+                
+                if (m_elevator.m_scheduler.IsEmpty)
+                {
+                    MoveNext(Command.ToIdle);
+                }
+                if (!m_elevator.m_scheduler.IsEmpty)
+                {
+                    m_elevator.ScheduleCall();
+
+                    // Set opposite direction if needed 
+                    if (m_elevator.m_scheduler.IsBorder)
+                    {
+                        if (m_elevator.Direction == Direction.Up)
+                        {
+                            m_elevator.Direction = Direction.Down;
+                        }
+                        else
+                        {
+                            m_elevator.Direction = Direction.Up;
+                        }
+
+                        m_elevator.RemoveCall();
+                    }
+
+                    // GOTO next state
                     MoveNext(Command.ToHalt);
                 }
-
-                // Action
-                m_actions[CurrentState]();
             }
             private void OnMove()
             {
-                if (m_elevator.CurrentFloor == m_elevator.DestinationFloor)
+                if (m_elevator.CurrentFloor == m_elevator.TargetFloor)
                 {
                     MoveNext(Command.ToFloor);
-
-                    // Action
-                    m_actions[CurrentState]();
                 }
             }
 
@@ -126,17 +143,15 @@ namespace ElevatorSimulation.SimulationModel.Entities
             private readonly Dictionary<StateTransition, State> m_transitions
                 = new Dictionary<StateTransition, State>()
                 {
-                    { new StateTransition(State.Idle   , Command.Hallcall), State.Halt    },
-                    { new StateTransition(State.Idle   , Command.Carcall) , State.Halt    },
-                    { new StateTransition(State.Halt   , Command.ToIdle)  , State.Idle    },
-                    { new StateTransition(State.Halt   , Command.ToFloor) , State.AtFloor },
-                    { new StateTransition(State.Halt   , Command.ToMove)  , State.Move    },
-                    { new StateTransition(State.Halt   , Command.Hallcall), State.Halt    },
-                    { new StateTransition(State.Halt   , Command.Carcall) , State.Halt    },
-                    { new StateTransition(State.AtFloor, Command.ToHalt)  , State.Halt    },
-                    { new StateTransition(State.Move   , Command.ToFloor) , State.AtFloor },
-                    { new StateTransition(State.Move   , Command.Hallcall), State.Move    },
-                    { new StateTransition(State.Move   , Command.Carcall) , State.Move    },
+                    { new StateTransition(State.Idle   , Command.Call   ), State.Halt    },
+                    { new StateTransition(State.Halt   , Command.ToFloor), State.AtFloor },
+                    { new StateTransition(State.Halt   , Command.ToMove ), State.Move    },
+                    { new StateTransition(State.Halt   , Command.Call   ), State.Halt    },
+                    { new StateTransition(State.Halt   , Command.ToIdle ), State.Idle    },
+                    { new StateTransition(State.AtFloor, Command.ToHalt ), State.Halt    },
+                    { new StateTransition(State.Move   , Command.ToFloor), State.AtFloor },
+                    { new StateTransition(State.Move   , Command.ToMove ), State.Move    },
+                    { new StateTransition(State.Move   , Command.Call   ), State.Move    },
                 };
 
             private readonly Elevator m_elevator;
