@@ -46,12 +46,13 @@ namespace ElevatorSimulation.SimulationModel.Entities
         public int CurrentFloor { get; private set; }
         public int TargetFloor { get; private set; }
 
-        /// <summary>
-        /// Flag which defines there is tenants for dropping off
-        /// </summary>
         public bool IsDropOff
         {
             get { return m_tenants.ContainsKey(CurrentFloor); }
+        }
+        public bool HasCalls
+        {
+            get { return !m_scheduler.IsEmpty; }
         }
 
         public Direction Direction { get; private set; }
@@ -78,12 +79,12 @@ namespace ElevatorSimulation.SimulationModel.Entities
         public void AddHallcall(Tenant tenant)
         {
             m_scheduler.AddHallcall(tenant);
-            m_stateMachine.MoveNext(Command.Call);
+            m_stateMachine.MoveNext(Edge.Call);
         }
         public void AddCarcall(Tenant tenant)
         {
             m_scheduler.AddCarcall(tenant);
-            m_stateMachine.MoveNext(Command.Call);
+            m_stateMachine.MoveNext(Edge.Call);
         }
 
         public void Pickup(List<Tenant> tenants)
@@ -126,21 +127,6 @@ namespace ElevatorSimulation.SimulationModel.Entities
 
             return tenants;
         }
-
-        public void StartMove()
-        {
-            // Checks
-            if (State == State.Idle)
-            {
-                throw new InvalidOperationException("No calls to move");
-            }
-            if (State == State.AtFloor)
-            {
-                throw new InvalidOperationException("The elevator reached the next called floor");
-            }
-
-            m_stateMachine.MoveNext(Command.ToMove);
-        }
         public void Move()
         {
             // Move
@@ -153,7 +139,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
                 CurrentFloor--;
             }
 
-            m_stateMachine.MoveNext(Command.ToMove);
+            m_stateMachine.MoveNext(Edge.ToMove);
         }
 
         public void Reset()
@@ -169,7 +155,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
         private void RemoveCall()
         {
             // Check
-            if (State == State.Idle)
+            if (State == State.Wait)
             {
                 throw new InvalidOperationException("No calls to remove");
             }
@@ -179,9 +165,9 @@ namespace ElevatorSimulation.SimulationModel.Entities
         private void ScheduleCall()
         {
             // Check
-            if (State == State.Idle)
+            if (m_scheduler.IsEmpty)
             {
-                throw new InvalidOperationException("No calls to set");
+                throw new InvalidOperationException("No calls to schedule");
             }
 
             // Schedule new call

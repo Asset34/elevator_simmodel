@@ -7,19 +7,19 @@ namespace ElevatorSimulation.SimulationModel.Entities
 {
     enum State
     {
-        Idle,
+        Wait,
         Halt,
-        AtFloor,
+        Target,
         Move
     }
 
-    enum Command
+    enum Edge
     {
         Call,
         ToHalt,
-        ToFloor,
+        ToTarget,
+        ToWait,
         ToMove,
-        ToIdle
     }
 
     partial class Elevator
@@ -34,18 +34,19 @@ namespace ElevatorSimulation.SimulationModel.Entities
             public StateMachine(Elevator elevator)
             {
                 m_elevator = elevator;
-                CurrentState = State.Idle;
+
+                CurrentState = State.Wait;
 
                 // Create action table
-                m_actions.Add(State.Idle   , OnIdle );
-                m_actions.Add(State.Halt   , OnHalt );
-                m_actions.Add(State.AtFloor, OnFloor);
-                m_actions.Add(State.Move   , OnMove );
+                m_actions.Add(State.Wait  , OnWait  );
+                m_actions.Add(State.Halt  , OnHalt  );
+                m_actions.Add(State.Target, OnTarget);
+                m_actions.Add(State.Move  , OnMove  );
             }
 
-            public State GetNext(Command command)
+            public State GetNext(Edge edge)
             {
-                StateTransition st = new StateTransition(CurrentState, command);
+                StateTransition st = new StateTransition(CurrentState, edge);
 
                 if (!m_transitions.ContainsKey(st))
                 {
@@ -54,87 +55,76 @@ namespace ElevatorSimulation.SimulationModel.Entities
 
                 return m_transitions[st];
             }
-            public void MoveNext(Command command)
+            public void MoveNext(Edge edge)
             {
-                CurrentState = GetNext(command);
+                CurrentState = GetNext(edge);
                 m_actions[CurrentState]();
             }
 
             public void Reset()
             {
-                CurrentState = State.Idle;
+                CurrentState = State.Wait;
             }
 
             /* State actions */
-            private void OnIdle()
+            private void OnWait()
             {
-                // TODO
-            }
-            private void OnHalt()
-            {
-                if (m_elevator.m_scheduler.IsEmpty)
-                {
-                    MoveNext(Command.ToIdle);
-                }
-                else
-                {
-                    // Set new direction
-                    m_elevator.ScheduleCall();
-
-                    // GOTO next state
-                    if (m_elevator.CurrentFloor == m_elevator.TargetFloor)
-                    {
-                        MoveNext(Command.ToFloor);
-                    }
-                    else
-                    {
-                        if (m_elevator.CurrentFloor < m_elevator.TargetFloor)
-                        {
-                            m_elevator.Direction = Direction.Up;
-                        }
-                        else
-                        {
-                            m_elevator.Direction = Direction.Down;
-                        }
-                    }
-                }   
-            }
-            private void OnFloor()
-            {
-                m_elevator.RemoveCall();
-                
-                if (m_elevator.m_scheduler.IsEmpty)
-                {
-                    MoveNext(Command.ToIdle);
-                }
                 if (!m_elevator.m_scheduler.IsEmpty)
                 {
                     m_elevator.ScheduleCall();
 
-                    // Set opposite direction if needed 
-                    if (m_elevator.m_scheduler.IsBorder)
+                    // Set direction
+                    if (m_elevator.CurrentFloor < m_elevator.TargetFloor)
                     {
-                        if (m_elevator.Direction == Direction.Up)
-                        {
-                            m_elevator.Direction = Direction.Down;
-                        }
-                        else
-                        {
-                            m_elevator.Direction = Direction.Up;
-                        }
-
-                        m_elevator.RemoveCall();
+                        m_elevator.Direction = Direction.Up;
+                    }
+                    else if (m_elevator.CurrentFloor > m_elevator.TargetFloor)
+                    {
+                        m_elevator.Direction = Direction.Down;
                     }
 
-                    // GOTO next state
-                    MoveNext(Command.ToHalt);
+                    MoveNext(Edge.ToHalt);
                 }
+            }
+            private void OnHalt()
+            {
+                if (m_elevator.CurrentFloor == m_elevator.TargetFloor)
+                {
+                    MoveNext(Edge.ToTarget);
+                }
+                else
+                {
+                    MoveNext(Edge.ToMove);
+                }
+            }
+            private void OnTarget()
+            {
+                m_elevator.RemoveCall();
+
+                if (m_elevator.m_scheduler.IsBorder)
+                {
+                    // Set opposite direction if needed 
+                    if (m_elevator.Direction == Direction.Up)
+                    {
+                        m_elevator.Direction = Direction.Down;
+                    }
+                    else
+                    {
+                        m_elevator.Direction = Direction.Up;
+                    }
+                }
+
+                MoveNext(Edge.ToWait);
             }
             private void OnMove()
             {
                 if (m_elevator.CurrentFloor == m_elevator.TargetFloor)
                 {
-                    MoveNext(Command.ToFloor);
+                    MoveNext(Edge.ToTarget);
+                }
+                else
+                {
+                    m_elevator.ScheduleCall();
                 }
             }
 
@@ -143,15 +133,14 @@ namespace ElevatorSimulation.SimulationModel.Entities
             private readonly Dictionary<StateTransition, State> m_transitions
                 = new Dictionary<StateTransition, State>()
                 {
-                    { new StateTransition(State.Idle   , Command.Call   ), State.Halt    },
-                    { new StateTransition(State.Halt   , Command.ToFloor), State.AtFloor },
-                    { new StateTransition(State.Halt   , Command.ToMove ), State.Move    },
-                    { new StateTransition(State.Halt   , Command.Call   ), State.Halt    },
-                    { new StateTransition(State.Halt   , Command.ToIdle ), State.Idle    },
-                    { new StateTransition(State.AtFloor, Command.ToHalt ), State.Halt    },
-                    { new StateTransition(State.Move   , Command.ToFloor), State.AtFloor },
-                    { new StateTransition(State.Move   , Command.ToMove ), State.Move    },
-                    { new StateTransition(State.Move   , Command.Call   ), State.Move    },
+                    { new StateTransition(State.Wait  , Edge.Call    ), State.Wait   },
+                    { new StateTransition(State.Wait  , Edge.ToHalt  ), State.Halt   },
+                    { new StateTransition(State.Target, Edge.ToWait  ), State.Wait   },
+                    { new StateTransition(State.Halt  , Edge.ToTarget), State.Target },
+                    { new StateTransition(State.Halt  , Edge.ToMove  ), State.Move   },
+                    { new StateTransition(State.Move  , Edge.ToMove  ), State.Move   },
+                    { new StateTransition(State.Move  , Edge.ToTarget), State.Target },
+                    { new StateTransition(State.Move  , Edge.Call    ), State.Move   },
                 };
 
             private readonly Elevator m_elevator;
