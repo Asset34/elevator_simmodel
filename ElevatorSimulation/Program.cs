@@ -77,17 +77,18 @@ namespace ElevatorSimulation
             SimulationParameters parameters = new SimulationParameters
             {
                 NumFloors = 4,
-                NumElevators = 1,
+                NumElevators = 2,
                 TenantGeneratorParameters = new TenantGeneratorParameters[]
                 {
-                    new TenantGeneratorParameters { Period = 10, DPeriod = 5 },
-                    new TenantGeneratorParameters { Period = 11, DPeriod = 3 },
-                    new TenantGeneratorParameters { Period = 15, DPeriod = 2 },
-                    new TenantGeneratorParameters { Period = 8, DPeriod = 3 },
+                    new TenantGeneratorParameters { Period = 15, DPeriod = 5 },
+                    new TenantGeneratorParameters { Period = 5, DPeriod = 2 },
+                    new TenantGeneratorParameters { Period = 34, DPeriod = 15 },
+                    new TenantGeneratorParameters { Period = 10, DPeriod = 10 },
                     //new TenantGeneratorParameters { Period = 11, DPeriod = 4 }
                 },
                 ElevatorParameters = new ElevatorParameters[]
                 {
+                    new ElevatorParameters { Capacity = 10, StartFloor = 1, Period = 3, DPeriod = 1},
                     new ElevatorParameters { Capacity = 10, StartFloor = 1, Period = 3, DPeriod = 1}
                 }
             };
@@ -96,7 +97,7 @@ namespace ElevatorSimulation
 
             model.Log += LogHandler;
 
-            model.Run(50);
+            model.Run(30);
         }
     }
 }

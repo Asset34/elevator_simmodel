@@ -37,7 +37,7 @@ namespace ElevatorSimulation.SimulationModel.Events
             m_p2.Enqueue(Tenant);
 
             // Create new event of tenant generation
-            //m_provider.CreateEvent_NewTenant(m_p1, m_p2);
+            m_provider.CreateEvent_NewTenant(m_p1, m_p2);
         }
         public override string ToString()
         {

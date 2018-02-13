@@ -35,6 +35,6 @@ namespace ElevatorSimulation
         }
 
         private static RandomGenerator m_instance;
-        private Random m_random = new Random();   
+        private Random m_random = new Random(0);   
     }
 }
