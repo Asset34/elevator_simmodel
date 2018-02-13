@@ -10,7 +10,7 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
 {
     partial class EventsScheduler
     {
-        class PriorityEventQueue
+        private class PriorityEventQueue
         {
             public int Count
             {

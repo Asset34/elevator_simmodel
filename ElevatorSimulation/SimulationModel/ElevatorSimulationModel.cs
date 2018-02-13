@@ -63,6 +63,8 @@ namespace ElevatorSimulation.SimulationModel
         /// </summary>
         public void Run(int dTime)
         {
+            Log("*** Simulation started ***");
+
             // Initialize
             m_eventProvider.Initialize();
 
@@ -83,6 +85,8 @@ namespace ElevatorSimulation.SimulationModel
                 // Set new model time
                 Time = ev.Time;
             }
+
+            Log("*** Simulation finished ***");
         }
         /// <summary>
         /// Reset the model
