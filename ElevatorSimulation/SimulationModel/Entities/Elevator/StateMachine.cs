@@ -124,7 +124,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
                 }
                 else
                 {
-                    m_elevator.ScheduleCall();
+                    //m_elevator.ScheduleCall();
                 }
             }
 

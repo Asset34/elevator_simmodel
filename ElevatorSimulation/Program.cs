@@ -76,14 +76,14 @@ namespace ElevatorSimulation
         {
             SimulationParameters parameters = new SimulationParameters
             {
-                NumFloors = 2,
+                NumFloors = 4,
                 NumElevators = 1,
                 TenantGeneratorParameters = new TenantGeneratorParameters[]
                 {
                     new TenantGeneratorParameters { Period = 10, DPeriod = 5 },
                     new TenantGeneratorParameters { Period = 11, DPeriod = 3 },
-                    //new TenantGeneratorParameters { Period = 15, DPeriod = 2 },
-                    //new TenantGeneratorParameters { Period = 8, DPeriod = 3 },
+                    new TenantGeneratorParameters { Period = 15, DPeriod = 2 },
+                    new TenantGeneratorParameters { Period = 8, DPeriod = 3 },
                     //new TenantGeneratorParameters { Period = 11, DPeriod = 4 }
                 },
                 ElevatorParameters = new ElevatorParameters[]
