@@ -13,6 +13,11 @@ namespace ElevatorSimulation.SimulationModel.Events
     /// </summary>
     class PickupEvent : EventOf2<TenantQueue, Elevator>
     {
+        public override int Priority
+        {
+            get { return 5; }
+        }
+
         /// <summary>
         /// Picked up tenants
         /// </summary>

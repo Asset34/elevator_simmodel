@@ -10,6 +10,11 @@
         /// </summary>
         public int Time { get; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public abstract int Priority { get; }
+
         public Event(int time, EventProvider provider)
         {
             Time = time;

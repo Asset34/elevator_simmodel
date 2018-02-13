@@ -9,6 +9,11 @@ namespace ElevatorSimulation.SimulationModel.Events
     /// </summary>
     class NewCarcall : EventOf2<Tenant, Elevator>
     {
+        public override int Priority
+        {
+            get { return 4; }
+        }
+
         public NewCarcall(int time, EventProvider provider, Tenant tenant, Elevator elevator)
             :base(time, provider, tenant, elevator)
         {
@@ -19,7 +24,7 @@ namespace ElevatorSimulation.SimulationModel.Events
 
             m_p2.AddCarcall(m_p1);
 
-            if (prevState == State.Idle)
+            if (prevState == State.Wait)
             {
                 m_provider.TryMove(m_p2);
             }

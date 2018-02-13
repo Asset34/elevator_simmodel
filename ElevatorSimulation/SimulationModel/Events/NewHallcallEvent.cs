@@ -10,6 +10,11 @@ namespace ElevatorSimulation.SimulationModel.Events
     /// </summary>
     class NewHallcallEvent : EventOf2<Tenant, Elevator>
     {
+        public override int Priority
+        {
+            get { return 3; }
+        }
+
         public NewHallcallEvent(int time, EventProvider provider, Tenant tenant, Elevator elevator)
             :base(time, provider, tenant, elevator)
         {
@@ -20,7 +25,7 @@ namespace ElevatorSimulation.SimulationModel.Events
 
             m_p2.AddHallcall(m_p1);
 
-            if (prevState == State.Idle)
+            if (prevState == State.Wait)
             {
                 m_provider.TryMove(m_p2);
             }

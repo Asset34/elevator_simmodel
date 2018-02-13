@@ -8,6 +8,11 @@ namespace ElevatorSimulation.SimulationModel.Events
     /// </summary>
     class NewTenantEvent : EventOf2<TenantGenerator, TenantQueue>
     {
+        public override int Priority
+        {
+            get { return 2; }
+        }
+
         /// <summary>
         /// Generated tenant
         /// </summary>
