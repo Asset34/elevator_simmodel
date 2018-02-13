@@ -18,6 +18,14 @@ namespace ElevatorSimulation.SimulationModel.Entities
         /// </summary>
         public int Floor { get; }
 
+        public int Count
+        {
+            get
+            {
+                return m_queues[Direction.Up].Count + m_queues[Direction.Down].Count;
+            }
+        }
+
         public TenantQueue(int floor)
         {
             Floor = floor;

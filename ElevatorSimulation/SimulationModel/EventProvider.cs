@@ -16,13 +16,10 @@ namespace ElevatorSimulation.SimulationModel
     class EventProvider
     {
         public EventProvider(
-            ElevatorSimulationModel model,
             Dictionary<int, Distribution> generatorsDistr,
             Dictionary<int, Distribution> elevatorsDistr
             )
         {
-            m_model = model;
-
             m_generatorsDistr = generatorsDistr;
             m_elevatorsDistr = elevatorsDistr;
         }
@@ -32,14 +29,15 @@ namespace ElevatorSimulation.SimulationModel
         /// </summary>
         public void Initialize()
         {
-            int[] floors1 = m_model.GeneratorsController.GetFloors();
+
+            int[] floors1 = ElevatorSimulationModel.Instance.GeneratorsController.GetFloors();
 
             TenantGenerator generator;
             TenantQueue queue;
             foreach (int key in floors1)
             {
-                generator = m_model.GeneratorsController.Get(key);
-                queue = m_model.QueuesController.Get(key);
+                generator = ElevatorSimulationModel.Instance.GeneratorsController.Get(key);
+                queue = ElevatorSimulationModel.Instance.QueuesController.Get(key);
 
                 CreateEvent_NewTenant(generator, queue);
             }
@@ -57,7 +55,7 @@ namespace ElevatorSimulation.SimulationModel
         public void CreateEvent_NewTenant(TenantGenerator generator, TenantQueue queue)
         {
             // Compute event occurence time
-            int time = m_model.Time + m_generatorsDistr[queue.Floor].GetValue();
+            int time = ElevatorSimulationModel.Instance.Time + m_generatorsDistr[queue.Floor].GetValue();
             
             // Create event
             Event newEv = new NewTenantEvent(time, this, generator, queue);
@@ -67,7 +65,7 @@ namespace ElevatorSimulation.SimulationModel
         public void CreateEvent_ElevatorMove(Elevator elevator)
         {
             // Compute event occurence time
-            int time = m_model.Time + m_elevatorsDistr[elevator.ID].GetValue();
+            int time = ElevatorSimulationModel.Instance.Time + m_elevatorsDistr[elevator.ID].GetValue();
 
             // Create event
             Event newEv = new ElevatorMoveEvent(time, this, elevator);
@@ -77,10 +75,10 @@ namespace ElevatorSimulation.SimulationModel
         public void CreateEvent_NewHallcall(Tenant tenant)
         {
             // Compute event occurence time
-            int time = m_model.Time;
+            int time = ElevatorSimulationModel.Instance.Time;
 
             // Get elevator from scheduler
-            Elevator elevator = m_model.ElevatorsController.ScheduleElevator(tenant);
+            Elevator elevator = ElevatorSimulationModel.Instance.ElevatorsController.ScheduleElevator(tenant);
 
             // Create event
             Event newEv = new NewHallcallEvent(time, this, tenant, elevator);
@@ -90,7 +88,7 @@ namespace ElevatorSimulation.SimulationModel
         public void CreateEvent_NewCarcall(Tenant tenant, Elevator elevator)
         {
             // Compute event occurence time
-            int time = m_model.Time;
+            int time = ElevatorSimulationModel.Instance.Time;
 
             // Create event
             Event newEv = new NewCarcall(time, this, tenant, elevator);
@@ -100,10 +98,10 @@ namespace ElevatorSimulation.SimulationModel
         public void CreateEvent_Pickup(Elevator elevator)
         {
             // Compute event occurencet ime
-            int time = m_model.Time;
+            int time = ElevatorSimulationModel.Instance.Time;
 
             // Get associated queue
-            TenantQueue queue = m_model.QueuesController.Get(elevator.CurrentFloor);
+            TenantQueue queue = ElevatorSimulationModel.Instance.QueuesController.Get(elevator.CurrentFloor);
 
             // Create event
             Event newEv = new PickupEvent(time, this, queue, elevator);
@@ -113,7 +111,7 @@ namespace ElevatorSimulation.SimulationModel
         public void CreateEvent_Dropoff(Elevator elevator)
         {
             // Compute event occurencet ime
-            int time = m_model.Time;
+            int time = ElevatorSimulationModel.Instance.Time;
 
             // Create event
             Event newEv = new DropoffEvent(time, this, elevator);
@@ -144,7 +142,7 @@ namespace ElevatorSimulation.SimulationModel
         public void TryPickup(Elevator elevator)
         {
             // Get associated queue
-            TenantQueue queue = m_model.QueuesController.Get(elevator.CurrentFloor);
+            TenantQueue queue = ElevatorSimulationModel.Instance.QueuesController.Get(elevator.CurrentFloor);
 
             if (queue.IsHallcall(elevator.Direction))
             {
@@ -160,8 +158,7 @@ namespace ElevatorSimulation.SimulationModel
         /* Distributions */
         private readonly Dictionary<int, Distribution> m_generatorsDistr;
         private readonly Dictionary<int, Distribution> m_elevatorsDistr;
-
-        private readonly ElevatorSimulationModel m_model;
+        
         private readonly EventsScheduler m_scheduler = new EventsScheduler();
     }
 }

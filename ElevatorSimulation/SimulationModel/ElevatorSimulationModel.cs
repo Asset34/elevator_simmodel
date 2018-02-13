@@ -24,6 +24,19 @@ namespace ElevatorSimulation.SimulationModel
 
         public event LogEventHandler Log;
 
+        static public ElevatorSimulationModel Instance
+        {
+            get
+            {
+                if (m_model == null)
+                {
+                    throw new NullReferenceException("Trying to instance uncreated model");
+                }
+
+                return m_model;
+            }
+        }
+
         /// <summary>
         /// Current model time
         /// </summary>
@@ -53,7 +66,6 @@ namespace ElevatorSimulation.SimulationModel
 
             // Build event provider
             m_eventProvider = new EventProvider(
-                this,
                 generationDistributions,
                 movementDistributions
                 );
@@ -188,5 +200,7 @@ namespace ElevatorSimulation.SimulationModel
         }
 
         private readonly EventProvider m_eventProvider;
+
+        static private readonly ElevatorSimulationModel m_model;
     }
 }
