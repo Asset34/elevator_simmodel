@@ -141,7 +141,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
 
             m_stateMachine.MoveNext(Edge.ToMove);
         }
-
+        
         public void Reset()
         {
             CurrentFloor = DefaultFloor;

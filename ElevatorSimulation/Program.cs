@@ -20,14 +20,14 @@ namespace ElevatorSimulation
         static void Main(string[] args)
         {
             TestSimulationModel();
+            //PriorityEventQueueTest();
         }
 
         static void LogHandler(string text)
         {
             Console.WriteLine("{0}", text);
         }
-
-
+        
         static void TestDistributions()
         {
             UniformDistribution d = new UniformDistribution(-3, 5);

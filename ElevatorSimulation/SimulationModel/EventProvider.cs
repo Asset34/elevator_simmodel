@@ -124,17 +124,14 @@ namespace ElevatorSimulation.SimulationModel
         /* Additional */
         public void TryMove(Elevator elevator)
         {
-            if (elevator.State == State.Halt)
+            if (elevator.State == State.Wait)
             {
                 TryDropoff(elevator);
                 TryPickup(elevator);
-                
-                CreateEvent_ElevatorMove(elevator);
             }
-            else if (elevator.State == State.Idle)
+            else if (elevator.State == State.Move)
             {
-                TryDropoff(elevator);
-                TryPickup(elevator);
+                CreateEvent_ElevatorMove(elevator);
             }
         }
         public void TryDropoff(Elevator elevator)
