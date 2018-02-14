@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using ElevatorSimulation.SimulationModel.Transactions;
-
 namespace ElevatorSimulation.SimulationModel.Entities
 {
     enum State

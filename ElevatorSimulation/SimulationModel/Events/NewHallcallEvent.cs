@@ -1,6 +1,4 @@
-﻿using ElevatorSimulation.SimulationModel.Transactions;
-
-using ElevatorSimulation.SimulationModel.Entities;
+﻿using ElevatorSimulation.SimulationModel.Entities;
 
 namespace ElevatorSimulation.SimulationModel.Events
 {

@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using ElevatorSimulation.SimulationModel;
 using ElevatorSimulation.SimulationModel.Distributions;
 using ElevatorSimulation.SimulationModel.Events;
-using ElevatorSimulation.SimulationModel.Transactions;
 using ElevatorSimulation.SimulationModel.Schedulers;
 using ElevatorSimulation.SimulationModel.Entities;
 using ElevatorSimulation.SimulationModel.Parameters;
@@ -20,7 +19,6 @@ namespace ElevatorSimulation
         static void Main(string[] args)
         {
             TestSimulationModel();
-            //PriorityEventQueueTest();
         }
 
         static void LogHandler(string text)

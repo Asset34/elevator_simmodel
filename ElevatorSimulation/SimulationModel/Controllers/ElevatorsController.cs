@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using ElevatorSimulation.SimulationModel.Transactions;
 using ElevatorSimulation.SimulationModel.Entities;
 using ElevatorSimulation.SimulationModel.Schedulers;
 

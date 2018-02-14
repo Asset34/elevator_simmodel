@@ -7,7 +7,6 @@ using ElevatorSimulation.SimulationModel.Controllers;
 using ElevatorSimulation.SimulationModel.Distributions;
 using ElevatorSimulation.SimulationModel.Entities;
 using ElevatorSimulation.SimulationModel.Schedulers;
-using ElevatorSimulation.SimulationModel.Transactions;
 
 namespace ElevatorSimulation.SimulationModel
 {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using ElevatorSimulation.SimulationModel.Transactions;
 using ElevatorSimulation.SimulationModel.Schedulers;
 
 namespace ElevatorSimulation.SimulationModel.Entities
@@ -10,7 +9,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
     /// Elevator which serves the tenants.
     /// Performs the service device with accumulator
     /// </summary>
-    partial class Elevator : Entity
+    partial class Elevator
     {
         public delegate void EventHandler();
         public event EventHandler Changed;

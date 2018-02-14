@@ -1,4 +1,4 @@
-﻿namespace ElevatorSimulation.SimulationModel.Transactions
+﻿namespace ElevatorSimulation.SimulationModel.Entities
 {
     enum Direction
     {

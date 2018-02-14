@@ -1,5 +1,4 @@
-﻿using ElevatorSimulation.SimulationModel.Transactions;
-using ElevatorSimulation.SimulationModel.Distributions;
+﻿using ElevatorSimulation.SimulationModel.Distributions;
 
 namespace ElevatorSimulation.SimulationModel.Entities
 {
@@ -7,7 +6,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
     /// Generator of tenants on the specific floor.
     /// Performs transaction source
     /// </summary>
-    class TenantGenerator : Entity
+    class TenantGenerator
     {
         /// <summary>
         /// Floor number

@@ -54,7 +54,6 @@
     <Compile Include="SimulationModel\Schedulers\EventScheduler\PriorityEventQueue.cs" />
     <Compile Include="SimulationModel\Entities\Elevator\StateMachine.cs" />
     <Compile Include="SimulationModel\Entities\Elevator\StateTransition.cs" />
-    <Compile Include="SimulationModel\Entities\Entity.cs" />
     <Compile Include="SimulationModel\Controllers\ElevatorsController.cs" />
     <Compile Include="SimulationModel\Controllers\TenantQueuesController.cs" />
     <Compile Include="SimulationModel\Controllers\TenantGeneratorsController.cs" />
@@ -83,7 +82,7 @@
     <Compile Include="SimulationModel\Parameters\TenantGeneratorParameters.cs" />
     <Compile Include="SimulationModel\Parameters\SimulationParameters.cs" />
     <Compile Include="SimulationModel\Schedulers\EventScheduler\EventsScheduler.cs" />
-    <Compile Include="SimulationModel\Transactions\Tenant.cs" />
+    <Compile Include="SimulationModel\Entities\Tenant.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

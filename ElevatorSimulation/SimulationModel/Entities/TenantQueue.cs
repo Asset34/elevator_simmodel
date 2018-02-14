@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using ElevatorSimulation.SimulationModel.Transactions;
-
 namespace ElevatorSimulation.SimulationModel.Entities
 {
     /// <summary>
@@ -11,7 +9,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
     /// contains two queues for each of two types 
     /// of transactions
     /// </summary>
-    class TenantQueue : Entity
+    class TenantQueue
     {
         /// <summary>
         /// Floor number

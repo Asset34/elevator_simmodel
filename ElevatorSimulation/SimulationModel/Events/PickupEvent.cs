@@ -2,7 +2,6 @@
 using System.Text;
 using System.Collections.Generic;
 
-using ElevatorSimulation.SimulationModel.Transactions;
 using ElevatorSimulation.SimulationModel.Entities;
 
 namespace ElevatorSimulation.SimulationModel.Events

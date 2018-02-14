@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 
 using ElevatorSimulation.SimulationModel.Entities;
-using ElevatorSimulation.SimulationModel.Transactions;
 
 namespace ElevatorSimulation.SimulationModel.Schedulers
 {
