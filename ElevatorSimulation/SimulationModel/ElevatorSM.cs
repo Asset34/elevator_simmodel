@@ -7,6 +7,7 @@ using ElevatorSimulation.SimulationModel.Controllers;
 using ElevatorSimulation.SimulationModel.Distributions;
 using ElevatorSimulation.SimulationModel.Entities;
 using ElevatorSimulation.SimulationModel.Schedulers;
+using ElevatorSimulation.SimulationModel.Transactions;
 
 namespace ElevatorSimulation.SimulationModel
 {
@@ -18,57 +19,30 @@ namespace ElevatorSimulation.SimulationModel
     /// - 
     /// - 
     /// </summary>
-    class ElevatorSimulationModel
+    partial class ElevatorSM
     {
-        public delegate void LogEventHandler(string text);
-
+        public delegate void LogEventHandler(string msg);
         public event LogEventHandler Log;
-
-        static public ElevatorSimulationModel Instance
-        {
-            get
-            {
-                if (m_model == null)
-                {
-                    throw new NullReferenceException("Trying to instance uncreated model");
-                }
-
-                return m_model;
-            }
-        }
 
         /// <summary>
         /// Current model time
         /// </summary>
         public int Time { get; private set; }
 
-        /* Controllers of subsystems */
-        public TenantGeneratorsController GeneratorsController { get; }
-        public TenantQueuesController QueuesController { get; }
-        public ElevatorsController ElevatorsController { get; }
-
-        public ElevatorSimulationModel(SimulationParameters parameters)
+        public ElevatorSM(SimulationParameters parameters)
         {
             // Build group controllers
-            GeneratorsController = BuildGeneratorsController(parameters.NumFloors);
-            QueuesController = BuildQueuesController(parameters.NumFloors);
-            ElevatorsController = BuildElevatorsController(
+            m_generatorsController = BuildGeneratorsController(parameters.NumFloors);
+            m_queuesController = BuildQueuesController(parameters.NumFloors);
+            m_elevatorsController = BuildElevatorsController(
                 parameters.NumFloors,
                 parameters.NumElevators,
                 parameters.ElevatorParameters
                 );
 
             // Build distributions
-            Dictionary<int, Distribution> generationDistributions
-                = BuildGenerationDistributions(parameters.NumFloors, parameters.TenantGeneratorParameters);
-            Dictionary<int, Distribution> movementDistributions
-                = BuildMovementDistributions(parameters.NumElevators, parameters.ElevatorParameters);
-
-            // Build event provider
-            m_eventProvider = new EventProvider(
-                generationDistributions,
-                movementDistributions
-                );
+            m_generatorsDistr = BuildGenerationDistributions(parameters.NumFloors, parameters.TenantGeneratorParameters);
+            m_elevatorsDistr = BuildMovementDistributions(parameters.NumElevators, parameters.ElevatorParameters);
         }
         /// <summary>
         /// Run the model
@@ -77,8 +51,7 @@ namespace ElevatorSimulation.SimulationModel
         {
             Log("*** Simulation started ***");
 
-            // Initialize
-            m_eventProvider.Initialize();
+            Initialize();
 
             Event ev = null;
             DateTime time = new DateTime();
@@ -92,7 +65,7 @@ namespace ElevatorSimulation.SimulationModel
                 }
 
                 // Get nearest event
-                ev = m_eventProvider.GetEvent();
+                ev = m_scheduler.Schedule();
 
                 // Set new model time
                 Time = ev.Time;
@@ -105,15 +78,35 @@ namespace ElevatorSimulation.SimulationModel
         /// </summary>
         public void Reset()
         {
-            GeneratorsController.Reset();
-            QueuesController.Reset();
-            ElevatorsController.Reset();
+            Time = 0;
 
-            m_eventProvider.Reset();
+            m_generatorsController.Reset();
+            m_queuesController.Reset();
+            m_elevatorsController.Reset();
+
+            m_scheduler.Reset();
+        }
+
+        /// <summary>
+        /// Set starting events
+        /// </summary>
+        private void Initialize()
+        {
+            int[] floors1 = m_generatorsController.GetFloors();
+
+            TenantGenerator generator;
+            TenantQueue queue;
+            foreach (int key in floors1)
+            {
+                generator = m_generatorsController.Get(key);
+                queue = m_queuesController.Get(key);
+
+                CreateEvent_NewTenant(generator, queue);
+            }
         }
 
         /* Temprorary builders */
-        // NEED: Replace all build methods to external 'Buidler'
+        // TODO: Replace all build methods to external 'Buidler'
         private TenantGeneratorsController BuildGeneratorsController(int numFloors)
         {
             TenantGeneratorsController controller = new TenantGeneratorsController();
@@ -199,8 +192,59 @@ namespace ElevatorSimulation.SimulationModel
             return distributions;
         }
 
-        private readonly EventProvider m_eventProvider;
+        /* Event create */
+        public void CreateEvent_NewTenant(TenantGenerator generator, TenantQueue queue)
+        {
+            // Compute event occurence time
+            int time = Time + m_generatorsDistr[queue.Floor].GetValue();
 
-        static private readonly ElevatorSimulationModel m_model;
+            m_scheduler.Add(new NewTenantEvent(time, this, generator, queue));
+        }
+        public void CreateEvent_ElevatorMove(Elevator elevator)
+        {
+            // Compute event occurence time
+            int time = Time + m_elevatorsDistr[elevator.ID].GetValue();
+
+            m_scheduler.Add(new ElevatorMoveEvent(time, this, elevator));
+        }
+        public void CreateEvent_NewHallcall(Tenant tenant)
+        {
+            // Get elevator from scheduler
+            Elevator elevator = m_elevatorsController.ScheduleElevator(tenant);
+
+            m_scheduler.Add(new NewHallcallEvent(Time, this, tenant, elevator));
+        }
+        public void CreateEvent_NewCarcall(Tenant tenant, Elevator elevator)
+        {
+            m_scheduler.Add(new NewCarcall(Time, this, tenant, elevator));
+        }
+        public void CreateEvent_Pickup(Elevator elevator)
+        {
+            // Get associated queue
+            TenantQueue queue = m_queuesController.Get(elevator.CurrentFloor);
+
+            if (queue.IsHallcall(elevator.Direction))
+            {
+                m_scheduler.Add(new PickupEvent(Time, this, queue, elevator));
+            }       
+        }
+        public void CreateEvent_Dropoff(Elevator elevator)
+        {
+            if (elevator.IsDropOff)
+            {
+                m_scheduler.Add(new DropoffEvent(Time, this, elevator));
+            } 
+        }
+
+        /* Controllers of subsystems */
+        private readonly TenantGeneratorsController m_generatorsController;
+        private readonly TenantQueuesController m_queuesController;
+        private readonly ElevatorsController m_elevatorsController;
+
+        /* Distributions */
+        private Dictionary<int, Distribution> m_generatorsDistr;
+        private Dictionary<int, Distribution> m_elevatorsDistr;
+
+        private readonly EventsScheduler m_scheduler = new EventsScheduler();
     }
 }

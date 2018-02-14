@@ -8,7 +8,7 @@ using ElevatorSimulation.SimulationModel.Transactions;
 namespace ElevatorSimulation.SimulationModel.Schedulers
 {
     /// <summary>
-    /// Scheduler of floor requests which serves all landing and resulting
+    /// Scheduler of floor requests which serves all landing and Experimenting
     /// car calls in one direction
     /// </summary>
     class CallsScheduler

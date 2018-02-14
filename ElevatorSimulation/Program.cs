@@ -93,7 +93,7 @@ namespace ElevatorSimulation
                 }
             };
 
-            ElevatorSimulationModel model = new ElevatorSimulationModel(parameters);
+            ElevatorSM model = new ElevatorSM(parameters);
 
             model.Log += LogHandler;
 

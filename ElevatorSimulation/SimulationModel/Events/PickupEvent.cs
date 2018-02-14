@@ -23,8 +23,8 @@ namespace ElevatorSimulation.SimulationModel.Events
         /// </summary>
         public List<Tenant> Tenants { get; private set; }
 
-        public PickupEvent(int time, EventProvider provider, TenantQueue queue, Elevator elevator)
-            :base(time, provider, queue, elevator)
+        public PickupEvent(int time, ElevatorSM model, TenantQueue queue, Elevator elevator)
+            :base(time, model, queue, elevator)
         {
         }
         public override void Execute()
@@ -44,13 +44,13 @@ namespace ElevatorSimulation.SimulationModel.Events
             foreach (Tenant tenant in Tenants)
             {
                 // Create new carcall
-                m_provider.CreateEvent_NewCarcall(tenant, m_p2);
+                m_model.CreateEvent_NewCarcall(tenant, m_p2);
             }
 
             // Repeat call if not all tenants was picked up
             if (m_p1.IsHallcall(m_p2.Direction))
             {
-                m_provider.CreateEvent_NewHallcall(m_p1.Peek(m_p2.Direction));
+                m_model.CreateEvent_NewHallcall(m_p1.Peek(m_p2.Direction));
             }
         }
         public override string ToString()

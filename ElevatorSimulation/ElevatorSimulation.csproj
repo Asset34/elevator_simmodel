@@ -43,10 +43,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SimulationModel\Experiment\Statistics\ElevatorStatistics\ElevatorSizeStatistic.cs" />
+    <Compile Include="SimulationModel\Experiment\Statistics\ElevatorStatistics\ElevatorStatistic.cs" />
+    <Compile Include="SimulationModel\Experiment\Statistics\Pair.cs" />
+    <Compile Include="SimulationModel\Experiment\Statistics\PairComparer.cs" />
+    <Compile Include="SimulationModel\Experiment\Experiment.cs" />
+    <Compile Include="SimulationModel\Experiment\Statistics\QueueStatistics\QueueSizeStatistic.cs" />
+    <Compile Include="SimulationModel\Experiment\Statistics\QueueStatistics\QueueStatistic.cs" />
+    <Compile Include="SimulationModel\Experiment\Statistics\Statistic.cs" />
     <Compile Include="SimulationModel\Schedulers\EventScheduler\PriorityEventQueue.cs" />
     <Compile Include="SimulationModel\Entities\Elevator\StateMachine.cs" />
     <Compile Include="SimulationModel\Entities\Elevator\StateTransition.cs" />
-    <Compile Include="SimulationModel\EventProvider.cs" />
     <Compile Include="SimulationModel\Entities\Entity.cs" />
     <Compile Include="SimulationModel\Controllers\ElevatorsController.cs" />
     <Compile Include="SimulationModel\Controllers\TenantQueuesController.cs" />
@@ -63,7 +70,7 @@
     <Compile Include="SimulationModel\Distributions\Distribution.cs" />
     <Compile Include="SimulationModel\Distributions\DistributionWithGaps.cs" />
     <Compile Include="SimulationModel\Distributions\UniformDistribution.cs" />
-    <Compile Include="SimulationModel\ElevatorSimulationModel.cs" />
+    <Compile Include="SimulationModel\ElevatorSM.cs" />
     <Compile Include="SimulationModel\Entities\Elevator\Elevator.cs" />
     <Compile Include="SimulationModel\Entities\TenantQueue.cs" />
     <Compile Include="SimulationModel\Entities\TenantGenerator.cs" />

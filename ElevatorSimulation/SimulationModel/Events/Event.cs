@@ -15,13 +15,13 @@
         /// </summary>
         public abstract int Priority { get; }
 
-        public Event(int time, EventProvider provider)
+        public Event(int time, ElevatorSM model)
         {
             Time = time;
-            m_provider = provider;
+            m_model = model;
         }
         public abstract void Execute();
 
-        protected EventProvider m_provider;
+        protected ElevatorSM m_model;
     }
 }

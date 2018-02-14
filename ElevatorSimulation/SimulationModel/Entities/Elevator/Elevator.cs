@@ -12,6 +12,9 @@ namespace ElevatorSimulation.SimulationModel.Entities
     /// </summary>
     partial class Elevator : Entity
     {
+        public delegate void EventHandler();
+        public event EventHandler Changed;
+
         public int ID { get; }
         /// <summary>
         /// Maximum number of served tenants

@@ -12,14 +12,24 @@ namespace ElevatorSimulation.SimulationModel.Events
             get { return 1; }
         }
 
-        public ElevatorMoveEvent(int time, EventProvider provider, Elevator elevator)
-            :base(time, provider, elevator)
+        public ElevatorMoveEvent(int time, ElevatorSM model, Elevator elevator)
+            :base(time, model, elevator)
         {
         }
         public override void Execute()
         {
             m_p.Move();
-            m_provider.TryMove(m_p);
+
+            if (m_p.State == State.Wait)
+            {
+                m_model.CreateEvent_Dropoff(m_p);
+                m_model.CreateEvent_Pickup(m_p);
+
+            }
+            else if (m_p.State == State.Move)
+            {
+                m_model.CreateEvent_ElevatorMove(m_p);
+            }
         }
         public override string ToString()
         {

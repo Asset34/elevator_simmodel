@@ -23,8 +23,8 @@ namespace ElevatorSimulation.SimulationModel.Events
         /// </summary>
         public List<Tenant> Tenants { get; set; }
         
-        public DropoffEvent(int time, EventProvider provider, Elevator elevator)
-            :base(time, provider, elevator)
+        public DropoffEvent(int time, ElevatorSM model, Elevator elevator)
+            :base(time, model, elevator)
         {
         }
         public override void Execute()

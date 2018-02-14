@@ -7,8 +7,8 @@
     /// <typeparam name="T2"> 2nd participant </typeparam>
     abstract class EventOf2<T1, T2> : Event
     {
-        public EventOf2(int time, EventProvider provider, T1 p1, T2 p2)
-            :base(time, provider)
+        public EventOf2(int time, ElevatorSM model, T1 p1, T2 p2)
+            :base(time, model)
         {
             m_p1 = p1;
             m_p2 = p2;

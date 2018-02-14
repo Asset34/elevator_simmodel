@@ -14,8 +14,8 @@ namespace ElevatorSimulation.SimulationModel.Events
             get { return 4; }
         }
 
-        public NewCarcall(int time, EventProvider provider, Tenant tenant, Elevator elevator)
-            :base(time, provider, tenant, elevator)
+        public NewCarcall(int time, ElevatorSM model, Tenant tenant, Elevator elevator)
+            :base(time, model, tenant, elevator)
         {
         }
         public override void Execute()
@@ -26,7 +26,16 @@ namespace ElevatorSimulation.SimulationModel.Events
 
             if (prevState == State.Wait)
             {
-                m_provider.TryMove(m_p2);
+                if (m_p2.State == State.Wait)
+                {
+                    m_model.CreateEvent_Dropoff(m_p2);
+                    m_model.CreateEvent_Pickup(m_p2);
+
+                }
+                else if (m_p2.State == State.Move)
+                {
+                    m_model.CreateEvent_ElevatorMove(m_p2);
+                }
             }
         }
         public override string ToString()
