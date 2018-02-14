@@ -10,9 +10,9 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
     /// Scheduler of floor requests which serves all landing and Experimenting
     /// car calls in one direction
     /// </summary>
-    class CallsScheduler
+    class CollectiveScheduler : CallsScheduler
     {
-        public bool IsEmpty
+        public override bool IsEmpty
         {
             get
             {
@@ -21,26 +21,19 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
             }
         }
 
-        public bool IsBorder { get; private set; }
-
-        public CallsScheduler(Elevator elevator)
-        {
-            m_elevator = elevator;
-        }
-
-        public void AddHallcall(Tenant tenant)
+        public override void AddHallcall(Tenant tenant)
         {   
             m_sets[tenant.Direction].Add(tenant.FloorFrom);
 
             RedefineLimits();
         }
-        public void AddCarcall(Tenant tenant)
+        public override void AddCarcall(Tenant tenant)
         {
             m_sets[tenant.Direction].Add(tenant.FloorTo);
 
             RedefineLimits();
         }
-        public void RemoveCall(int call)
+        public override void RemoveCall(int call)
         {
             //m_sets[m_lastDirection].Remove(call);
             m_sets[m_elevator.Direction].Remove(call);
@@ -48,7 +41,7 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
             RedefineLimits();
         }
 
-        public int Schedule()
+        public override int Schedule()
         {
             // Check
             if (IsEmpty)
@@ -112,7 +105,7 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
             return call;
         }
 
-        public void Reset()
+        public override void Reset()
         {
             m_sets[Direction.Up].Clear();
             m_sets[Direction.Down].Clear();
@@ -159,7 +152,5 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
             { Direction.Up,   new HashSet<int>() },
             { Direction.Down, new HashSet<int>() }
         };
-
-        private Elevator m_elevator;
     }
 }

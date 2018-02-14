@@ -132,7 +132,7 @@ namespace ElevatorSimulation.SimulationModel
             )
         {
             // Build global scheduler
-            ElevatorsScheduler scheduler = new ElevatorsScheduler(numFloors);
+            ElevatorsScheduler scheduler = new NearestCarScheduler(numFloors);
 
             // Build controller
             ElevatorsController controller = new ElevatorsController(scheduler);
@@ -151,7 +151,8 @@ namespace ElevatorSimulation.SimulationModel
             return new Elevator(
                 id,
                 parameters.Capacity,
-                parameters.StartFloor
+                parameters.StartFloor,
+                new CollectiveScheduler()
                 );
         }
         private Dictionary<int, Distribution> BuildGenerationDistributions(

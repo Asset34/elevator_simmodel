@@ -51,6 +51,8 @@
     <Compile Include="SimulationModel\Experiment\Statistics\QueueStatistics\QueueSizeStatistic.cs" />
     <Compile Include="SimulationModel\Experiment\Statistics\QueueStatistics\QueueStatistic.cs" />
     <Compile Include="SimulationModel\Experiment\Statistics\Statistic.cs" />
+    <Compile Include="SimulationModel\Schedulers\CallsSchedulers\CallsScheduler.cs" />
+    <Compile Include="SimulationModel\Schedulers\ElevatorsScheduler\ElevatorsScheduler.cs" />
     <Compile Include="SimulationModel\Schedulers\EventScheduler\PriorityEventQueue.cs" />
     <Compile Include="SimulationModel\Entities\Elevator\StateMachine.cs" />
     <Compile Include="SimulationModel\Entities\Elevator\StateTransition.cs" />
@@ -64,8 +66,8 @@
     <Compile Include="SimulationModel\Events\NewCarcallEvent.cs" />
     <Compile Include="SimulationModel\Events\NewHallcallEvent.cs" />
     <Compile Include="SimulationModel\Events\PickupEvent.cs" />
-    <Compile Include="SimulationModel\Schedulers\ElevatorsScheduler.cs" />
-    <Compile Include="SimulationModel\Schedulers\CallsScheduler.cs" />
+    <Compile Include="SimulationModel\Schedulers\ElevatorsScheduler\NearestCarScheduler.cs" />
+    <Compile Include="SimulationModel\Schedulers\CallsSchedulers\CollectiveScheduler.cs" />
     <Compile Include="SimulationModel\Distributions\Distribution.cs" />
     <Compile Include="SimulationModel\Distributions\DistributionWithGaps.cs" />
     <Compile Include="SimulationModel\Distributions\UniformDistribution.cs" />

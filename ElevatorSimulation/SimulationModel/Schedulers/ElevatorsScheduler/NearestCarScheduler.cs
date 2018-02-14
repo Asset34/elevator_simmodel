@@ -11,9 +11,9 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
     /// group algorithm based on allocating the closest car
     /// to the current call
     /// </summary>
-    class ElevatorsScheduler
+    class NearestCarScheduler : ElevatorsScheduler
     {
-        public bool IsEmpty
+        public override bool IsEmpty
         {
             get
             {
@@ -21,20 +21,20 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
             }
         }
 
-        public ElevatorsScheduler(int numFloors)
+        public NearestCarScheduler(int numFloors)
         {
             m_numFloors = numFloors;
         }
 
-        public void Add(Elevator element)
+        public override void Add(Elevator element)
         {
             m_elevators.Add(element);
         }
-        public void Remove(Elevator element)
+        public override void Remove(Elevator element)
         {
             m_elevators.Add(element);
         }
-        public Elevator Schedule(Tenant tenant)
+        public override Elevator Schedule(Tenant tenant)
         {
             // Check
             if (IsEmpty)
@@ -93,7 +93,7 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
             return null;
         }
 
-        public void Reset()
+        public override void Reset()
         {
             m_elevators.Clear();
         }

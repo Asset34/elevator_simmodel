@@ -63,7 +63,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
             get { return m_stateMachine.CurrentState; }
         }
 
-        public Elevator(int id, int capacity, int startFloor)
+        public Elevator(int id, int capacity, int startFloor, CallsScheduler scheduler)
         {
             ID = id;
 
@@ -74,7 +74,9 @@ namespace ElevatorSimulation.SimulationModel.Entities
 
             Direction = Direction.Down;
 
-            m_scheduler = new CallsScheduler(this);
+            m_scheduler = scheduler;
+            m_scheduler.SetElevator(this);
+
             m_stateMachine = new StateMachine(this);
         }
 
