@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SimulationModel\Builder.cs" />
     <Compile Include="SimulationModel\Experiment\Statistics\ElevatorStatistics\ElevatorSizeStatistic.cs" />
     <Compile Include="SimulationModel\Experiment\Statistics\ElevatorStatistics\ElevatorStatistic.cs" />
     <Compile Include="SimulationModel\Experiment\Statistics\Pair.cs" />

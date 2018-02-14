@@ -28,20 +28,9 @@ namespace ElevatorSimulation.SimulationModel
         /// </summary>
         public int Time { get; private set; }
 
-        public ElevatorSM(SimulationParameters parameters)
+        public ElevatorSM()
         {
-            // Build group controllers
-            m_generatorsController = BuildGeneratorsController(parameters.NumFloors);
-            m_queuesController = BuildQueuesController(parameters.NumFloors);
-            m_elevatorsController = BuildElevatorsController(
-                parameters.NumFloors,
-                parameters.NumElevators,
-                parameters.ElevatorParameters
-                );
 
-            // Build distributions
-            m_generatorsDistr = BuildGenerationDistributions(parameters.NumFloors, parameters.TenantGeneratorParameters);
-            m_elevatorsDistr = BuildMovementDistributions(parameters.NumElevators, parameters.ElevatorParameters);
         }
         /// <summary>
         /// Run the model
@@ -102,94 +91,6 @@ namespace ElevatorSimulation.SimulationModel
             }
         }
 
-        /* Temprorary builders */
-        // TODO: Replace all build methods to external 'Buidler'
-        private TenantGeneratorsController BuildGeneratorsController(int numFloors)
-        {
-            TenantGeneratorsController controller = new TenantGeneratorsController();
-            Distribution floorsDistribution = new UniformDistribution(1, numFloors);
-            for (int i = 0; i < numFloors; i++)
-            {
-                controller.Add(new TenantGenerator(i + 1, floorsDistribution));
-            }
-
-            return controller;
-        }
-        private TenantQueuesController BuildQueuesController(int numFloors)
-        {
-            TenantQueuesController controller = new TenantQueuesController();
-            for (int i = 0; i < numFloors; i++)
-            {
-                controller.Add(new TenantQueue(i + 1));
-            }
-
-            return controller;
-        }
-        private ElevatorsController BuildElevatorsController(
-            int numFloors, 
-            int numElevators, 
-            ElevatorParameters[] parameters
-            )
-        {
-            // Build global scheduler
-            ElevatorsScheduler scheduler = new NearestCarScheduler(numFloors);
-
-            // Build controller
-            ElevatorsController controller = new ElevatorsController(scheduler);
-            Elevator elevator;
-            for (int i = 0; i < numElevators; i++)
-            {
-                elevator = BuildElevator(i + 1, parameters[i]);
-                controller.Add(elevator);
-            }
-
-            return controller;
-        }
-        private Elevator BuildElevator(int id, ElevatorParameters parameters)
-        {
-            // Build elevator
-            return new Elevator(
-                id,
-                parameters.Capacity,
-                parameters.StartFloor,
-                new CollectiveScheduler()
-                );
-        }
-        private Dictionary<int, Distribution> BuildGenerationDistributions(
-            int numFloors, 
-            TenantGeneratorParameters[] parameters
-            )
-        {
-            Dictionary<int, Distribution> distributions = new Dictionary<int, Distribution>();
-            int min, max;
-            for (int i = 0; i < numFloors; i++)
-            {
-                min = parameters[i].Period - parameters[i].DPeriod;
-                max = parameters[i].Period + parameters[i].DPeriod;
-
-                distributions.Add(i + 1, new UniformDistribution(min, max));
-            }
-
-            return distributions;
-        }
-        private Dictionary<int, Distribution> BuildMovementDistributions(
-            int numElevators, 
-            ElevatorParameters[] parameters
-            )
-        {
-            Dictionary<int, Distribution> distributions = new Dictionary<int, Distribution>();
-            int min, max;
-            for (int i = 0; i < numElevators; i++)
-            {
-                min = parameters[i].Period - parameters[i].DPeriod;
-                max = parameters[i].Period + parameters[i].DPeriod;
-
-                distributions.Add(i + 1, new UniformDistribution(min, max));
-            }
-
-            return distributions;
-        }
-
         /* Event create */
         public void CreateEvent_NewTenant(TenantGenerator generator, TenantQueue queue)
         {
@@ -235,14 +136,14 @@ namespace ElevatorSimulation.SimulationModel
         }
 
         /* Controllers of subsystems */
-        private readonly TenantGeneratorsController m_generatorsController;
-        private readonly TenantQueuesController m_queuesController;
-        private readonly ElevatorsController m_elevatorsController;
+        private TenantGeneratorsController m_generatorsController;
+        private TenantQueuesController m_queuesController;
+        private ElevatorsController m_elevatorsController;
 
         /* Distributions */
         private Dictionary<int, Distribution> m_generatorsDistr;
         private Dictionary<int, Distribution> m_elevatorsDistr;
 
-        private readonly EventsScheduler m_scheduler = new EventsScheduler();
+        private EventsScheduler m_scheduler;
     }
 }

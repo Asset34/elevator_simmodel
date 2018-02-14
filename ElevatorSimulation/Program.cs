@@ -72,30 +72,38 @@ namespace ElevatorSimulation
         }
         static void TestSimulationModel()
         {
-            SimulationParameters parameters = new SimulationParameters
+            int numFloors = 5;
+            int numElevators = 2;
+            
+            ElevatorsScheduler scheduler = new NearestCarScheduler(numFloors);
+            ElevatorSM.Builder.ElevatorsScheduler(scheduler);
+            
+            // Build generators and queues
+            for (int i = 0; i < numFloors; i++)
             {
-                NumFloors = 4,
-                NumElevators = 2,
-                TenantGeneratorParameters = new TenantGeneratorParameters[]
-                {
-                    new TenantGeneratorParameters { Period = 15, DPeriod = 5 },
-                    new TenantGeneratorParameters { Period = 5, DPeriod = 2 },
-                    new TenantGeneratorParameters { Period = 34, DPeriod = 15 },
-                    new TenantGeneratorParameters { Period = 10, DPeriod = 10 },
-                    //new TenantGeneratorParameters { Period = 11, DPeriod = 4 }
-                },
-                ElevatorParameters = new ElevatorParameters[]
-                {
-                    new ElevatorParameters { Capacity = 10, StartFloor = 1, Period = 3, DPeriod = 1},
-                    new ElevatorParameters { Capacity = 10, StartFloor = 1, Period = 3, DPeriod = 1}
-                }
-            };
+                ElevatorSM.Builder.TenantGenerator(i + 1, new UniformDistribution(1, numFloors));
+                ElevatorSM.Builder.TenantQueue(i + 1);
+            }
 
-            ElevatorSM model = new ElevatorSM(parameters);
+            // Build elevators
+            ElevatorSM.Builder.Elevator(1, 10, 1, new CollectiveScheduler());
+            ElevatorSM.Builder.Elevator(2, 10, 1, new CollectiveScheduler());
 
+            // Build generators distributions
+            ElevatorSM.Builder.TenantGenerationDistr(1, new UniformDistribution(10, 20));
+            ElevatorSM.Builder.TenantGenerationDistr(2, new UniformDistribution(5, 25));
+            ElevatorSM.Builder.TenantGenerationDistr(3, new UniformDistribution(17, 45));
+            ElevatorSM.Builder.TenantGenerationDistr(4, new UniformDistribution(7, 9));
+            ElevatorSM.Builder.TenantGenerationDistr(5, new UniformDistribution(20, 31));
+
+            // BUild elevators distributions
+            ElevatorSM.Builder.ElevatorMovementDistr(1, new UniformDistribution(3, 5));
+            ElevatorSM.Builder.ElevatorMovementDistr(2, new UniformDistribution(4, 6));
+
+            ElevatorSM model = ElevatorSM.Builder.Build();
             model.Log += LogHandler;
 
-            model.Run(30);
+            model.Run(360);
         }
     }
 }

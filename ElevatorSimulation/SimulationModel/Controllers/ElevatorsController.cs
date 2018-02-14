@@ -12,6 +12,11 @@ namespace ElevatorSimulation.SimulationModel.Controllers
     /// </summary>
     class ElevatorsController
     {
+        public int[] IDs
+        {
+            get { return m_elevators.Keys.ToArray(); }
+        }
+
         public ElevatorsController(ElevatorsScheduler scheduler)
         {
             m_scheduler = scheduler;
@@ -47,11 +52,6 @@ namespace ElevatorSimulation.SimulationModel.Controllers
             return m_scheduler.Schedule(tenant);
         }     
 
-        public int[] GetIDs()
-        {
-            return m_elevators.Keys.ToArray();
-        }
-
         public void Reset()
         {
             foreach (Elevator elevator in m_elevators.Values)
@@ -60,7 +60,8 @@ namespace ElevatorSimulation.SimulationModel.Controllers
             }
         }
 
-        private Dictionary<int, Elevator> m_elevators = new Dictionary<int, Elevator>();
+        private SortedDictionary<int, Elevator> m_elevators
+            = new SortedDictionary<int, Elevator>();
         private readonly ElevatorsScheduler m_scheduler;
     }
 }
