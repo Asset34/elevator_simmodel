@@ -48,7 +48,7 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
             RedefineLimits();
         }
 
-        public int Schedule(int floor)
+        public int Schedule()
         {
             // Check
             if (IsEmpty)
@@ -59,7 +59,7 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
             int call;
             if (m_elevator.Direction == Direction.Up)
             {
-                if (floor == m_top)
+                if (m_elevator.CurrentFloor == m_top)
                 {
                     call = m_bottom;
 
@@ -74,7 +74,7 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
 
                     // Get calls which directed such as elevator movement
                     // and located upper than elevator
-                    var upperCalls = m_sets[Direction.Up].Where(x => x >= floor);
+                    var upperCalls = m_sets[Direction.Up].Where(x => x >= m_elevator.CurrentFloor);
                     if (upperCalls.Any())
                     {
                         call = upperCalls.Min();
@@ -83,7 +83,7 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
             }
             else 
             {
-                if (floor == m_bottom)
+                if (m_elevator.CurrentFloor == m_bottom)
                 {
                     call = m_top;
 
@@ -98,7 +98,7 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
 
                     // Get calls which directed such as elevator movement
                     // and located lower than elevator
-                    var lowerCalls = m_sets[Direction.Down].Where(x => x <= floor);
+                    var lowerCalls = m_sets[Direction.Down].Where(x => x <= m_elevator.CurrentFloor);
                     if (lowerCalls.Any())
                     {
                         call = lowerCalls.Max();

@@ -173,7 +173,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
             }
 
             // Schedule new call
-            TargetFloor = m_scheduler.Schedule(CurrentFloor);
+            TargetFloor = m_scheduler.Schedule();
         }
 
         private readonly CallsScheduler m_scheduler;

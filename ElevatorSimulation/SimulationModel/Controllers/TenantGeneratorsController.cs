@@ -11,6 +11,14 @@ namespace ElevatorSimulation.SimulationModel.Controllers
     /// </summary>
     class TenantGeneratorsController
     {
+        /// <summary>
+        /// Numbers of floors for which there is generator
+        /// </summary>
+        public int[] Floors
+        {
+            get { return m_generators.Keys.ToArray(); }
+        }
+
         public void Add(TenantGenerator generator)
         {
             m_generators.Add(generator.Floor, generator);
@@ -24,11 +32,6 @@ namespace ElevatorSimulation.SimulationModel.Controllers
             return m_generators[floor];
         }
 
-        public int[] GetFloors()
-        {
-            return m_generators.Keys.ToArray();
-        }
-
         public void Reset()
         {
             foreach (TenantGenerator generator in m_generators.Values)
@@ -37,6 +40,7 @@ namespace ElevatorSimulation.SimulationModel.Controllers
             }
         }
         
-        private Dictionary<int, TenantGenerator> m_generators = new Dictionary<int, TenantGenerator>();
+        private SortedDictionary<int, TenantGenerator> m_generators
+            = new SortedDictionary<int, TenantGenerator>();
     }
 }

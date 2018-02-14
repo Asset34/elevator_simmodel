@@ -91,11 +91,9 @@ namespace ElevatorSimulation.SimulationModel
         /// </summary>
         private void Initialize()
         {
-            int[] floors1 = m_generatorsController.GetFloors();
-
             TenantGenerator generator;
             TenantQueue queue;
-            foreach (int key in floors1)
+            foreach (int key in m_generatorsController.Floors)
             {
                 generator = m_generatorsController.Get(key);
                 queue = m_queuesController.Get(key);
