@@ -1,7 +1,7 @@
 ﻿namespace ElevatorSimulation.SimulationModel.Events
 {
     /// <summary>
-    /// Base class for events with two participants
+    /// Base class for events between two participants
     /// </summary>
     /// <typeparam name="T1"> 1st participant </typeparam>
     /// <typeparam name="T2"> 2nd participant </typeparam>

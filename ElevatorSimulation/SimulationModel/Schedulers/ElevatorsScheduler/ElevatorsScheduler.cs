@@ -3,7 +3,8 @@
 namespace ElevatorSimulation.SimulationModel.Schedulers
 {
     /// <summary>
-    /// Base class for schedulers of elevators
+    /// Base class for schedulers of group of elevators which
+    /// defines which elevator will take the next sended call
     /// </summary>
     abstract class ElevatorsScheduler
     {

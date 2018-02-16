@@ -8,10 +8,16 @@ using ElevatorSimulation.SimulationModel.Schedulers;
 namespace ElevatorSimulation.SimulationModel.Controllers
 {
     /// <summary>
-    /// Controller of the complex of elevators
+    /// Controller of the complex of elevators which
+    /// performs subsystem 'Service devices' of the
+    /// queueing theory
     /// </summary>
     class ElevatorsController
     {
+        /// <summary>
+        /// Identification numbers of all elevators
+        /// of the simulation model
+        /// </summary>
         public int[] IDs
         {
             get { return m_elevators.Keys.ToArray(); }

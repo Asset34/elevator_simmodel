@@ -7,8 +7,7 @@ using ElevatorSimulation.SimulationModel.Entities;
 namespace ElevatorSimulation.SimulationModel.Events
 {
     /// <summary>
-    /// Event of dropping off the tenants by oe
-    /// of the elevators
+    /// Event of dropping off the tenants by the elevator
     /// </summary>
     class DropoffEvent : EventOf1<Elevator>
     {

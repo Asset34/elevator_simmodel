@@ -16,7 +16,6 @@ namespace ElevatorSimulation.SimulationModel.Distributions
         public override int GetValue()
         {
             int value;
-
             do
             {
                 value = m_distribution.GetValue();

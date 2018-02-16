@@ -18,7 +18,7 @@ namespace ElevatorSimulation
     {
         static void Main(string[] args)
         {
-            TestSimulationModel();
+            //TestSimulationModel();
         }
 
         static void LogHandler(string text)

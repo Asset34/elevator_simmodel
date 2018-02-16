@@ -11,7 +11,8 @@
         public int Time { get; }
 
         /// <summary>
-        /// 
+        /// Priority of the event which defines
+        /// ....
         /// </summary>
         public abstract int Priority { get; }
 

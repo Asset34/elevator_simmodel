@@ -6,23 +6,20 @@ using ElevatorSimulation.SimulationModel.Schedulers;
 namespace ElevatorSimulation.SimulationModel.Entities
 {
     /// <summary>
-    /// Elevator which serves the tenants.
-    /// Performs the service device with accumulator
+    /// Elevator serving and accumulating the tenants which
+    /// performs the 'Service device' entity of the queueing theory
     /// </summary>
-    partial class Elevator
+    partial class Elevator : Entity
     {
-        public delegate void EventHandler();
-        public event EventHandler Changed;
-
         public int ID { get; }
         /// <summary>
-        /// Maximum number of served tenants
+        /// Maximum number of served tenants at the same time
         /// </summary>
-        public int Capacity { get; set; }
+        public int Capacity { get; }
         /// <summary>
-        /// Number of served tenants
+        /// Number of served tenants at the current time
         /// </summary>
-        public int FillCount
+        public int Occupancy
         {
             get
             {
@@ -37,58 +34,90 @@ namespace ElevatorSimulation.SimulationModel.Entities
             }
         }
         /// <summary>
-        /// Number of free places
+        /// Number of non-occupied place at the current time
         /// </summary>
-        public int FreeCount
+        public int FreePlace
         {
-            get { return Capacity - FillCount; }
+            get { return Capacity - Occupancy; }
         }
 
-        public int DefaultFloor { get; set; }
-        public int CurrentFloor { get; private set; }
-        public int TargetFloor { get; private set; }
-
-        public bool IsDropOff
+        public int DefaultFloor { get; }
+        public int CurrentFloor
         {
-            get { return m_tenants.ContainsKey(CurrentFloor); }
+            get { return m_currentFloor; }
+            private set
+            {
+                m_currentFloor = value;
+                OnChanged();
+            }
         }
-        public bool HasCalls
+        public int TargetFloor
         {
-            get { return !m_scheduler.IsEmpty; }
+            get { return m_targetFloor; }
+            private set
+            {
+                m_targetFloor = value;
+                OnChanged();
+            }
         }
 
+        /// <summary>
+        /// Current movement direction
+        /// </summary>
         public Direction Direction { get; private set; }
+        /// <summary>
+        /// Current state of the elevator's FSM
+        /// </summary>
         public State State
         {
             get { return m_stateMachine.CurrentState; }
         }
 
+        /// <summary>
+        /// Flag which defines there are the tenants whose
+        /// service is over
+        /// </summary>
+        public bool IsDropOff
+        {
+            get { return m_tenants.ContainsKey(CurrentFloor); }
+        }
+        /// <summary>
+        /// Flag which defines elevator has calls to handle
+        /// </summary>
+        public bool HasCalls
+        {
+            get { return !m_scheduler.IsEmpty; }
+        }
+
         public Elevator(int id, int capacity, int startFloor, CallsScheduler scheduler)
         {
             ID = id;
-
             Capacity = capacity;
             DefaultFloor = startFloor;
             CurrentFloor = startFloor;
             TargetFloor = startFloor;
-
             Direction = Direction.Down;
 
             m_scheduler = scheduler;
             m_scheduler.SetElevator(this);
 
             m_stateMachine = new StateMachine(this);
+            m_tenants = new Dictionary<int, List<Tenant>>();
         }
 
         public void AddHallcall(Tenant tenant)
         {
             m_scheduler.AddHallcall(tenant);
             m_stateMachine.MoveNext(Edge.Call);
+
+            OnChanged();
         }
         public void AddCarcall(Tenant tenant)
         {
             m_scheduler.AddCarcall(tenant);
             m_stateMachine.MoveNext(Edge.Call);
+
+            OnChanged();
         }
 
         public void Pickup(List<Tenant> tenants)
@@ -97,11 +126,13 @@ namespace ElevatorSimulation.SimulationModel.Entities
             {
                 Pickup(tenant);
             }
+
+            OnChanged();
         }
         public void Pickup(Tenant tenant)
         {
             // Checks
-            if (FreeCount == 0)
+            if (FreePlace == 0)
             {
                 throw new InvalidOperationException("The elevator is full");
             }
@@ -129,6 +160,8 @@ namespace ElevatorSimulation.SimulationModel.Entities
             List<Tenant> tenants = m_tenants[CurrentFloor];
             m_tenants.Remove(CurrentFloor);
 
+            OnChanged();
+
             return tenants;
         }
         public void Move()
@@ -144,6 +177,8 @@ namespace ElevatorSimulation.SimulationModel.Entities
             }
 
             m_stateMachine.MoveNext(Edge.ToMove);
+
+            OnChanged();
         }
         
         public void Reset()
@@ -156,6 +191,9 @@ namespace ElevatorSimulation.SimulationModel.Entities
             m_tenants.Clear();
         }
 
+        /// <summary>
+        /// Remove last cheduled call
+        /// </summary>
         private void RemoveCall()
         {
             // Check
@@ -166,6 +204,9 @@ namespace ElevatorSimulation.SimulationModel.Entities
 
             m_scheduler.RemoveCall(TargetFloor);
         }
+        /// <summary>
+        /// Set new call to move
+        /// </summary>
         private void ScheduleCall()
         {
             // Check
@@ -176,11 +217,16 @@ namespace ElevatorSimulation.SimulationModel.Entities
 
             // Schedule new call
             TargetFloor = m_scheduler.Schedule();
+
+            OnChanged();
         }
+
+        private int m_currentFloor;
+        private int m_targetFloor;
 
         private readonly CallsScheduler m_scheduler;
         private readonly StateMachine m_stateMachine;
 
-        private Dictionary<int, List<Tenant>> m_tenants = new Dictionary<int, List<Tenant>>();
+        private Dictionary<int, List<Tenant>> m_tenants;
     }
 }

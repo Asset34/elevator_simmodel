@@ -28,14 +28,10 @@ namespace ElevatorSimulation.SimulationModel
         /// </summary>
         public int Time { get; private set; }
 
-        public ElevatorSM()
-        {
-
-        }
         /// <summary>
         /// Run the model
         /// </summary>
-        public void Run(int dTime)
+        public void Run(int Duration)
         {
             Log("*** Simulation started ***");
 
@@ -43,7 +39,7 @@ namespace ElevatorSimulation.SimulationModel
 
             Event ev = null;
             DateTime time = new DateTime();
-            while (Time <= dTime)
+            while (Time <= Duration)
             {
                 // Execute event
                 if (ev != null)

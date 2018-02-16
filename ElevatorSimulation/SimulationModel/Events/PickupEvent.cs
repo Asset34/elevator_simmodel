@@ -31,7 +31,7 @@ namespace ElevatorSimulation.SimulationModel.Events
             // Get list of picking up tenants
             Tenants = new List<Tenant>();
             while (m_p1.IsHallcall(m_p2.Direction) &&
-                   m_p2.FreeCount > 0)
+                   m_p2.FreePlace > 0)
             {
                 Tenants.Add(m_p1.Dequeue(m_p2.Direction));
             }

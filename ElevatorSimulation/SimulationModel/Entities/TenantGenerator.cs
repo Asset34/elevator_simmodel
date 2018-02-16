@@ -3,10 +3,10 @@
 namespace ElevatorSimulation.SimulationModel.Entities
 {
     /// <summary>
-    /// Generator of tenants on the specific floor.
-    /// Performs transaction source
+    /// Generator of tenants on the specific floor which
+    /// performs 'Transaction source' entity of the queueing theory
     /// </summary>
-    class TenantGenerator
+    class TenantGenerator : Entity
     {
         /// <summary>
         /// Floor number
@@ -18,24 +18,24 @@ namespace ElevatorSimulation.SimulationModel.Entities
             Floor = floor;
             m_floorDistr = new DistributionWithGaps(floorDistr, floor);
         }
+
+        /// <summary>
+        /// Generate new tenant for specific floor
+        /// </summary>
+        /// <returns></returns>
         public Tenant Generate()
         {
             m_tenantCounter++;
 
-            return new Tenant
-            {
-                ID = m_tenantCounter,
-                FloorFrom = Floor,
-                FloorTo = m_floorDistr.GetValue()
-            };
+            return new Tenant(m_tenantCounter, Floor, m_floorDistr.GetValue());
         }
-
         public void Reset()
         {
             m_tenantCounter = 0;
         }
 
-        private static int m_tenantCounter = 0;
         private readonly Distribution m_floorDistr;
+
+        private static int m_tenantCounter = 0;
     }
 }

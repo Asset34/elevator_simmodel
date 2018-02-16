@@ -3,7 +3,7 @@
 namespace ElevatorSimulation.SimulationModel.Events
 {
     /// <summary>
-    /// Event of elevator movement with step = 1 floor
+    /// Event of elevator movement
     /// </summary>
     class ElevatorMoveEvent : EventOf1<Elevator>
     {

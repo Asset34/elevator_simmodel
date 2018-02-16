@@ -7,7 +7,7 @@ using ElevatorSimulation.SimulationModel.Entities;
 namespace ElevatorSimulation.SimulationModel.Schedulers
 {
     /// <summary>
-    /// Scheduler of floor requests which serves all landing and Experimenting
+    /// Scheduler of calls which serves all landing and Experimenting
     /// car calls in one direction
     /// </summary>
     class CollectiveScheduler : CallsScheduler

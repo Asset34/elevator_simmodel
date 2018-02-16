@@ -9,7 +9,7 @@ namespace ElevatorSimulation.SimulationModel.Entities
     /// contains two queues for each of two types 
     /// of transactions
     /// </summary>
-    class TenantQueue
+    class TenantQueue : Entity
     {
         /// <summary>
         /// Floor number
@@ -32,9 +32,13 @@ namespace ElevatorSimulation.SimulationModel.Entities
         public void Enqueue(Tenant tenant)
         {
             m_queues[tenant.Direction].Enqueue(tenant);
+
+            OnChanged();
         }
         public Tenant Dequeue(Direction Direction)
         {
+            OnChanged();
+
             return m_queues[Direction].Dequeue();
         }
         public Tenant Peek(Direction Direction)

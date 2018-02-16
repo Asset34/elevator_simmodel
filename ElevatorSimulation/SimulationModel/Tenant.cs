@@ -1,4 +1,4 @@
-﻿namespace ElevatorSimulation.SimulationModel.Entities
+﻿namespace ElevatorSimulation.SimulationModel
 {
     enum Direction
     {
@@ -7,7 +7,8 @@
     }
 
     /// <summary>
-    /// Model of the tenant
+    /// Model of the tenant which performs 'Transaction'
+    /// entity of the queueing theory
     /// </summary>
     class Tenant
     {
@@ -21,7 +22,7 @@
         /// </summary>
         public int FloorTo { get; set; }
         /// <summary>
-        /// Destination of movement
+        /// Destination of the movement
         /// </summary>
         public Direction Direction
         {
@@ -37,5 +38,12 @@
                 }
             }
         }  
+        
+        public Tenant(int id, int floorFrom, int floorTo)
+        {
+            ID = id;
+            FloorFrom = FloorFrom;
+            FloorTo = floorTo;
+        }
     }
 }

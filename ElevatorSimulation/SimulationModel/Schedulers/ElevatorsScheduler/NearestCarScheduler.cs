@@ -84,7 +84,7 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
             // Search of the available elevator with highest priority
             foreach (KeyValuePair<Elevator, int> pair in sortedPriorityElevators)
             {
-                if (pair.Key.FreeCount > 0)
+                if (pair.Key.FreePlace > 0)
                 {
                     return pair.Key;
                 }

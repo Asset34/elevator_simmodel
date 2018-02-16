@@ -8,6 +8,8 @@ namespace ElevatorSimulation.SimulationModel.Controllers
 {
     /// <summary>
     /// Controller of the complex of tenant generators
+    /// which performs subsystem 'Transaction sources'
+    /// of the queueing theory
     /// </summary>
     class TenantGeneratorsController
     {

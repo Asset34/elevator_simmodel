@@ -42,6 +42,11 @@ namespace ElevatorSimulation.SimulationModel.Entities
                 m_actions.Add(State.Move  , OnMove  );
             }
 
+            /// <summary>
+            /// Get next state according to the edge
+            /// </summary>
+            /// <param name="edge"></param>
+            /// <returns></returns>
             public State GetNext(Edge edge)
             {
                 StateTransition st = new StateTransition(CurrentState, edge);
@@ -53,6 +58,10 @@ namespace ElevatorSimulation.SimulationModel.Entities
 
                 return m_transitions[st];
             }
+            /// <summary>
+            /// Move to the next state according to the edge
+            /// </summary>
+            /// <param name="edge"></param>
             public void MoveNext(Edge edge)
             {
                 CurrentState = GetNext(edge);
@@ -119,10 +128,6 @@ namespace ElevatorSimulation.SimulationModel.Entities
                 if (m_elevator.CurrentFloor == m_elevator.TargetFloor)
                 {
                     MoveNext(Edge.ToTarget);
-                }
-                else
-                {
-                    //m_elevator.ScheduleCall();
                 }
             }
 

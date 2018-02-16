@@ -3,8 +3,7 @@
 namespace ElevatorSimulation.SimulationModel.Events
 {
     /// <summary>
-    /// Event of adding the new hall call to the
-    /// one of the elevators.
+    /// Event of adding the new hall call to the elevator
     /// </summary>
     class NewHallcallEvent : EventOf2<Tenant, Elevator>
     {

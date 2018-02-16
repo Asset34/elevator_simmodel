@@ -35,7 +35,7 @@ namespace ElevatorSimulation.SimulationModel.Events
             // Add tenant to the associated queue
             m_p2.Enqueue(Tenant);
 
-            // Create new event of tenant generation
+            // Create next event of tenant generation
             m_model.CreateEvent_NewTenant(m_p1, m_p2);
         }
         public override string ToString()
