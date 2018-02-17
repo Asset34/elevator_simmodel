@@ -21,7 +21,7 @@ namespace ElevatorSimulation.SimulationModel.Events
         /// </summary>
         public List<Tenant> Tenants { get; set; }
         
-        public DropoffEvent(int time, ElevatorSM model, Elevator elevator)
+        public DropoffEvent(int time, ElevatorSimModel model, Elevator elevator)
             :base(time, model, elevator)
         {
         }

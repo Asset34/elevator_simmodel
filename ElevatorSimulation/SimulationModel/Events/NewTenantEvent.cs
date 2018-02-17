@@ -17,7 +17,7 @@ namespace ElevatorSimulation.SimulationModel.Events
         /// </summary>
         public Tenant Tenant { get; private set; }
 
-        public NewTenantEvent(int time, ElevatorSM model, TenantGenerator generator, TenantQueue queue)
+        public NewTenantEvent(int time, ElevatorSimModel model, TenantGenerator generator, TenantQueue queue)
             : base(time, model, generator, queue)
         { 
         }

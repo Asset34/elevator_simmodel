@@ -12,7 +12,7 @@ namespace ElevatorSimulation.SimulationModel.Events
             get { return 3; }
         }
 
-        public NewHallcallEvent(int time, ElevatorSM model, Tenant tenant, Elevator elevator)
+        public NewHallcallEvent(int time, ElevatorSimModel model, Tenant tenant, Elevator elevator)
             :base(time, model, tenant, elevator)
         {
         }

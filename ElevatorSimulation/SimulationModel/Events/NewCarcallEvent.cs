@@ -12,7 +12,7 @@ namespace ElevatorSimulation.SimulationModel.Events
             get { return 4; }
         }
 
-        public NewCarcall(int time, ElevatorSM model, Tenant tenant, Elevator elevator)
+        public NewCarcall(int time, ElevatorSimModel model, Tenant tenant, Elevator elevator)
             :base(time, model, tenant, elevator)
         {
         }

@@ -22,7 +22,7 @@ namespace ElevatorSimulation.SimulationModel.Events
         /// </summary>
         public List<Tenant> Tenants { get; private set; }
 
-        public PickupEvent(int time, ElevatorSM model, TenantQueue queue, Elevator elevator)
+        public PickupEvent(int time, ElevatorSimModel model, TenantQueue queue, Elevator elevator)
             :base(time, model, queue, elevator)
         {
         }
