@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using ElevatorSimulation.SimulationModel.Parameters;
 using ElevatorSimulation.SimulationModel.Events;
 using ElevatorSimulation.SimulationModel.Controllers;
 using ElevatorSimulation.SimulationModel.Distributions;
@@ -18,7 +17,7 @@ namespace ElevatorSimulation.SimulationModel
     /// - 
     /// - 
     /// </summary>
-    partial class ElevatorSM
+    class ElevatorSimModel
     {
         public delegate void LogEventHandler(string msg);
         public event LogEventHandler Log;
@@ -27,6 +26,37 @@ namespace ElevatorSimulation.SimulationModel
         /// Current model time
         /// </summary>
         public int Time { get; private set; }
+
+        public ElevatorSimModel(ElevatorSimModelBuilder builder)
+        {
+            // Build subsystem of transaction sources
+            m_generatorsController = new TenantGeneratorsController();
+            foreach (TenantGenerator generator in builder.Generators)
+            {
+                m_generatorsController.Add(generator);
+            }
+
+            // Build subsystem of transaction queues
+            m_queuesController = new TenantQueuesController();
+            foreach (TenantQueue queue in builder.Queues)
+            {
+                m_queuesController.Add(queue);
+            }
+
+            // Build subsystem of service devices
+            m_elevatorsController = new ElevatorsController(builder.Scheduler);
+            foreach (Elevator elevator in builder.Elevators)
+            {
+                m_elevatorsController.Add(elevator);
+            }
+
+            // Set distributions
+            m_generatorsDistr = builder.GeneratorsDistr;
+            m_elevatorsDistr = builder.ElevatorsDistr;
+
+            // Set events scheduler
+            m_scheduler = new EventsScheduler();
+        }
 
         /// <summary>
         /// Run the model

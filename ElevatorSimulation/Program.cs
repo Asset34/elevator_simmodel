@@ -11,6 +11,7 @@ using ElevatorSimulation.SimulationModel.Events;
 using ElevatorSimulation.SimulationModel.Schedulers;
 using ElevatorSimulation.SimulationModel.Entities;
 using ElevatorSimulation.SimulationModel.Parameters;
+using ElevatorSimulation.SimulationModel.Statistic.Quantities;
 
 namespace ElevatorSimulation
 {
@@ -18,7 +19,7 @@ namespace ElevatorSimulation
     {
         static void Main(string[] args)
         {
-            //TestSimulationModel();
+            TestSimulationModel();
         }
 
         static void LogHandler(string text)
@@ -74,33 +75,55 @@ namespace ElevatorSimulation
         {
             int numFloors = 5;
             int numElevators = 2;
-            
-            ElevatorsScheduler scheduler = new NearestCarScheduler(numFloors);
-            ElevatorSM.Builder.ElevatorsScheduler(scheduler);
-            
-            // Build generators and queues
-            for (int i = 0; i < numFloors; i++)
-            {
-                ElevatorSM.Builder.TenantGenerator(i + 1, new UniformDistribution(1, numFloors));
-                ElevatorSM.Builder.TenantQueue(i + 1);
-            }
+
+            ElevatorSimModelBuilder builder = new ElevatorSimModelBuilder();
+
+            // Build generators
+            builder
+            .Generator(
+                    new TenantGenerator(1, new UniformDistribution(1, numFloors)),
+                    new UniformDistribution(10, 20)
+                    )
+            .Generator(
+                    new TenantGenerator(2, new UniformDistribution(1, numFloors)),
+                    new UniformDistribution(5, 25)
+                    )
+            .Generator(
+                    new TenantGenerator(3, new UniformDistribution(1, numFloors)),
+                    new UniformDistribution(17, 45)
+                    )
+            .Generator(
+                    new TenantGenerator(4, new UniformDistribution(1, numFloors)),
+                    new UniformDistribution(7, 9)
+                    )
+            .Generator(
+                    new TenantGenerator(5, new UniformDistribution(1, numFloors)),
+                    new UniformDistribution(20, 31)
+                    );
+            // Build queues
+            builder
+            .Queue(new TenantQueue(1))
+            .Queue(new TenantQueue(2))
+            .Queue(new TenantQueue(3))
+            .Queue(new TenantQueue(4))
+            .Queue(new TenantQueue(5));
 
             // Build elevators
-            ElevatorSM.Builder.Elevator(1, 10, 1, new CollectiveScheduler());
-            ElevatorSM.Builder.Elevator(2, 10, 1, new CollectiveScheduler());
+            builder
+            .Elevator(
+                new Elevator(1, 10, 1, new CollectiveScheduler()),
+                new UniformDistribution(3, 5)
+                )
+            .Elevator(
+                new Elevator(2, 10, 1, new CollectiveScheduler()),
+                new UniformDistribution(4, 6)
+                );
 
-            // Build generators distributions
-            ElevatorSM.Builder.TenantGenerationDistr(1, new UniformDistribution(10, 20));
-            ElevatorSM.Builder.TenantGenerationDistr(2, new UniformDistribution(5, 25));
-            ElevatorSM.Builder.TenantGenerationDistr(3, new UniformDistribution(17, 45));
-            ElevatorSM.Builder.TenantGenerationDistr(4, new UniformDistribution(7, 9));
-            ElevatorSM.Builder.TenantGenerationDistr(5, new UniformDistribution(20, 31));
+            // Build elevators scheduler
+            builder.ElevatorsScheduler(new NearestCarScheduler(numFloors));
 
-            // BUild elevators distributions
-            ElevatorSM.Builder.ElevatorMovementDistr(1, new UniformDistribution(3, 5));
-            ElevatorSM.Builder.ElevatorMovementDistr(2, new UniformDistribution(4, 6));
 
-            ElevatorSM model = ElevatorSM.Builder.Build();
+            ElevatorSimModel model = new ElevatorSimModel(builder);
             model.Log += LogHandler;
 
             model.Run(360);

@@ -42,7 +42,7 @@
         public Tenant(int id, int floorFrom, int floorTo)
         {
             ID = id;
-            FloorFrom = FloorFrom;
+            FloorFrom = floorFrom;
             FloorTo = floorTo;
         }
     }
