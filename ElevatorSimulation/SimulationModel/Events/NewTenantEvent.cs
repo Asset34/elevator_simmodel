@@ -18,8 +18,8 @@ namespace ElevatorSimulation.SimulationModel.Events
         /// </summary>
         public Tenant Tenant { get; private set; }
 
-        public NewTenantEvent(int time, EventProvider provider, TenantGenerator generator, TenantQueue queue)
-            : base(time, provider, generator, queue)
+        public NewTenantEvent(int time, ElevatorSimModel model, TenantGenerator generator, TenantQueue queue)
+            : base(time, model, generator, queue)
         { 
         }
         public override void Execute()
@@ -30,14 +30,14 @@ namespace ElevatorSimulation.SimulationModel.Events
             // Create new event
             if (!m_p2.IsHallcall(Tenant.Direction))
             {
-                m_provider.CreateEvent_NewHallcall(Tenant);
+                m_model.CreateEvent_NewHallcall(Tenant);
             }
 
             // Add tenant to the associated queue
             m_p2.Enqueue(Tenant);
 
-            // Create new event of tenant generation
-            m_provider.CreateEvent_NewTenant(m_p1, m_p2);
+            // Create next event of tenant generation
+            m_model.CreateEvent_NewTenant(m_p1, m_p2);
         }
         public override string ToString()
         {

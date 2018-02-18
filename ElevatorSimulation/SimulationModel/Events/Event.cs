@@ -11,17 +11,18 @@
         public int Time { get; }
 
         /// <summary>
-        /// 
+        /// Priority of the event which defines
+        /// ....
         /// </summary>
         public abstract int Priority { get; }
 
-        public Event(int time, EventProvider provider)
+        public Event(int time, ElevatorSimModel model)
         {
             Time = time;
-            m_provider = provider;
+            m_model = model;
         }
         public abstract void Execute();
 
-        protected EventProvider m_provider;
+        protected ElevatorSimModel m_model;
     }
 }

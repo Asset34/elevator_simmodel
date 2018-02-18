@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using ElevatorSimulation.SimulationModel.Events;
 
 namespace ElevatorSimulation.SimulationModel.Schedulers
 {
+    /// <summary>
+    /// Scheduler which distributes and orders events
+    /// by the model time
+    /// </summary>
     partial class EventsScheduler
     {
-        class PriorityEventQueue
+        private class PriorityEventQueue
         {
             public int Count
             {

@@ -18,6 +18,14 @@ namespace ElevatorSimulation.SimulationModel.Entities
         /// </summary>
         public int Floor { get; }
 
+        public int Count
+        {
+            get
+            {
+                return m_queues[Direction.Up].Count + m_queues[Direction.Down].Count;
+            }
+        }
+
         public TenantQueue(int floor)
         {
             Floor = floor;
@@ -26,10 +34,15 @@ namespace ElevatorSimulation.SimulationModel.Entities
         public void Enqueue(Tenant tenant)
         {
             m_queues[tenant.Direction].Enqueue(tenant);
+
+            OnChanged();
         }
         public Tenant Dequeue(Direction Direction)
         {
-            return m_queues[Direction].Dequeue();
+            Tenant tenant = m_queues[Direction].Dequeue();
+            OnChanged();
+
+            return tenant;
         }
         public Tenant Peek(Direction Direction)
         {
@@ -44,12 +57,6 @@ namespace ElevatorSimulation.SimulationModel.Entities
         public bool IsHallcall(Direction direction)
         {
             return m_queues[direction].Count > 0;
-        }
-
-        public void Reset()
-        {
-            m_queues[Direction.Up].Clear();
-            m_queues[Direction.Down].Clear();
         }
 
         private readonly Dictionary<Direction, Queue<Tenant>> m_queues
