@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 using ElevatorSimulation.SimulationModel;
 using ElevatorSimulation.SimulationModel.Distributions;
@@ -128,9 +129,30 @@ namespace ElevatorSimulation
             Statistic[] queueStatistics = new Statistic[numFloors];
             for (int i = 0; i < numFloors; i++)
             {
+<<<<<<< HEAD
+                NumFloors = 4,
+                NumElevators = 2,
+                TenantGeneratorParameters = new TenantGeneratorParameters[]
+                {
+                    new TenantGeneratorParameters { Period = 15, DPeriod = 5 },
+                    new TenantGeneratorParameters { Period = 5, DPeriod = 2 },
+                    new TenantGeneratorParameters { Period = 34, DPeriod = 15 },
+                    new TenantGeneratorParameters { Period = 10, DPeriod = 10 },
+                    //new TenantGeneratorParameters { Period = 11, DPeriod = 4 }
+                },
+                ElevatorParameters = new ElevatorParameters[]
+                {
+                    new ElevatorParameters { Capacity = 10, StartFloor = 1, Period = 3, DPeriod = 1},
+                    new ElevatorParameters { Capacity = 10, StartFloor = 1, Period = 3, DPeriod = 1}
+                }
+            };
+
+            ElevatorSimulationModel model = new ElevatorSimulationModel(parameters);
+=======
                 queueStatistics[i] = new QueueSize(string.Format("Queue_size({0})", i + 1), model);
                 queueStatistics[i].Link(i + 1);
             }
+>>>>>>> statistics
 
             // Run
             model.Run(60);
@@ -146,6 +168,9 @@ namespace ElevatorSimulation
 
             LogHandler("");
 
+<<<<<<< HEAD
+            model.Run(30);
+=======
             // Handle and print statistics
             LogHandler("*** Handled statistics ***");
             StatisticHandler handler = new StatisticHandler();
@@ -156,6 +181,7 @@ namespace ElevatorSimulation
 
                 LogHandler(string.Format("{0}\n", handler));
             }
+>>>>>>> statistics
         }
     }
 }

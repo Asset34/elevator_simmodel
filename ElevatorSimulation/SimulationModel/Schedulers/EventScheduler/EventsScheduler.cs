@@ -7,7 +7,8 @@ using ElevatorSimulation.SimulationModel.Events;
 namespace ElevatorSimulation.SimulationModel.Schedulers
 {
     /// <summary>
-    /// Schedulers of simulatuon model's events
+    /// Scheduler which distributes and orders events
+    /// by the model time
     /// </summary>
     partial class EventsScheduler
     {
@@ -45,11 +46,6 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
             }
 
             return Remove(m_events.Keys.Min());
-        }
-
-        public void Reset()
-        {
-            m_events.Clear();
         }
 
         private Dictionary<int, PriorityEventQueue> m_events = new Dictionary<int, PriorityEventQueue>();

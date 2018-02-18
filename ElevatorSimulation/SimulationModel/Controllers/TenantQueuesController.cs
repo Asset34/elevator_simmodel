@@ -7,10 +7,20 @@ using ElevatorSimulation.SimulationModel.Entities;
 namespace ElevatorSimulation.SimulationModel.Controllers
 {
     /// <summary>
-    /// Controller of the complex of tenant queues
+    /// Controller of the complex of tenant queues which
+    /// performs subsystem 'Transaction queues' of the
+    /// queueing theory
     /// </summary>
     class TenantQueuesController
     {
+        /// <summary>
+        /// Numbers of floors for which there is queue
+        /// </summary>
+        public int[] Floors
+        {
+            get { return m_queues.Keys.ToArray(); }
+        }
+
         public void Add(TenantQueue queue)
         {
             m_queues.Add(queue.Floor, queue);
@@ -24,19 +34,18 @@ namespace ElevatorSimulation.SimulationModel.Controllers
             return m_queues[floor];
         }
 
-        public int[] GetFloors()
+        /// <summary>
+        /// Update statistics linked to queues
+        /// </summary>
+        public void UpdateStatistics()
         {
-            return m_queues.Keys.ToArray();
-        }
-
-        public void Reset()
-        {
-            foreach (TenantQueue TenantQueue in m_queues.Values)
+            foreach (TenantQueue queue in m_queues.Values)
             {
-                TenantQueue.Reset();
+                queue.OnChanged();
             }
         }
 
-        private Dictionary<int, TenantQueue> m_queues = new Dictionary<int, TenantQueue>();
+        private SortedDictionary<int, TenantQueue> m_queues
+            = new SortedDictionary<int, TenantQueue>();
     }
 }

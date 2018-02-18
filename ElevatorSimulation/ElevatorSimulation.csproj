@@ -43,11 +43,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SimulationModel\ElevatorSimModelBuilder.cs" />
+    <Compile Include="SimulationModel\Entities\Entity.cs" />
+    <Compile Include="SimulationModel\Statistics\Statistic.cs" />
+    <Compile Include="SimulationModel\Statistics\ElevatorOccupancy.cs" />
+    <Compile Include="SimulationModel\Statistics\QueueSize.cs" />
+    <Compile Include="SimulationModel\Statistics\DataValue.cs" />
+    <Compile Include="SimulationModel\Schedulers\CallsSchedulers\CallsScheduler.cs" />
+    <Compile Include="SimulationModel\Schedulers\ElevatorsScheduler\ElevatorsScheduler.cs" />
     <Compile Include="SimulationModel\Schedulers\EventScheduler\PriorityEventQueue.cs" />
     <Compile Include="SimulationModel\Entities\Elevator\StateMachine.cs" />
     <Compile Include="SimulationModel\Entities\Elevator\StateTransition.cs" />
-    <Compile Include="SimulationModel\EventProvider.cs" />
-    <Compile Include="SimulationModel\Entities\Entity.cs" />
     <Compile Include="SimulationModel\Controllers\ElevatorsController.cs" />
     <Compile Include="SimulationModel\Controllers\TenantQueuesController.cs" />
     <Compile Include="SimulationModel\Controllers\TenantGeneratorsController.cs" />
@@ -58,12 +64,12 @@
     <Compile Include="SimulationModel\Events\NewCarcallEvent.cs" />
     <Compile Include="SimulationModel\Events\NewHallcallEvent.cs" />
     <Compile Include="SimulationModel\Events\PickupEvent.cs" />
-    <Compile Include="SimulationModel\Schedulers\ElevatorsScheduler.cs" />
-    <Compile Include="SimulationModel\Schedulers\CallsScheduler.cs" />
+    <Compile Include="SimulationModel\Schedulers\ElevatorsScheduler\NearestCarScheduler.cs" />
+    <Compile Include="SimulationModel\Schedulers\CallsSchedulers\CollectiveScheduler.cs" />
     <Compile Include="SimulationModel\Distributions\Distribution.cs" />
     <Compile Include="SimulationModel\Distributions\DistributionWithGaps.cs" />
     <Compile Include="SimulationModel\Distributions\UniformDistribution.cs" />
-    <Compile Include="SimulationModel\ElevatorSimulationModel.cs" />
+    <Compile Include="SimulationModel\ElevatorSimModel.cs" />
     <Compile Include="SimulationModel\Entities\Elevator\Elevator.cs" />
     <Compile Include="SimulationModel\Entities\TenantQueue.cs" />
     <Compile Include="SimulationModel\Entities\TenantGenerator.cs" />
@@ -71,11 +77,11 @@
     <Compile Include="SimulationModel\Events\NewTenantEvent.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RandomGenerator.cs" />
     <Compile Include="SimulationModel\Parameters\ElevatorParameters.cs" />
     <Compile Include="SimulationModel\Parameters\TenantGeneratorParameters.cs" />
     <Compile Include="SimulationModel\Parameters\SimulationParameters.cs" />
     <Compile Include="SimulationModel\Schedulers\EventScheduler\EventsScheduler.cs" />
+    <Compile Include="SimulationModel\Statistics\StatisticHandler.cs" />
     <Compile Include="SimulationModel\Transactions\Tenant.cs" />
   </ItemGroup>
   <ItemGroup>

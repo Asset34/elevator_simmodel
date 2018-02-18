@@ -1,12 +1,10 @@
-﻿using ElevatorSimulation.SimulationModel.Transactions;
-
-using ElevatorSimulation.SimulationModel.Entities;
+﻿using ElevatorSimulation.SimulationModel.Entities;
+using ElevatorSimulation.SimulationModel.Transactions;
 
 namespace ElevatorSimulation.SimulationModel.Events
 {
     /// <summary>
-    /// Event of adding the new hall call to the
-    /// one of the elevators.
+    /// Event of adding the new hall call to the elevator
     /// </summary>
     class NewHallcallEvent : EventOf2<Tenant, Elevator>
     {
@@ -15,8 +13,8 @@ namespace ElevatorSimulation.SimulationModel.Events
             get { return 3; }
         }
 
-        public NewHallcallEvent(int time, EventProvider provider, Tenant tenant, Elevator elevator)
-            :base(time, provider, tenant, elevator)
+        public NewHallcallEvent(int time, ElevatorSimModel model, Tenant tenant, Elevator elevator)
+            :base(time, model, tenant, elevator)
         {
         }
         public override void Execute()
@@ -27,7 +25,16 @@ namespace ElevatorSimulation.SimulationModel.Events
 
             if (prevState == State.Wait)
             {
-                m_provider.TryMove(m_p2);
+                if (m_p2.State == State.Wait)
+                {
+                    m_model.CreateEvent_Dropoff(m_p2);
+                    m_model.CreateEvent_Pickup(m_p2);
+
+                }
+                else if (m_p2.State == State.Move)
+                {
+                    m_model.CreateEvent_ElevatorMove(m_p2);
+                }
             }
         }
         public override string ToString()

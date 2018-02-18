@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using ElevatorSimulation.SimulationModel.Entities;
 using ElevatorSimulation.SimulationModel.Transactions;
 
 namespace ElevatorSimulation.SimulationModel.Schedulers
 {
     /// <summary>
-    /// Scheduler of floor requests which serves all landing and resulting
+    /// Scheduler of calls which serves all landing and Resulting
     /// car calls in one direction
     /// </summary>
-    class CallsScheduler
+    class CollectiveScheduler : CallsScheduler
     {
-        public bool IsEmpty
+        public override bool IsEmpty
         {
             get
             {
@@ -22,26 +21,19 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
             }
         }
 
-        public bool IsBorder { get; private set; }
-
-        public CallsScheduler(Elevator elevator)
-        {
-            m_elevator = elevator;
-        }
-
-        public void AddHallcall(Tenant tenant)
+        public override void AddHallcall(Tenant tenant)
         {   
             m_sets[tenant.Direction].Add(tenant.FloorFrom);
 
             RedefineLimits();
         }
-        public void AddCarcall(Tenant tenant)
+        public override void AddCarcall(Tenant tenant)
         {
             m_sets[tenant.Direction].Add(tenant.FloorTo);
 
             RedefineLimits();
         }
-        public void RemoveCall(int call)
+        public override void RemoveCall(int call)
         {
             //m_sets[m_lastDirection].Remove(call);
             m_sets[m_elevator.Direction].Remove(call);
@@ -49,7 +41,7 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
             RedefineLimits();
         }
 
-        public int Schedule(int floor)
+        public override int Schedule()
         {
             // Check
             if (IsEmpty)
@@ -60,7 +52,7 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
             int call;
             if (m_elevator.Direction == Direction.Up)
             {
-                if (floor == m_top)
+                if (m_elevator.CurrentFloor == m_top)
                 {
                     call = m_bottom;
 
@@ -75,7 +67,7 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
 
                     // Get calls which directed such as elevator movement
                     // and located upper than elevator
-                    var upperCalls = m_sets[Direction.Up].Where(x => x >= floor);
+                    var upperCalls = m_sets[Direction.Up].Where(x => x >= m_elevator.CurrentFloor);
                     if (upperCalls.Any())
                     {
                         call = upperCalls.Min();
@@ -84,7 +76,7 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
             }
             else 
             {
-                if (floor == m_bottom)
+                if (m_elevator.CurrentFloor == m_bottom)
                 {
                     call = m_top;
 
@@ -99,7 +91,7 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
 
                     // Get calls which directed such as elevator movement
                     // and located lower than elevator
-                    var lowerCalls = m_sets[Direction.Down].Where(x => x <= floor);
+                    var lowerCalls = m_sets[Direction.Down].Where(x => x <= m_elevator.CurrentFloor);
                     if (lowerCalls.Any())
                     {
                         call = lowerCalls.Max();
@@ -111,12 +103,6 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
             RedefineBorder();
 
             return call;
-        }
-
-        public void Reset()
-        {
-            m_sets[Direction.Up].Clear();
-            m_sets[Direction.Down].Clear();
         }
 
         private void RedefineLimits()
@@ -160,7 +146,5 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
             { Direction.Up,   new HashSet<int>() },
             { Direction.Down, new HashSet<int>() }
         };
-
-        private Elevator m_elevator;
     }
 }

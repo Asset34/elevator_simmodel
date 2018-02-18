@@ -2,16 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using ElevatorSimulation.SimulationModel.Transactions;
 using ElevatorSimulation.SimulationModel.Entities;
 
 namespace ElevatorSimulation.SimulationModel.Controllers
 {
     /// <summary>
     /// Controller of the complex of tenant generators
+    /// which performs subsystem 'Transaction sources'
+    /// of the queueing theory
     /// </summary>
     class TenantGeneratorsController
     {
+        /// <summary>
+        /// Numbers of floors for which there is generator
+        /// </summary>
+        public int[] Floors
+        {
+            get { return m_generators.Keys.ToArray(); }
+        }
+
         public void Add(TenantGenerator generator)
         {
             m_generators.Add(generator.Floor, generator);
@@ -25,19 +34,18 @@ namespace ElevatorSimulation.SimulationModel.Controllers
             return m_generators[floor];
         }
 
-        public int[] GetFloors()
-        {
-            return m_generators.Keys.ToArray();
-        }
-
-        public void Reset()
+        /// <summary>
+        /// Update statistics linked to generators
+        /// </summary>
+        public void UpdateStatistics()
         {
             foreach (TenantGenerator generator in m_generators.Values)
             {
-                generator.Reset();
+                generator.OnChanged();
             }
         }
         
-        private Dictionary<int, TenantGenerator> m_generators = new Dictionary<int, TenantGenerator>();
+        private SortedDictionary<int, TenantGenerator> m_generators
+            = new SortedDictionary<int, TenantGenerator>();
     }
 }

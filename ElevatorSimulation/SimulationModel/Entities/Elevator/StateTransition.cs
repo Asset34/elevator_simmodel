@@ -5,12 +5,12 @@
         private partial class StateMachine
         {
             /// <summary>
-            /// Performs the each edge of the each state
+            /// Performs aggregate of the state and edge of this state
             /// </summary>
             private class StateTransition
             {
-                public State State { get; }
-                public Edge Edge { get; }
+                public State State { get; set; }
+                public Edge Edge { get; set; }
 
                 public StateTransition(State state, Edge edge)
                 {

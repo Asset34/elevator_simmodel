@@ -2,17 +2,28 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using ElevatorSimulation.SimulationModel.Transactions;
 using ElevatorSimulation.SimulationModel.Entities;
 using ElevatorSimulation.SimulationModel.Schedulers;
+using ElevatorSimulation.SimulationModel.Transactions;
 
 namespace ElevatorSimulation.SimulationModel.Controllers
 {
     /// <summary>
-    /// Controller of the complex of elevators
+    /// Controller of the complex of elevators which
+    /// performs subsystem 'Service devices' of the
+    /// queueing theory
     /// </summary>
     class ElevatorsController
     {
+        /// <summary>
+        /// Identification numbers of all elevators
+        /// of the simulation model
+        /// </summary>
+        public int[] IDs
+        {
+            get { return m_elevators.Keys.ToArray(); }
+        }
+
         public ElevatorsController(ElevatorsScheduler scheduler)
         {
             m_scheduler = scheduler;
@@ -46,22 +57,21 @@ namespace ElevatorSimulation.SimulationModel.Controllers
         public Elevator ScheduleElevator(Tenant tenant)
         {
             return m_scheduler.Schedule(tenant);
-        }     
-
-        public int[] GetIDs()
-        {
-            return m_elevators.Keys.ToArray();
         }
 
-        public void Reset()
+        /// <summary>
+        /// Update statistics linked to generators
+        /// </summary>
+        public void UpdateStatistics()
         {
             foreach (Elevator elevator in m_elevators.Values)
             {
-                elevator.Reset();
+                elevator.OnChanged();
             }
         }
 
-        private Dictionary<int, Elevator> m_elevators = new Dictionary<int, Elevator>();
+        private SortedDictionary<int, Elevator> m_elevators
+            = new SortedDictionary<int, Elevator>();
         private readonly ElevatorsScheduler m_scheduler;
     }
 }

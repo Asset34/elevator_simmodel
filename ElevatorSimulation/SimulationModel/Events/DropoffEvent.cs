@@ -2,14 +2,13 @@
 using System.Text;
 using System.Collections.Generic;
 
-using ElevatorSimulation.SimulationModel.Transactions;
 using ElevatorSimulation.SimulationModel.Entities;
+using ElevatorSimulation.SimulationModel.Transactions;
 
 namespace ElevatorSimulation.SimulationModel.Events
 {
     /// <summary>
-    /// Event of dropping off the tenants by oe
-    /// of the elevators
+    /// Event of dropping off the tenants by the elevator
     /// </summary>
     class DropoffEvent : EventOf1<Elevator>
     {
@@ -23,8 +22,8 @@ namespace ElevatorSimulation.SimulationModel.Events
         /// </summary>
         public List<Tenant> Tenants { get; set; }
         
-        public DropoffEvent(int time, EventProvider provider, Elevator elevator)
-            :base(time, provider, elevator)
+        public DropoffEvent(int time, ElevatorSimModel model, Elevator elevator)
+            :base(time, model, elevator)
         {
         }
         public override void Execute()
