@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElevatorSimulation", "ElevatorSimulation\ElevatorSimulation.csproj", "{D9F21B6D-BE4E-49F1-BF81-B054E7C3F0B7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElevatorSimulation", "ElevatorSimulation\ElevatorSimulation.csproj", "{EB125F0C-F6F7-4A92-931D-3EE3D52C9AFC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D9F21B6D-BE4E-49F1-BF81-B054E7C3F0B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D9F21B6D-BE4E-49F1-BF81-B054E7C3F0B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D9F21B6D-BE4E-49F1-BF81-B054E7C3F0B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D9F21B6D-BE4E-49F1-BF81-B054E7C3F0B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB125F0C-F6F7-4A92-931D-3EE3D52C9AFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB125F0C-F6F7-4A92-931D-3EE3D52C9AFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB125F0C-F6F7-4A92-931D-3EE3D52C9AFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB125F0C-F6F7-4A92-931D-3EE3D52C9AFC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
