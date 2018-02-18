@@ -70,8 +70,8 @@ namespace ElevatorSimulation
         }
         static void TestSimulationModel()
         {
-            int numFloors = 3;
-            int numElevators = 1;
+            int numFloors = 4;
+            int numElevators = 2;
 
             ElevatorSimModelBuilder builder = new ElevatorSimModelBuilder();
 
@@ -79,20 +79,20 @@ namespace ElevatorSimulation
             builder
             .Generator(
                     new TenantGenerator(1, new UniformDistribution(1, numFloors)),
-                    new UniformDistribution(4, 36)
+                    new UniformDistribution(15, 35)
                     )
             .Generator(
                     new TenantGenerator(2, new UniformDistribution(1, numFloors)),
-                    new UniformDistribution(4, 36)
+                    new UniformDistribution(15, 35)
                     )
             .Generator(
                     new TenantGenerator(3, new UniformDistribution(1, numFloors)),
-                    new UniformDistribution(4, 36)
+                    new UniformDistribution(15, 35)
+                    )
+            .Generator(
+                    new TenantGenerator(4, new UniformDistribution(1, numFloors)),
+                    new UniformDistribution(15, 35)
                     );
-            //.Generator(
-            //        new TenantGenerator(4, new UniformDistribution(1, numFloors)),
-            //        new UniformDistribution(7, 9)
-            //        )
             //.Generator(
             //        new TenantGenerator(5, new UniformDistribution(1, numFloors)),
             //        new UniformDistribution(20, 31)
@@ -102,8 +102,8 @@ namespace ElevatorSimulation
             builder
             .Queue(new TenantQueue(1))
             .Queue(new TenantQueue(2))
-            .Queue(new TenantQueue(3));
-            //.Queue(new TenantQueue(4))
+            .Queue(new TenantQueue(3))
+            .Queue(new TenantQueue(4));
             //.Queue(new TenantQueue(5));
 
             // Build elevators
@@ -111,11 +111,15 @@ namespace ElevatorSimulation
             .Elevator(
                 new Elevator(1, 10, 1, new CollectiveScheduler()),
                 new UniformDistribution(2, 2)
+                )
+            .Elevator(
+                new Elevator(2, 10, 1, new CollectiveScheduler()),
+                new UniformDistribution(2, 2)
                 );
             //.Elevator(
-            //    new Elevator(2, 10, 1, new CollectiveScheduler()),
-            //    new UniformDistribution(4, 6)
-            //    );
+            //    new Elevator(3, 10, 1, new CollectiveScheduler()),
+            //    new UniformDistribution(2, 2)
+            //);
 
             // Build elevators scheduler
             builder.ElevatorsScheduler(new NearestCarScheduler(numFloors));
@@ -128,12 +132,18 @@ namespace ElevatorSimulation
             Statistic[] queueStatistics = new Statistic[numFloors];
             for (int i = 0; i < numFloors; i++)
             {
-                queueStatistics[i] = new QueueSize(string.Format("Queue_size({0})", i + 1), model);
+                queueStatistics[i] = new QueueSize(string.Format("Queue size({0})", i + 1), model);
                 queueStatistics[i].Link(i + 1);
+            }
+            Statistic[] elevatorStatistics = new Statistic[numElevators];
+            for (int i = 0; i < numElevators; i++)
+            {
+                elevatorStatistics[i] = new ElevatorOccupancy(string.Format("Elevator Ooccupancy({0})", i + 1), model);
+                elevatorStatistics[i].Link(i + 1);
             }
 
             // Run
-            model.Run(60);
+            model.Run(360);
 
             LogHandler("");
 
@@ -141,7 +151,11 @@ namespace ElevatorSimulation
             LogHandler("*** Statistics ***");
             foreach (Statistic statistic in queueStatistics)
             {
-                LogHandler(string.Format("{0}\n", statistic));
+                LogHandler(string.Format("{0}", statistic));
+            }
+            foreach (Statistic statistic in elevatorStatistics)
+            {
+                LogHandler(string.Format("{0}", statistic));
             }
 
             LogHandler("");
@@ -154,7 +168,14 @@ namespace ElevatorSimulation
                 handler.Statistic = statistic;
                 handler.Handle(Operation.Average);
 
-                LogHandler(string.Format("{0}\n", handler));
+                LogHandler(string.Format("{0}", handler));
+            }
+            foreach (Statistic statistic in elevatorStatistics)
+            {
+                handler.Statistic = statistic;
+                handler.Handle(Operation.Average);
+
+                LogHandler(string.Format("{0}", handler));
             }
         }
     }

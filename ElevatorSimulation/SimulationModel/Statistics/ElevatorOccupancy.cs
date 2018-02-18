@@ -1,4 +1,7 @@
-﻿using ElevatorSimulation.SimulationModel.Entities;
+﻿using System;
+using System.Linq;
+
+using ElevatorSimulation.SimulationModel.Entities;
 
 namespace ElevatorSimulation.SimulationModel.Statistics
 {
@@ -19,8 +22,14 @@ namespace ElevatorSimulation.SimulationModel.Statistics
         }
         public override void Update()
         {
-            Check();
-            Data.Add(m_model.Time, new DataValue(m_model.Time, m_elevator.Occupancy));
+            if (Data.Count == 0 || Data.Last().Time != m_model.Time)
+            {
+                Data.Add(new DataValue(m_model.Time, m_elevator.Occupancy));
+            }
+            else
+            {
+                Data.Last().Value = m_elevator.Occupancy;
+            }
         }
 
         protected Elevator m_elevator;

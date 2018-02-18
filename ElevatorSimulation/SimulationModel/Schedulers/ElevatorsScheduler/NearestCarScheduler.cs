@@ -91,7 +91,7 @@ namespace ElevatorSimulation.SimulationModel.Schedulers
                 }
             }
 
-            return null;
+            return sortedPriorityElevators.First().Key;
         }
 
         private List<Elevator> m_elevators = new List<Elevator>();

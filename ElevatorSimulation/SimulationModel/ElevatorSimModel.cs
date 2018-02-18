@@ -123,7 +123,8 @@ namespace ElevatorSimulation.SimulationModel
             // Get associated queue
             TenantQueue queue = QueuesController.Get(elevator.CurrentFloor);
 
-            if (queue.IsHallcall(elevator.Direction))
+            if (queue.IsHallcall(elevator.Direction) && 
+                elevator.FreePlace > 0)
             {
                 m_scheduler.Add(new PickupEvent(Time, this, queue, elevator));
             }       

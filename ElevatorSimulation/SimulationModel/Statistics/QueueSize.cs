@@ -21,8 +21,14 @@ namespace ElevatorSimulation.SimulationModel.Statistics
         }
         public override void Update()
         {
-            Check();
-            Data.Add(m_model.Time, new DataValue(m_model.Time, m_queue.Count));
+            if (Data.Count == 0 || Data.Last().Time != m_model.Time)
+            {
+                Data.Add(new DataValue(m_model.Time, m_queue.Count));
+            }
+            else
+            {
+                Data.Last().Value = m_queue.Count;
+            }
         }
 
         protected TenantQueue m_queue;

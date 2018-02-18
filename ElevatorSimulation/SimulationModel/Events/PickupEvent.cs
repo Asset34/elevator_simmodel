@@ -31,15 +31,21 @@ namespace ElevatorSimulation.SimulationModel.Events
         {
             // Get list of picking up tenants
             Tenants = new List<Tenant>();
+            int count = m_p2.FreePlace;
             while (m_p1.IsHallcall(m_p2.Direction) &&
-                   m_p2.FreePlace > 0)
+                   count > 0)
             {
                 Tenants.Add(m_p1.Dequeue(m_p2.Direction));
+
+                count--;
             }
 
             // Add tenants to the elevator
-            m_p2.Pickup(Tenants);
-            
+            if (Tenants.Count > 0)
+            {
+                m_p2.Pickup(Tenants);
+            }
+                        
             // Add unduplicated carcalls from tenants
             foreach (Tenant tenant in Tenants)
             {

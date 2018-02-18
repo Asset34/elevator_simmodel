@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using System.Collections.Generic;
 
@@ -14,14 +15,14 @@ namespace ElevatorSimulation.SimulationModel.Statistics
         /// <summary>
         /// Set of values
         /// </summary>
-        public SortedList<int, DataValue> Data { get; }
+        public List<DataValue> Data { get; }
 
         public Statistic(string name, ElevatorSimModel model)
         {
             Name = name;
             m_model = model;
 
-            Data = new SortedList<int, DataValue>();
+            Data = new List<DataValue>();
         }
 
         /// <summary>
@@ -41,20 +42,12 @@ namespace ElevatorSimulation.SimulationModel.Statistics
 
             str.Append(string.Format("{0}:", Name));
 
-            foreach (DataValue data in Data.Values)
+            foreach (DataValue data in Data)
             {
                 str.Append(string.Format(" {0}", data));
             }
 
             return str.ToString();
-        }
-
-        protected void Check()
-        {
-            if (Data.ContainsKey(m_model.Time))
-            {
-                Data.Remove(m_model.Time);
-            }
         }
 
         protected ElevatorSimModel m_model;

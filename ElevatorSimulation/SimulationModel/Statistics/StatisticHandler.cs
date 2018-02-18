@@ -50,21 +50,21 @@
             int d;
             for (int i = 0; i < Statistic.Data.Count - 1; i++)
             {
-                d = Statistic.Data.Values[i + 1].Time - Statistic.Data.Values[i].Time;
+                d = Statistic.Data[i + 1].Time - Statistic.Data[i].Time;
 
                 count += d;
-                sum += Statistic.Data.Values[i].Value * d;
+                sum += Statistic.Data[i].Value * d;
             }
 
             count++;
-            sum += Statistic.Data.Values[Statistic.Data.Count - 1].Value;
+            sum += Statistic.Data[Statistic.Data.Count - 1].Value;
 
             Result = sum / count;
         }
 
         public override string ToString()
         {
-            return string.Format("{0}[{1}]: {2}", Statistic.Name, Operation, Result);
+            return string.Format("{0} [{1}]: {2}", Statistic.Name, Operation, Result);
         }
     }
 }

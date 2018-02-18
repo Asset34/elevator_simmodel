@@ -8,7 +8,7 @@ namespace ElevatorSimulation.SimulationModel.Distributions
     abstract class Distribution
     {
         public abstract int GetValue();
-
-        protected Random m_rand = new Random();
+        
+        protected static Random m_rand = new Random();
     }
 }
