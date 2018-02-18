@@ -56,7 +56,18 @@ namespace ElevatorSimulation.SimulationModel.Controllers
         public Elevator ScheduleElevator(Tenant tenant)
         {
             return m_scheduler.Schedule(tenant);
-        }     
+        }
+
+        /// <summary>
+        /// Update statistics linked to generators
+        /// </summary>
+        public void UpdateStatistics()
+        {
+            foreach (Elevator elevator in m_elevators.Values)
+            {
+                elevator.OnChanged();
+            }
+        }
 
         public void Reset()
         {

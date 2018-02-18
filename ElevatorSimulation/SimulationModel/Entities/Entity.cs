@@ -9,7 +9,7 @@
         public delegate void EventHandler();
         public event EventHandler Changed;
 
-        protected virtual void OnChanged()
+        public virtual void OnChanged()
         {
             if (Changed != null)
             {
