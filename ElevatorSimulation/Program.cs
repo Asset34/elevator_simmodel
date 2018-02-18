@@ -7,11 +7,9 @@ using System.Threading.Tasks;
 
 using ElevatorSimulation.SimulationModel;
 using ElevatorSimulation.SimulationModel.Distributions;
-using ElevatorSimulation.SimulationModel.Events;
 using ElevatorSimulation.SimulationModel.Schedulers;
 using ElevatorSimulation.SimulationModel.Entities;
-using ElevatorSimulation.SimulationModel.Parameters;
-using ElevatorSimulation.SimulationModel.Statistic.Quantities;
+using ElevatorSimulation.SimulationModel.Statistics;
 
 namespace ElevatorSimulation
 {
@@ -73,8 +71,8 @@ namespace ElevatorSimulation
         }
         static void TestSimulationModel()
         {
-            int numFloors = 5;
-            int numElevators = 2;
+            int numFloors = 3;
+            int numElevators = 1;
 
             ElevatorSimModelBuilder builder = new ElevatorSimModelBuilder();
 
@@ -82,51 +80,82 @@ namespace ElevatorSimulation
             builder
             .Generator(
                     new TenantGenerator(1, new UniformDistribution(1, numFloors)),
-                    new UniformDistribution(10, 20)
+                    new UniformDistribution(4, 36)
                     )
             .Generator(
                     new TenantGenerator(2, new UniformDistribution(1, numFloors)),
-                    new UniformDistribution(5, 25)
+                    new UniformDistribution(4, 36)
                     )
             .Generator(
                     new TenantGenerator(3, new UniformDistribution(1, numFloors)),
-                    new UniformDistribution(17, 45)
-                    )
-            .Generator(
-                    new TenantGenerator(4, new UniformDistribution(1, numFloors)),
-                    new UniformDistribution(7, 9)
-                    )
-            .Generator(
-                    new TenantGenerator(5, new UniformDistribution(1, numFloors)),
-                    new UniformDistribution(20, 31)
+                    new UniformDistribution(4, 36)
                     );
+            //.Generator(
+            //        new TenantGenerator(4, new UniformDistribution(1, numFloors)),
+            //        new UniformDistribution(7, 9)
+            //        )
+            //.Generator(
+            //        new TenantGenerator(5, new UniformDistribution(1, numFloors)),
+            //        new UniformDistribution(20, 31)
+            //        );
             // Build queues
             builder
             .Queue(new TenantQueue(1))
             .Queue(new TenantQueue(2))
-            .Queue(new TenantQueue(3))
-            .Queue(new TenantQueue(4))
-            .Queue(new TenantQueue(5));
+            .Queue(new TenantQueue(3));
+            //.Queue(new TenantQueue(4))
+            //.Queue(new TenantQueue(5));
 
             // Build elevators
             builder
             .Elevator(
                 new Elevator(1, 10, 1, new CollectiveScheduler()),
-                new UniformDistribution(3, 5)
-                )
-            .Elevator(
-                new Elevator(2, 10, 1, new CollectiveScheduler()),
-                new UniformDistribution(4, 6)
+                new UniformDistribution(2, 2)
                 );
+            //.Elevator(
+            //    new Elevator(2, 10, 1, new CollectiveScheduler()),
+            //    new UniformDistribution(4, 6)
+            //    );
 
             // Build elevators scheduler
             builder.ElevatorsScheduler(new NearestCarScheduler(numFloors));
 
-
+            // Build model
             ElevatorSimModel model = new ElevatorSimModel(builder);
             model.Log += LogHandler;
 
-            model.Run(360);
+            // Set statistics
+            Statistic[] queueStatistics = new Statistic[numFloors];
+            for (int i = 0; i < numFloors; i++)
+            {
+                queueStatistics[i] = new QueueSize(string.Format("Queue_size({0})", i + 1), model);
+                queueStatistics[i].Link(i + 1);
+            }
+
+            // Run
+            model.Run(60);
+
+            LogHandler("");
+
+            // Print statistics
+            LogHandler("*** Statistics ***");
+            foreach (Statistic statistic in queueStatistics)
+            {
+                LogHandler(string.Format("{0}\n", statistic));
+            }
+
+            LogHandler("");
+
+            // Handle and print statistics
+            LogHandler("*** Handled statistics ***");
+            StatisticHandler handler = new StatisticHandler();
+            foreach (Statistic statistic in queueStatistics)
+            {
+                handler.Statistic = statistic;
+                handler.Handle(Operation.Average);
+
+                LogHandler(string.Format("{0}\n", handler));
+            }
         }
     }
 }

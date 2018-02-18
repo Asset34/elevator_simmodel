@@ -37,9 +37,10 @@ namespace ElevatorSimulation.SimulationModel.Entities
         }
         public Tenant Dequeue(Direction Direction)
         {
+            Tenant tenant = m_queues[Direction].Dequeue();
             OnChanged();
 
-            return m_queues[Direction].Dequeue();
+            return tenant;
         }
         public Tenant Peek(Direction Direction)
         {

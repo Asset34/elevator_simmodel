@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using ElevatorSimulation.SimulationModel.Entities;
 using ElevatorSimulation.SimulationModel.Distributions;
 using ElevatorSimulation.SimulationModel.Schedulers;
-using ElevatorSimulation.SimulationModel.Statistic.Quantities;
+using ElevatorSimulation.SimulationModel.Statistics;
 
 namespace ElevatorSimulation.SimulationModel
 {
@@ -25,8 +25,8 @@ namespace ElevatorSimulation.SimulationModel
         /* Schedulers */
         public ElevatorsScheduler Scheduler { get; private set; }
 
-        /* Statisctical quantities */
-        public List<StatisticQuantity> Quantities { get; private set; }
+        /* Statisctical data */
+        public List<Statistic> Data { get; private set; }
 
         public ElevatorSimModelBuilder()
         {
@@ -36,53 +36,34 @@ namespace ElevatorSimulation.SimulationModel
 
             GeneratorsDistr = new Dictionary<int, Distribution>();
             ElevatorsDistr = new Dictionary<int, Distribution>();
+
+            Data = new List<Statistic>();
         }
 
         /* Building of parts */
         public ElevatorSimModelBuilder Generator(
             TenantGenerator generator,
-            Distribution generationDistr,
-            BindedStatisticQuantity<TenantGenerator> quantity = null
+            Distribution generationDistr
             )
         {
-            if (quantity != null)
-            {
-                quantity.Bind(generator);
-                Quantities.Add(quantity);
-            }
-
             Generators.Add(generator);
             GeneratorsDistr.Add(generator.Floor, generationDistr);
 
             return this;
         }
         public ElevatorSimModelBuilder Queue(
-            TenantQueue queue,
-            BindedStatisticQuantity<TenantQueue> quantity = null
+            TenantQueue queue
             )
         {
-            if (quantity != null)
-            {
-                quantity.Bind(queue);
-                Quantities.Add(quantity);
-            }
-
             Queues.Add(queue);
             
             return this;
         }
         public ElevatorSimModelBuilder Elevator(
             Elevator elevator,
-            Distribution movementDistr,
-            BindedStatisticQuantity<Elevator> quantity = null
+            Distribution movementDistr
             )
-        {
-            if (quantity != null)
-            {
-                quantity.Bind(elevator);
-                Quantities.Add(quantity);
-            }
-            
+        {           
             Elevators.Add(elevator);
             ElevatorsDistr.Add(elevator.ID, movementDistr);           
 
