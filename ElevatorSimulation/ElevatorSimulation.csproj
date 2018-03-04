@@ -51,57 +51,57 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="WPF\View\App.xaml">
+    <ApplicationDefinition Include="src\App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="SimulationModel\Controllers\ElevatorsController.cs" />
-    <Compile Include="SimulationModel\Controllers\TenantGeneratorsController.cs" />
-    <Compile Include="SimulationModel\Controllers\TenantQueuesController.cs" />
-    <Compile Include="SimulationModel\Distributions\Distribution.cs" />
-    <Compile Include="SimulationModel\Distributions\DistributionWithGaps.cs" />
-    <Compile Include="SimulationModel\Distributions\UniformDistribution.cs" />
-    <Compile Include="SimulationModel\ElevatorSimModel.cs" />
-    <Compile Include="SimulationModel\ElevatorSimModelBuilder.cs" />
-    <Compile Include="SimulationModel\Entities\Elevator\Elevator.cs" />
-    <Compile Include="SimulationModel\Entities\Elevator\StateMachine.cs" />
-    <Compile Include="SimulationModel\Entities\Elevator\StateTransition.cs" />
-    <Compile Include="SimulationModel\Entities\Entity.cs" />
-    <Compile Include="SimulationModel\Entities\TenantGenerator.cs" />
-    <Compile Include="SimulationModel\Entities\TenantQueue.cs" />
-    <Compile Include="SimulationModel\Events\DropoffEvent.cs" />
-    <Compile Include="SimulationModel\Events\ElevatorMoveEvent.cs" />
-    <Compile Include="SimulationModel\Events\Event.cs" />
-    <Compile Include="SimulationModel\Events\EventOf1.cs" />
-    <Compile Include="SimulationModel\Events\EventOf2.cs" />
-    <Compile Include="SimulationModel\Events\NewCarcallEvent.cs" />
-    <Compile Include="SimulationModel\Events\NewHallcallEvent.cs" />
-    <Compile Include="SimulationModel\Events\NewTenantEvent.cs" />
-    <Compile Include="SimulationModel\Events\PickupEvent.cs" />
-    <Compile Include="SimulationModel\Parameters\ElevatorParameters.cs" />
-    <Compile Include="SimulationModel\Parameters\SimulationParameters.cs" />
-    <Compile Include="SimulationModel\Parameters\TenantGeneratorParameters.cs" />
-    <Compile Include="SimulationModel\Schedulers\CallsSchedulers\CallsScheduler.cs" />
-    <Compile Include="SimulationModel\Schedulers\CallsSchedulers\CollectiveScheduler.cs" />
-    <Compile Include="SimulationModel\Schedulers\ElevatorsScheduler\ElevatorsScheduler.cs" />
-    <Compile Include="SimulationModel\Schedulers\ElevatorsScheduler\NearestCarScheduler.cs" />
-    <Compile Include="SimulationModel\Schedulers\EventScheduler\EventsScheduler.cs" />
-    <Compile Include="SimulationModel\Schedulers\EventScheduler\PriorityEventQueue.cs" />
-    <Compile Include="SimulationModel\Statistics\DataValue.cs" />
-    <Compile Include="SimulationModel\Statistics\ElevatorOccupancy.cs" />
-    <Compile Include="SimulationModel\Statistics\QueueSize.cs" />
-    <Compile Include="SimulationModel\Statistics\Statistic.cs" />
-    <Compile Include="SimulationModel\Statistics\StatisticHandler.cs" />
-    <Compile Include="SimulationModel\Transactions\Tenant.cs" />
-    <Page Include="WPF\View\MainWindow.xaml">
+    <Compile Include="src\Model\MainModel.cs" />
+    <Compile Include="src\Model\SimulationModel\Controllers\ElevatorsController.cs" />
+    <Compile Include="src\Model\SimulationModel\Controllers\TenantGeneratorsController.cs" />
+    <Compile Include="src\Model\SimulationModel\Controllers\TenantQueuesController.cs" />
+    <Compile Include="src\Model\SimulationModel\Distributions\Distribution.cs" />
+    <Compile Include="src\Model\SimulationModel\Distributions\DistributionWithGaps.cs" />
+    <Compile Include="src\Model\SimulationModel\Distributions\UniformDistribution.cs" />
+    <Compile Include="src\Model\SimulationModel\ElevatorSimModel.cs" />
+    <Compile Include="src\Model\SimulationModel\ElevatorSimModelBuilder.cs" />
+    <Compile Include="src\Model\SimulationModel\Entities\Elevator\Elevator.cs" />
+    <Compile Include="src\Model\SimulationModel\Entities\Elevator\StateMachine.cs" />
+    <Compile Include="src\Model\SimulationModel\Entities\Elevator\StateTransition.cs" />
+    <Compile Include="src\Model\SimulationModel\Entities\Entity.cs" />
+    <Compile Include="src\Model\SimulationModel\Entities\TenantGenerator.cs" />
+    <Compile Include="src\Model\SimulationModel\Entities\TenantQueue.cs" />
+    <Compile Include="src\Model\SimulationModel\Events\DropoffEvent.cs" />
+    <Compile Include="src\Model\SimulationModel\Events\ElevatorMoveEvent.cs" />
+    <Compile Include="src\Model\SimulationModel\Events\Event.cs" />
+    <Compile Include="src\Model\SimulationModel\Events\EventOf1.cs" />
+    <Compile Include="src\Model\SimulationModel\Events\EventOf2.cs" />
+    <Compile Include="src\Model\SimulationModel\Events\NewCarcallEvent.cs" />
+    <Compile Include="src\Model\SimulationModel\Events\NewHallcallEvent.cs" />
+    <Compile Include="src\Model\SimulationModel\Events\NewTenantEvent.cs" />
+    <Compile Include="src\Model\SimulationModel\Events\PickupEvent.cs" />
+    <Compile Include="src\Model\SimulationModel\Schedulers\CallsScheduler.cs" />
+    <Compile Include="src\Model\SimulationModel\Schedulers\ElevatorsScheduler.cs" />
+    <Compile Include="src\Model\SimulationModel\Schedulers\EventScheduler\EventsScheduler.cs" />
+    <Compile Include="src\Model\SimulationModel\Schedulers\EventScheduler\PriorityEventQueue.cs" />
+    <Compile Include="src\Model\SimulationModel\Statistics\ElevatorOccupancy.cs" />
+    <Compile Include="src\Model\SimulationModel\Statistics\QueueSize.cs" />
+    <Compile Include="src\Model\SimulationModel\Statistics\SData.cs" />
+    <Compile Include="src\Model\SimulationModel\Statistics\Statistic.cs" />
+    <Compile Include="src\Model\SimulationModel\Statistics\StatisticHandler.cs" />
+    <Compile Include="src\Model\SimulationModel\Transactions\Tenant.cs" />
+    <Page Include="src\View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="WPF\View\App.xaml.cs">
+    <Compile Include="src\Commands\RelayCommand.cs" />
+    <Compile Include="src\Model\ElevatorData.cs" />
+    <Compile Include="src\Model\FloorData.cs" />
+    <Compile Include="src\ViewModel\ViewModelMainWindow.cs" />
+    <Compile Include="src\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="WPF\View\MainWindow.xaml.cs">
+    <Compile Include="src\View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -131,11 +131,9 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="WPF\View\App.config" />
+    <None Include="src\App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="WPF\ViewModel\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
