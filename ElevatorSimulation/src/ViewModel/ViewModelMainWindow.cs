@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using ElevatorSimulation.Model;
 using ElevatorSimulation.Commands;
 using ElevatorSimulation.Model.SimulationModel;
+using ElevatorSimulation.Model.SimulationModel.Statistics;
 
 namespace ElevatorSimulation.ViewModel
 {
@@ -33,6 +34,7 @@ namespace ElevatorSimulation.ViewModel
             get { return m_currentFloor; }
             set { m_currentFloor = value; OnPropertyChanged("CurrentFloor"); }
         }
+
         public ObservableCollection<ElevatorData> Elevators
         {
             get { return m_elevators; }
@@ -47,20 +49,28 @@ namespace ElevatorSimulation.ViewModel
             get { return m_currentElevator; }
             set { m_currentElevator = value; OnPropertyChanged("CurrentElevator"); }
         }
-        public ObservableCollection<string> EventsLog
-        {
-            get { return m_eventsLog; }
-            set { m_eventsLog = value; OnPropertyChanged("EventsLog"); }
-        }
+
         public int Duration
         {
             get { return m_duration; }
             set { m_duration = value; OnPropertyChanged("Duration"); }
         }
+
         public bool IsShowEvents
         {
             get { return m_isShowEvents; }
             set { m_isShowEvents = value; OnPropertyChanged("IsShowEvents"); }
+        }
+
+        public ObservableCollection<string> EventsLog
+        {
+            get { return m_eventsLog; }
+            set { m_eventsLog = value; OnPropertyChanged("EventsLog"); }
+        }
+        public ObservableCollection<SPair> Statistics
+        {
+            get { return m_statistics; }
+            set { m_statistics = value; OnPropertyChanged("Statistics"); }
         }
 
         /* Commands */
@@ -73,7 +83,6 @@ namespace ElevatorSimulation.ViewModel
         public ICommand BuildCommand { get; set; }
         public ICommand ResetCommand { get; set; }
         public ICommand RunCommand { get; set; }
-        public ICommand ClearLogCommand { get; set; }
 
         public ViewModelMainWindow()
         {
@@ -89,7 +98,7 @@ namespace ElevatorSimulation.ViewModel
             CurrentFloor.ID = 1;
             CurrentElevator.ID = 1;
 
-            IsShowEvents = false;
+            IsShowEvents = true;
 
             AddFloorCommand = new RelayCommand(arg => AddFloorHandle());
             DeleteFloorCommand = new RelayCommand(arg => DeleteFloorHandle());
@@ -100,7 +109,6 @@ namespace ElevatorSimulation.ViewModel
             BuildCommand = new RelayCommand(arg => BuildHandle());
             ResetCommand = new RelayCommand(arg => ResetHandle());
             RunCommand = new RelayCommand(arg => RunHandle());
-            ClearLogCommand = new RelayCommand(arg => ClearLogHandle());
         }
 
         /* Command handlers */
@@ -196,6 +204,7 @@ namespace ElevatorSimulation.ViewModel
         {
             try
             {
+                // Checks
                 if (Floors.Count < 2)
                 {
                     throw new Exception("The simulation model must have at least 2 floors");
@@ -206,8 +215,9 @@ namespace ElevatorSimulation.ViewModel
                 }
 
                 ElevatorSimModel simModel = m_model.BuildModel(Floors.ToList(), Elevators.ToList());
+                simModel.Log += AddEventLog;
 
-                simModel.Log += (arg) => { EventsLog.Add(arg); };
+                m_model.LinkStatistics(Floors.Count, Elevators.Count);
             }
             catch (Exception ex)
             {
@@ -218,7 +228,14 @@ namespace ElevatorSimulation.ViewModel
         {
             try
             {
-                m_model.ResetModel();
+                // Reset model
+                m_model.Reset();
+
+                // Clear log
+                EventsLog.Clear();
+
+                // Clear statistics
+                Statistics.Clear();
             }
             catch (Exception ex)
             {
@@ -230,17 +247,7 @@ namespace ElevatorSimulation.ViewModel
             try
             {
                 m_model.RunModel(Duration);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK);
-            }
-        }
-        private void ClearLogHandle()
-        {
-            try
-            {
-                EventsLog.Clear();
+                Statistics = new ObservableCollection<SPair>(m_model.HandleStatistics());
             }
             catch (Exception ex)
             {
@@ -292,6 +299,7 @@ namespace ElevatorSimulation.ViewModel
         private int m_duration;
         private bool m_isShowEvents;
         private ObservableCollection<string> m_eventsLog;
+        private ObservableCollection<SPair> m_statistics;
 
         private readonly MainModel m_model;
     }

@@ -59,6 +59,14 @@ namespace ElevatorSimulation.Model.SimulationModel.Controllers
             return m_scheduler.Schedule(tenant);
         }
 
+        public void UpdateStatistics()
+        {
+            foreach (Elevator elevator in m_elevators.Values)
+            {
+                elevator.OnChanged();
+            }
+        }
+
         public void Reset()
         {
             foreach (Elevator elevator in m_elevators.Values)

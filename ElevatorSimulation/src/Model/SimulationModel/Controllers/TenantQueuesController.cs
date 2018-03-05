@@ -34,6 +34,14 @@ namespace ElevatorSimulation.Model.SimulationModel.Controllers
             return m_queues[floor];
         }
 
+        public void UpdateStatistics()
+        {
+            foreach (TenantQueue queue in m_queues.Values)
+            {
+                queue.OnChanged();
+            }
+        }
+
         public void Reset()
         {
             foreach (TenantQueue queue in m_queues.Values)

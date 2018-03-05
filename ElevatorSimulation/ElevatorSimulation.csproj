@@ -86,6 +86,7 @@
     <Compile Include="src\Model\SimulationModel\Statistics\ElevatorOccupancy.cs" />
     <Compile Include="src\Model\SimulationModel\Statistics\QueueSize.cs" />
     <Compile Include="src\Model\SimulationModel\Statistics\SData.cs" />
+    <Compile Include="src\Model\SimulationModel\Statistics\SPair.cs" />
     <Compile Include="src\Model\SimulationModel\Statistics\Statistic.cs" />
     <Compile Include="src\Model\SimulationModel\Statistics\StatisticHandler.cs" />
     <Compile Include="src\Model\SimulationModel\Transactions\Tenant.cs" />

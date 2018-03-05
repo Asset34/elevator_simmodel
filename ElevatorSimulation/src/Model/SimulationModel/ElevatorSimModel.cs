@@ -172,6 +172,11 @@ namespace ElevatorSimulation.Model.SimulationModel
                     CreateEvent_NewTenant(generator, queue);
                 }
 
+                // Force update statistics
+                GeneratorsController.UpdateStatistics();
+                QueuesController.UpdateStatistics();
+                ElevatorsController.UpdateStatistics();
+
                 m_isFinished = false;
             }
             else
@@ -182,6 +187,11 @@ namespace ElevatorSimulation.Model.SimulationModel
         private void Postprocess()
         {
             Log("\n *** Simulation stopped *** \n");
+
+            // Force update statistics
+            GeneratorsController.UpdateStatistics();
+            QueuesController.UpdateStatistics();
+            ElevatorsController.UpdateStatistics();
         }
 
         /* Distributions */

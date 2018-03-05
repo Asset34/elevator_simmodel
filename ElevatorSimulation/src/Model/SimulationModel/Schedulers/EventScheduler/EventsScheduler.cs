@@ -47,6 +47,10 @@ namespace ElevatorSimulation.Model.SimulationModel.Schedulers
 
             return Remove(m_events.Keys.Min());
         }
+        public Event Peek()
+        {
+            return m_events[m_events.Keys.Min()].Peek();
+        }
 
         public void Reset()
         {

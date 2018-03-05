@@ -16,24 +16,23 @@ namespace ElevatorSimulation.Model.SimulationModel.Statistics
         /// </summary>
         /// <param name="statistic"></param>
         /// <returns></returns>
-        public static double Average(Statistic statistic)
+        public static SPair Average(Statistic statistic)
         {
             double sum = 0;
             int count = 0;
 
-            int d;
-            for (int i = 0; i < statistic.Data.Count - 1; i++)
+            int interval;
+            for (int i = 1; i < statistic.Data.Count; i++)
             {
-                d = statistic.Data[i + 1].Time - statistic.Data[i].Time;
+                // Get next interval
+                interval = statistic.Data[i].Time - statistic.Data[i - 1].Time;
+                count += interval;
 
-                count += d;
-                sum += statistic.Data[i].Value * d;
+                // Compute area on this interval
+                sum += statistic.Data[i - 1].Value * interval;
             }
 
-            count++;
-            sum += statistic.Data[statistic.Data.Count - 1].Value;
-
-            return sum / count;
+            return new SPair(string.Format("{0} (Average)", statistic.Name), sum / count);
         }
     }
 }

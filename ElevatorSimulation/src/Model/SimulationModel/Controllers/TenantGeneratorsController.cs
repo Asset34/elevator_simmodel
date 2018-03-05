@@ -34,6 +34,14 @@ namespace ElevatorSimulation.Model.SimulationModel.Controllers
             return m_generators[floor];
         }
 
+        public void UpdateStatistics()
+        {
+            foreach (TenantGenerator generator in m_generators.Values)
+            {
+                generator.OnChanged();
+            }
+        }
+
         public void Reset()
         {
             foreach (TenantGenerator generator in m_generators.Values)
