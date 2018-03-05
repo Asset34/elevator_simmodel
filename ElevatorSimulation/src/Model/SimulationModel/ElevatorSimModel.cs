@@ -77,12 +77,13 @@ namespace ElevatorSimulation.Model.SimulationModel
                 // Execute event
                 if (ev != null)
                 {
+                    m_scheduler.Schedule();
                     ev.Execute();
                     Log(String.Format("{0}   {1}", time.AddMinutes(ev.Time).TimeOfDay, ev.ToString()));
                 }
 
                 // Get nearest event
-                ev = m_scheduler.Schedule();
+                ev = m_scheduler.Peek();
 
                 // Set new model time
                 Time = ev.Time;
@@ -105,6 +106,14 @@ namespace ElevatorSimulation.Model.SimulationModel
             int time = Time + m_elevatorsDistr[elevator.ID].GetValue();
 
             m_scheduler.Add(new ElevatorMoveEvent(time, this, elevator));
+        }
+        public void CreateEvent_ElevatorStartMove(Elevator elevator)
+        {
+            m_scheduler.Add(new ElevatorStartMoveEvent(Time, this, elevator));
+        }
+        public void CreateEvent_ElevatorStopMove(Elevator elevator)
+        {
+            m_scheduler.Add(new ElevatorStopMoveEvent(Time, this, elevator));
         }
         public void CreateEvent_NewHallcall(Tenant tenant)
         {

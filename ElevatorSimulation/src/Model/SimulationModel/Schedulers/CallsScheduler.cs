@@ -21,7 +21,8 @@ namespace ElevatorSimulation.Model.SimulationModel.Schedulers
                        m_sets[Direction.Down].Count == 0;
             }
         }
-        public bool IsBorder { get; private set; }
+        public bool IsTopBorder { get; private set; }
+        public bool IsBottomBorder { get; private set; }
 
         public CallsScheduler(Elevator elevator)
         {
@@ -129,22 +130,26 @@ namespace ElevatorSimulation.Model.SimulationModel.Schedulers
         }
         private void RedefineBorder()
         {
-            IsBorder = false;
+            IsTopBorder = false;
+            IsTopBorder = false;
 
+            // Set bottom border
             if (m_elevator.Direction == Direction.Down)
             {
-                var lower = m_sets[Direction.Down].Where(call => (call <= m_elevator.TargetFloor));
+                var lower = m_sets[Direction.Down].Where(call => (call < m_elevator.TargetFloor));
                 if (!lower.Any())
                 {
-                    IsBorder = true;
+                    IsBottomBorder = true;
                 }
             }
-            else
+
+            // Set top border
+            if (m_elevator.Direction == Direction.Up)
             {
-                var upper = m_sets[Direction.Up].Where(call => (call >= m_elevator.TargetFloor));
+                var upper = m_sets[Direction.Up].Where(call => (call > m_elevator.TargetFloor));
                 if (!upper.Any())
                 {
-                    IsBorder = true;
+                    IsTopBorder = true;
                 }
             }
         }

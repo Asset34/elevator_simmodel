@@ -10,7 +10,7 @@ namespace ElevatorSimulation.Model.SimulationModel.Events
     {
         public override int Priority
         {
-            get { return 3; }
+            get { return 4; }
         }
 
         public NewHallcallEvent(int time, ElevatorSimModel model, Tenant tenant, Elevator elevator)
@@ -19,23 +19,12 @@ namespace ElevatorSimulation.Model.SimulationModel.Events
         }
         public override void Execute()
         {
-            State prevState = m_p2.State;
+            if (m_p2.State == State.Idle)
+            {
+                m_model.CreateEvent_ElevatorStartMove(m_p2);
+            }
 
             m_p2.AddHallcall(m_p1);
-
-            if (prevState == State.Wait)
-            {
-                if (m_p2.State == State.Wait)
-                {
-                    m_model.CreateEvent_Dropoff(m_p2);
-                    m_model.CreateEvent_Pickup(m_p2);
-
-                }
-                else if (m_p2.State == State.Move)
-                {
-                    m_model.CreateEvent_ElevatorMove(m_p2);
-                }
-            }
         }
         public override string ToString()
         {

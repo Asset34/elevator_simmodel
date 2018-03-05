@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -226,8 +227,8 @@ namespace ElevatorSimulation.ViewModel
         }
         private void ResetHandle()
         {
-            try
-            {
+            //try
+            //{
                 // Reset model
                 m_model.Reset();
 
@@ -236,11 +237,11 @@ namespace ElevatorSimulation.ViewModel
 
                 // Clear statistics
                 Statistics.Clear();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK);
+            //}
         }
         private void RunHandle()
         {
@@ -251,7 +252,7 @@ namespace ElevatorSimulation.ViewModel
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK);
+              MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK);
             }
         }
 

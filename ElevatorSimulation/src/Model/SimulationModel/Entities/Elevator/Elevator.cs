@@ -97,7 +97,7 @@ namespace ElevatorSimulation.Model.SimulationModel.Entities
             DefaultFloor = startFloor;
             CurrentFloor = startFloor;
             TargetFloor = startFloor;
-            Direction = Direction.Down;
+            Direction = Direction.Up;
             
             m_scheduler = new CallsScheduler(this);
 
@@ -179,6 +179,11 @@ namespace ElevatorSimulation.Model.SimulationModel.Entities
             m_stateMachine.MoveNext(Edge.ToMove);
 
             OnChanged();
+        }
+
+        public void Next()
+        {
+            m_stateMachine.MoveNext(Edge.ToHalt);
         }
 
         public void Reset()

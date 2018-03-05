@@ -14,7 +14,7 @@ namespace ElevatorSimulation.Model.SimulationModel.Events
     {
         public override int Priority
         {
-            get { return 6; }
+            get { return 7; }
         }
 
         /// <summary>

@@ -72,6 +72,8 @@
     <Compile Include="src\Model\SimulationModel\Entities\TenantQueue.cs" />
     <Compile Include="src\Model\SimulationModel\Events\DropoffEvent.cs" />
     <Compile Include="src\Model\SimulationModel\Events\ElevatorMoveEvent.cs" />
+    <Compile Include="src\Model\SimulationModel\Events\ElevatorStartMoveEvent.cs" />
+    <Compile Include="src\Model\SimulationModel\Events\ElevatorStopMoveEvent.cs" />
     <Compile Include="src\Model\SimulationModel\Events\Event.cs" />
     <Compile Include="src\Model\SimulationModel\Events\EventOf1.cs" />
     <Compile Include="src\Model\SimulationModel\Events\EventOf2.cs" />

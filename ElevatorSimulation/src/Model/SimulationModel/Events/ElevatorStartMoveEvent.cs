@@ -1,24 +1,31 @@
-﻿using ElevatorSimulation.Model.SimulationModel.Entities;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+using ElevatorSimulation.Model.SimulationModel.Entities;
 
 namespace ElevatorSimulation.Model.SimulationModel.Events
 {
-    /// <summary>
-    /// Event of elevator movement
-    /// </summary>
-    class ElevatorMoveEvent : EventOf1<Elevator>
+    class ElevatorStartMoveEvent : EventOf1<Elevator>
     {
         public override int Priority
         {
-            get { return 2; }
+            get { return 1; }
         }
 
-        public ElevatorMoveEvent(int time, ElevatorSimModel model, Elevator elevator)
-            :base(time, model, elevator)
+        public int Floor { get; private set; }
+
+        public ElevatorStartMoveEvent(int time, ElevatorSimModel model, Elevator p)
+            : base(time, model, p)
         {
         }
         public override void Execute()
         {
-            m_p.Move();
+            Floor = m_p.CurrentFloor;
+
+            m_p.Next();
 
             if (m_p.State == State.Wait || m_p.State == State.Idle)
             {
@@ -29,12 +36,13 @@ namespace ElevatorSimulation.Model.SimulationModel.Events
                 m_model.CreateEvent_ElevatorMove(m_p);
             }
         }
+
         public override string ToString()
         {
             return string.Format(
-                "Elevator[id:{0}] - move[floor:{1}]",
+                "Elevator[id:{0}] - start move[floor:{1}]",
                 m_p.ID,
-                m_p.CurrentFloor
+                Floor
                 );
         }
     }
