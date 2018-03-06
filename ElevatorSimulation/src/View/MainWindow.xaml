@@ -210,8 +210,8 @@
                           HorizontalAlignment="Stretch" >
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button Content="Build model" Command="{Binding BuildCommand}" />
-                        <Button Content="Run" Command="{Binding RunCommand}" />
-                        <Button Content="Reset" Command="{Binding ResetCommand}" />
+                        <Button Content="Run" Command="{Binding RunCommand}" IsEnabled="{Binding IsBuilded}" />
+                        <Button Content="Reset" Command="{Binding ResetCommand}" IsEnabled="{Binding IsBuilded}"  />
                     </StackPanel>
                 </GroupBox>
             </Grid>
@@ -225,8 +225,7 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <GroupBox Grid.Row="0" Grid.Column="0" Header="Statistics">
-                <ListView ItemsSource="{Binding Statistics}"
-                          MinHeight="100" MaxHeight="150">
+                <ListView ItemsSource="{Binding Statistics}">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" />

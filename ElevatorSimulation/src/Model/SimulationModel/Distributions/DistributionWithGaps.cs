@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace ElevatorSimulation.Model.SimulationModel.Distributions
+namespace ElevatorSimulation.Model. SimulationModel.Distributions
 {
     /// <summary>
     /// "Decorator" for distributions which excludes specific values(gaps)

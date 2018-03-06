@@ -57,6 +57,11 @@ namespace ElevatorSimulation.ViewModel
             set { m_duration = value; OnPropertyChanged("Duration"); }
         }
 
+        public bool IsBuilded
+        {
+            get { return m_isBuilded; }
+            set { m_isBuilded = value; OnPropertyChanged("IsBuilded"); }
+        }
         public bool IsShowEvents
         {
             get { return m_isShowEvents; }
@@ -99,6 +104,7 @@ namespace ElevatorSimulation.ViewModel
             CurrentFloor.ID = 1;
             CurrentElevator.ID = 1;
 
+            IsBuilded = false;
             IsShowEvents = true;
 
             AddFloorCommand = new RelayCommand(arg => AddFloorHandle());
@@ -219,6 +225,8 @@ namespace ElevatorSimulation.ViewModel
                 simModel.Log += AddEventLog;
 
                 m_model.LinkStatistics(Floors.Count, Elevators.Count);
+
+                IsBuilded = true;
             }
             catch (Exception ex)
             {
@@ -298,6 +306,7 @@ namespace ElevatorSimulation.ViewModel
         private ObservableCollection<ElevatorData> m_elevators;
         private ElevatorData m_currentElevator;
         private int m_duration;
+        private bool m_isBuilded;
         private bool m_isShowEvents;
         private ObservableCollection<string> m_eventsLog;
         private ObservableCollection<SPair> m_statistics;

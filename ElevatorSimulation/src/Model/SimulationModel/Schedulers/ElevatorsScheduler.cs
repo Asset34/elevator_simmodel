@@ -59,16 +59,16 @@ namespace ElevatorSimulation.Model.SimulationModel.Schedulers
                 {
                     if (elevator.Direction == tenant.Direction)
                     {
-                        priority = m_numFloors + 3 - Math.Abs(displacement);
+                        priority = m_numFloors + 2 - Math.Abs(displacement);
                     }
                     else
                     {
-                        priority = m_numFloors + 2 - Math.Abs(displacement);
+                        priority = m_numFloors + 1 - Math.Abs(displacement);
                     }
                 }
-                else if (elevator.State == State.Wait)
+                else if (elevator.State == State.Idle)
                 {
-                    priority = 2;
+                    priority = m_numFloors + 1 - Math.Abs(displacement);
                 }
                 else
                 {
