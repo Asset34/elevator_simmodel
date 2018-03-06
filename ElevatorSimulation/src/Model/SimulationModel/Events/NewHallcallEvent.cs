@@ -8,14 +8,10 @@ namespace ElevatorSimulation.Model.SimulationModel.Events
     /// </summary>
     class NewHallcallEvent : EventOf2<Tenant, Elevator>
     {
-        public override int Priority
-        {
-            get { return 4; }
-        }
-
         public NewHallcallEvent(int time, ElevatorSimModel model, Tenant tenant, Elevator elevator)
             :base(time, model, tenant, elevator)
         {
+            Priority = 4;
         }
         public override void Execute()
         {

@@ -185,7 +185,6 @@ namespace ElevatorSimulation.Model.SimulationModel.Entities
         {
             m_stateMachine.MoveNext(Edge.ToHalt);
         }
-
         public void Reset()
         {
             m_tenants.Clear();

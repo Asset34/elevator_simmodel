@@ -9,12 +9,10 @@
         /// Occurrence time
         /// </summary>
         public int Time { get; }
-
         /// <summary>
-        /// Priority of the event which defines
-        /// ....
+        /// Priority of the event
         /// </summary>
-        public abstract int Priority { get; }
+        public int Priority { get; protected set; }
 
         public Event(int time, ElevatorSimModel model)
         {

@@ -8,11 +8,6 @@ namespace ElevatorSimulation.Model.SimulationModel.Events
     /// </summary>
     class NewTenantEvent : EventOf2<TenantGenerator, TenantQueue>
     {
-        public override int Priority
-        {
-            get { return 3; }
-        }
-
         /// <summary>
         /// Generated tenant
         /// </summary>
@@ -20,7 +15,8 @@ namespace ElevatorSimulation.Model.SimulationModel.Events
 
         public NewTenantEvent(int time, ElevatorSimModel model, TenantGenerator generator, TenantQueue queue)
             : base(time, model, generator, queue)
-        { 
+        {
+            Priority = 3;
         }
         public override void Execute()
         {

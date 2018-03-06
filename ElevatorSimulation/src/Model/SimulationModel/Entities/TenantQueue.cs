@@ -17,7 +17,6 @@ namespace ElevatorSimulation.Model.SimulationModel.Entities
         /// Floor number
         /// </summary>
         public int Floor { get; }
-
         public int Count
         {
             get
@@ -37,16 +36,16 @@ namespace ElevatorSimulation.Model.SimulationModel.Entities
 
             OnChanged();
         }
-        public Tenant Dequeue(Direction Direction)
+        public Tenant Dequeue(Direction direction)
         {
-            Tenant tenant = m_queues[Direction].Dequeue();
+            Tenant tenant = m_queues[direction].Dequeue();
             OnChanged();
 
             return tenant;
         }
-        public Tenant Peek(Direction Direction)
+        public Tenant Peek(Direction direction)
         {
-            return m_queues[Direction].Peek();
+            return m_queues[direction].Peek();
         }
 
         /// <summary>

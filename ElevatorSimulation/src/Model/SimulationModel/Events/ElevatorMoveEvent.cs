@@ -7,14 +7,10 @@ namespace ElevatorSimulation.Model.SimulationModel.Events
     /// </summary>
     class ElevatorMoveEvent : EventOf1<Elevator>
     {
-        public override int Priority
-        {
-            get { return 2; }
-        }
-
         public ElevatorMoveEvent(int time, ElevatorSimModel model, Elevator elevator)
             :base(time, model, elevator)
         {
+            Priority = 2;
         }
         public override void Execute()
         {

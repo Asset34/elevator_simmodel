@@ -27,13 +27,13 @@ namespace ElevatorSimulation.Model.SimulationModel.Schedulers
             m_numFloors = numFloors;
         }
 
-        public void Add(Elevator element)
+        public void Add(Elevator elevator)
         {
-            m_elevators.Add(element);
+            m_elevators.Add(elevator);
         }
-        public void Remove(Elevator element)
+        public void Remove(Elevator elevator)
         {
-            m_elevators.Add(element);
+            m_elevators.Add(elevator);
         }
         public Elevator Schedule(Tenant tenant)
         {

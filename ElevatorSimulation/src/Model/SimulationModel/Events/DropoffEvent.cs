@@ -12,11 +12,6 @@ namespace ElevatorSimulation.Model.SimulationModel.Events
     /// </summary>
     class DropoffEvent : EventOf1<Elevator>
     {
-        public override int Priority
-        {
-            get { return 7; }
-        }
-
         /// <summary>
         /// Dropped off tenants
         /// </summary>
@@ -25,6 +20,7 @@ namespace ElevatorSimulation.Model.SimulationModel.Events
         public DropoffEvent(int time, ElevatorSimModel model, Elevator elevator)
             :base(time, model, elevator)
         {
+            Priority = 7;
         }
         public override void Execute()
         {

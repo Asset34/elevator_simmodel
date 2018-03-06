@@ -13,11 +13,6 @@ namespace ElevatorSimulation.Model.SimulationModel.Events
     /// </summary>
     class PickupEvent : EventOf2<TenantQueue, Elevator>
     {
-        public override int Priority
-        {
-            get { return 6; }
-        }
-
         /// <summary>
         /// Picked up tenants
         /// </summary>
@@ -26,6 +21,7 @@ namespace ElevatorSimulation.Model.SimulationModel.Events
         public PickupEvent(int time, ElevatorSimModel model, TenantQueue queue, Elevator elevator)
             :base(time, model, queue, elevator)
         {
+            Priority = 6;
         }
         public override void Execute()
         {

@@ -28,6 +28,7 @@ namespace ElevatorSimulation.Model.SimulationModel.Schedulers
         {
             m_elevator = elevator;
         }
+
         public void AddHallcall(Tenant tenant)
         {   
             m_sets[tenant.Direction].Add(tenant.FloorFrom);

@@ -1,23 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using ElevatorSimulation.Model.SimulationModel.Entities;
+﻿using ElevatorSimulation.Model.SimulationModel.Entities;
 
 namespace ElevatorSimulation.Model.SimulationModel.Events
 {
     class ElevatorStopMoveEvent : EventOf1<Elevator>
     {
-        public override int Priority
-        {
-            get { return 8; }
-        }
-
         public ElevatorStopMoveEvent(int time, ElevatorSimModel model, Elevator p)
             : base(time, model, p)
         {
+            Priority = 8;
         }
         public override void Execute()
         {

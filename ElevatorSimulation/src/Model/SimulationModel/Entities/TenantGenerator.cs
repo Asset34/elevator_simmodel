@@ -26,7 +26,7 @@ namespace ElevatorSimulation.Model.SimulationModel.Entities
             return new Tenant(m_tenantCounter, Floor, m_floorDistr.GetValue());
         }
 
-        public void Reset()
+        public void Reset() 
         {
             m_tenantCounter = 0;
         }

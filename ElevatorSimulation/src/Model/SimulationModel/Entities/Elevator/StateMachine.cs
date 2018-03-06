@@ -81,22 +81,11 @@ namespace ElevatorSimulation.Model.SimulationModel.Entities
             /* State actions */
             private void OnIdle()
             {
-
+                /* EMPTY */
             }
             private void OnWait()
             {
-                //if (!m_elevator.m_scheduler.IsEmpty)
-                //{
-                //    // Set direction
-                //    if (m_elevator.CurrentFloor < m_elevator.TargetFloor)
-                //    {
-                //        m_elevator.Direction = Direction.Up;
-                //    }
-                //    else if (m_elevator.CurrentFloor > m_elevator.TargetFloor)
-                //    {
-                //        m_elevator.Direction = Direction.Down;
-                //    }
-                //}
+                /* EMPTY */
             }
             private void OnHalt()
             {
